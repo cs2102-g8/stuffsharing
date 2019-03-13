@@ -11,6 +11,9 @@ drop table if exists Requests cascade;
 drop table if exists ResponseToRequest cascade;
 drop table if exists Complain cascade;
 drop table if exists Area cascade;
+drop table if exists UserGroup cascade;
+drop table if exists Category cascade;
+drop table if exists Belongs cascade;
 
 create table Area(
 	city varchar(100),
@@ -110,5 +113,23 @@ create table Complain(
 	FOREIGN KEY (complainee) REFERENCES Users
 );
 
+create table UserGroup(
+	gid					integer,
+	uid					integer,
+	gname			varchar(100),
+	primary key (gid, uid),
+	foreign key (uid) references Users
+);
 
+create table Category(
+	catname				varchar(100),
+	primary key (catname)
+);
 
+create table Belongs(
+	sid					integer,
+	catname				varchar(100),
+	primary key (sid, catname),
+	foreign key (sid) references Stuff,
+	foreign key (catname) references Category
+);
