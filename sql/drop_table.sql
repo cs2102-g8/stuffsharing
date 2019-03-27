@@ -1,0 +1,16 @@
+drop table if exists Users cascade;
+drop table if exists Borrowers cascade;
+drop table if exists Lenders cascade;
+drop table if exists Stuff cascade;
+drop table if exists Bids cascade;
+drop table if exists Lends cascade;
+drop table if exists Description cascade;
+drop table if exists Borrows cascade;
+drop table if exists Feedback cascade;
+drop table if exists Requests cascade;
+drop table if exists ResponseToRequest cascade;
+drop table if exists Complain cascade;
+drop table if exists Area cascade;
+drop table if exists UserGroup cascade;
+drop table if exists Category cascade;
+drop table if exists Belongs cascade;
