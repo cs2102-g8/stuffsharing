@@ -1,120 +1,192 @@
-create table Area(
+drop table if exists Users cascade;
+drop table if exists Areas cascade;
+drop table if exists Earns cascade;
+drop table if exists Badges cascade;
+drop table if exists Complaints cascade;
+drop table if exists Complains cascade;
+drop table if exists Borrowers cascade;
+drop table if exists Lenders cascade;
+drop table if exists Stuffs cascade;
+drop table if exists Bids cascade;
+drop table if exists Borrows cascade;
+drop table if exists Lends cascade;
+drop table if exists Descriptions cascade;
+drop table if exists Comments cascade;
+drop table if exists Categories cascade;
+drop table if exists Belongs cascade;
+
+create table Areas(
 	city varchar(100),
 	country varchar(100),
-	primary key(city, country)
+	primary key (city, country)
 );
 
 create table Users(
-	uid varchar(100) primary key, 
-	username varchar(100) not null unique,
-	phone 				Integer,
-	address 			varchar(60) not null,
+	uid integer, 
+	username varchar(100) unique not null,
+	password varchar(64) not null,
+	phone integer not null,
+	address	varchar(60) not null,
 	city varchar(100),
 	country varchar(100),
-	password   varchar(64) NOT NULL,
-	foreign key(city, country) references Area(city, country)
+	primary key (uid),
+	foreign key (city, country) references Areas(city, country)
+);
+
+create table Badges(
+	badgeName varchar(30),
+	primary key (badgeName)
+);
+
+create table Earns(
+	uid integer,
+	badgeName varchar(30),
+	foreign key (uid) references Users(uid),
+	foreign key (badgeName) references Badges(badgeName)
+);
+
+create table Complaints(
+	cid	integer,
+	complaint varchar(1000) not null,
+	dateTime timestamp not null,
+	primary key (cid)
+);
+
+create table Complains(
+	uid integer,
+	cid integer,
+	foreign key (uid) references Users(uid),
+	foreign key (cid) references Complaints(cid)
 );
 
 create table Borrowers(
-	uid varchar(100) references Users,
-	primary key(uid)
+	uid integer references Users(uid),
+	primary key (uid)
 );
 
 create table Lenders(
-	uid varchar(100) references Users,
-	primary key(uid)
+	uid integer references Users(uid),
+	primary key (uid)
 );
 
-create table Stuff(
-	sid integer primary key,
-	price float8 not null
+create table Stuffs(
+	sid integer,
+	nextMinimumBid money not null,
+	primary key (sid)
 );
 
 create table Bids(
-	uid varchar(100) not null references Borrowers on delete cascade,
-	sid integer not null references Stuff on delete cascade,
-	bid integer not null,
-	primary key(uid, sid)
-);
-
-create table Lends(
-	uid varchar(100) not null references Lenders on delete cascade,
-	sid integer not null references Stuff on delete cascade,
-	primary key(uid, sid)
-);
-
-create table Description(
-	updateTime varchar(20) not null,
-	timeToPickUp varchar(20) not null,
-	timeToReturn varchar(20) not null,
-	whereToPickUp varchar(100) not null,
-	whereToReturn varchar(100) not null,
-	introduction varchar(1000) not null,
-	sid integer,
-	uid varchar(100),
-	foreign key (sid, uid) references Lends(sid, uid) on delete cascade,
-	primary key (sid, uid, updateTime)
+	uid integer not null,
+	sid integer not null,
+	bid money not null,
+	primary key (uid, sid),
+	foreign key (uid) references Borrowers(uid) on delete cascade,
+	foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Borrows(
-	uid varchar(100) references Borrowers on delete cascade,
-	sid integer references Stuff on delete cascade,
-	primary key (sid, uid)
-);
-
-create table Feedback(
-	feedback varchar(1000) not null,
-	updateTime varchar(100) not null,
+	uid integer,
 	sid integer,
-	uid varchar(100),
+	primary key (uid, sid),
+	foreign key (uid) references Borrowers(uid) on delete cascade,
+	foreign key (sid) references Stuffs(sid) on delete cascade
+);
+
+create table Lends(
+	uid integer not null,
+	sid integer not null,
+	primary key (uid, sid),
+	foreign key (uid) references Lenders(uid) on delete cascade,
+	foreign key (sid) references Stuffs(sid) on delete cascade
+);
+
+create table Descriptions(
+	pickUpTime timestamp not null,
+	returnTime timestamp not null,
+	pickUpLocation varchar(100) not null,
+	returnLocation varchar(100) not null,
+	summary varchar(1000) not null,
+	uid integer,
+	sid integer,
+	primary key (uid, sid),
+	foreign key (uid, sid) references Lends(uid, sid) on delete cascade
+);
+
+create table Comments(
+	comment varchar(1000) not null,
+	updateTime timestamp not null,
+	uid integer,
+	sid integer,
 	rating integer,
-	foreign key (sid, uid) references Borrows(sid, uid) on delete cascade,
-	primary key (sid, uid, updateTime),
-	check (rating <= 5 and rating >= 0)
+	check (rating <= 5 and rating >= 0),
+	primary key (uid, sid, updateTime),
+	foreign key (uid, sid) references Borrows(uid, sid) on delete cascade
 );
 
-create table Requests(
-	title varchar(100) not null,
-	uid varchar(100) references Borrowers on delete cascade,
-	primary key (uid, title)
-);
-
-create table ResponseToRequest(
-	uid1 varchar(100) references Lenders(uid),
-	uid2 varchar(100) not null,
-	title varchar(100) not null,
-	foreign key (uid2, title) references Requests(uid, title)
-	on delete cascade on update cascade,
-	primary key (uid1, uid2, title)
-);
-
-create table Complain(
-	cid					varchar(100),
-	complain			varchar(1000) not null,
-	complainee			varchar(100) not null,
-	dates				integer,
-	PRIMARY KEY (cid),
-	FOREIGN KEY (complainee) REFERENCES Users
-);
-
-create table UserGroup(
-	gid					integer,
-	uid					varchar(100),
-	gname			varchar(100),
-	primary key (gid, uid),
-	foreign key (uid) references Users
-);
-
-create table Category(
-	catname				varchar(100),
-	primary key (catname)
+create table Categories(
+	categoryName varchar(100),
+	primary key (categoryName)
 );
 
 create table Belongs(
-	sid					integer,
-	catname				varchar(100),
-	primary key (sid, catname),
-	foreign key (sid) references Stuff,
-	foreign key (catname) references Category
+	sid integer,
+	categoryName varchar(100),
+	primary key (sid, categoryName),
+	foreign key (sid) references Stuffs(sid),
+	foreign key (categoryName) references Categories(categoryName)
 );
 
+create or replace function bidCheck() returns trigger as $$
+declare amount money;
+	begin
+		select nextMinimumBid into amount
+		from Stuffs
+		where new.sid = Stuffs.sid;
+		if new.bid > amount then
+			return new;
+		else
+			return null;
+		end if;
+	end;
+$$ language plpgsql;
+
+create trigger bidTrigger
+before insert on Bids
+for each row
+execute procedure bidCheck();
+
+create or replace function borrowCheck() returns trigger as $$
+declare count numeric;
+	begin
+		select count(*) into count
+		from Borrows
+		where new.uid = Borrows.uid;
+		if count > 10 then
+			return null;
+		else
+			return new;
+		end if;
+	end;
+$$ language plpgsql;
+
+create trigger borrowTrigger
+before insert on Borrows
+for each row
+execute procedure borrowCheck();
+
+create or replace function descriptionCheck() returns trigger as $$
+	begin
+		if new.pickUpTime >= new.returnTime then
+			return null;
+		else
+			delete from Borrows
+			where new.uid = Borrows.uid and new.sid = Borrows.sid
+			return new;
+		end if;
+	end;
+$$ language plpgsql;
+
+create trigger descriptionTrigger
+before insert on Descriptions
+for each row
+execute procedure descriptionCheck();
