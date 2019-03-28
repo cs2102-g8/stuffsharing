@@ -22,11 +22,10 @@ create table Areas(
 );
 
 create table Users(
-	uid integer, 
+	uid varchar(100), 
 	username varchar(100) unique not null,
 	password varchar(64) not null,
 	phone integer not null,
-	address	varchar(60) not null,
 	city varchar(100),
 	country varchar(100),
 	primary key (uid),
@@ -39,7 +38,7 @@ create table Badges(
 );
 
 create table Earns(
-	uid integer,
+	uid varchar(100),
 	badgeName varchar(30),
 	foreign key (uid) references Users(uid),
 	foreign key (badgeName) references Badges(badgeName)
@@ -53,19 +52,19 @@ create table Complaints(
 );
 
 create table Complains(
-	uid integer,
+	uid varchar(100),
 	cid integer,
 	foreign key (uid) references Users(uid),
 	foreign key (cid) references Complaints(cid)
 );
 
 create table Borrowers(
-	uid integer references Users(uid),
+	uid varchar(100) references Users(uid),
 	primary key (uid)
 );
 
 create table Lenders(
-	uid integer references Users(uid),
+	uid varchar(100) references Users(uid),
 	primary key (uid)
 );
 
@@ -76,7 +75,7 @@ create table Stuffs(
 );
 
 create table Bids(
-	uid integer not null,
+	uid varchar(100) not null,
 	sid integer not null,
 	bid money not null,
 	primary key (uid, sid),
@@ -85,7 +84,7 @@ create table Bids(
 );
 
 create table Borrows(
-	uid integer,
+	uid varchar(100),
 	sid integer,
 	primary key (uid, sid),
 	foreign key (uid) references Borrowers(uid) on delete cascade,
@@ -93,7 +92,7 @@ create table Borrows(
 );
 
 create table Lends(
-	uid integer not null,
+	uid varchar(100) not null,
 	sid integer not null,
 	primary key (uid, sid),
 	foreign key (uid) references Lenders(uid) on delete cascade,
@@ -106,7 +105,7 @@ create table Descriptions(
 	pickUpLocation varchar(100) not null,
 	returnLocation varchar(100) not null,
 	summary varchar(1000) not null,
-	uid integer,
+	uid varchar(100),
 	sid integer,
 	primary key (uid, sid),
 	foreign key (uid, sid) references Lends(uid, sid) on delete cascade
@@ -115,7 +114,7 @@ create table Descriptions(
 create table Comments(
 	comment varchar(1000) not null,
 	updateTime timestamp not null,
-	uid integer,
+	uid varchar(100),
 	sid integer,
 	rating integer,
 	check (rating <= 5 and rating >= 0),
@@ -180,7 +179,7 @@ create or replace function descriptionCheck() returns trigger as $$
 			return null;
 		else
 			delete from Borrows
-			where new.uid = Borrows.uid and new.sid = Borrows.sid
+			where new.uid = Borrows.uid and new.sid = Borrows.sid;
 			return new;
 		end if;
 	end;
