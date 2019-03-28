@@ -45,7 +45,7 @@ create table Earns(
 );
 
 create table Complaints(
-	cid	integer,
+	cid	varchar(100),
 	complaint varchar(1000) not null,
 	dateTime timestamp not null,
 	primary key (cid)
@@ -53,7 +53,7 @@ create table Complaints(
 
 create table Complains(
 	uid varchar(100),
-	cid integer,
+	cid varchar(100),
 	foreign key (uid) references Users(uid),
 	foreign key (cid) references Complaints(cid)
 );
@@ -69,14 +69,14 @@ create table Lenders(
 );
 
 create table Stuffs(
-	sid integer,
+	sid varchar(100),
 	nextMinimumBid money not null,
 	primary key (sid)
 );
 
 create table Bids(
 	uid varchar(100) not null,
-	sid integer not null,
+	sid varchar(100) not null,
 	bid money not null,
 	primary key (uid, sid),
 	foreign key (uid) references Borrowers(uid) on delete cascade,
@@ -85,7 +85,7 @@ create table Bids(
 
 create table Borrows(
 	uid varchar(100),
-	sid integer,
+	sid varchar(100),
 	primary key (uid, sid),
 	foreign key (uid) references Borrowers(uid) on delete cascade,
 	foreign key (sid) references Stuffs(sid) on delete cascade
@@ -93,7 +93,7 @@ create table Borrows(
 
 create table Lends(
 	uid varchar(100) not null,
-	sid integer not null,
+	sid varchar(100) not null,
 	primary key (uid, sid),
 	foreign key (uid) references Lenders(uid) on delete cascade,
 	foreign key (sid) references Stuffs(sid) on delete cascade
@@ -106,7 +106,7 @@ create table Descriptions(
 	returnLocation varchar(100) not null,
 	summary varchar(1000) not null,
 	uid varchar(100),
-	sid integer,
+	sid varchar(100),
 	primary key (uid, sid),
 	foreign key (uid, sid) references Lends(uid, sid) on delete cascade
 );
@@ -115,7 +115,7 @@ create table Comments(
 	comment varchar(1000) not null,
 	updateTime timestamp not null,
 	uid varchar(100),
-	sid integer,
+	sid varchar(100),
 	rating integer,
 	check (rating <= 5 and rating >= 0),
 	primary key (uid, sid, updateTime),
@@ -128,7 +128,7 @@ create table Categories(
 );
 
 create table Belongs(
-	sid integer,
+	sid varchar(100),
 	categoryName varchar(100),
 	primary key (sid, categoryName),
 	foreign key (sid) references Stuffs(sid),
