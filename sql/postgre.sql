@@ -70,6 +70,7 @@ create table Lenders(
 
 create table Stuffs(
 	sid varchar(100),
+	stuffName varchar(100),
 	nextMinimumBid money not null,
 	primary key (sid)
 );
