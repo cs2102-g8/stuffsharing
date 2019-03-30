@@ -21,7 +21,7 @@ function initRouter(app) {
 	
 	/* PROTECTED GET */
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
-	//app.get('/games'    , passport.authMiddleware(), games    );
+	app.get('/update'    , passport.authMiddleware(), update    );
 	//app.get('/plays'    , passport.authMiddleware(), plays    );
 	
 	app.get('/register' , passport.antiMiddleware(), register );
@@ -118,6 +118,11 @@ function search(req, res, next) {
 function dashboard(req, res, next) {
 	basic(req, res, 'dashboard', { info_msg: msg(req, 'info', 'Information updated successfully', 'Error in updating information'), pass_msg: msg(req, 'pass', 'Password updated successfully', 'Error in updating password'), auth: true });
 }
+
+function update(req, res, next) {
+	basic(req, res, 'update', { info_msg: msg(req, 'info', 'Information updated successfully', 'Error in updating information'), pass_msg: msg(req, 'pass', 'Password updated successfully', 'Error in updating password'), auth: true });
+}
+
 /*
 function games(req, res, next) {
 	var ctx = 0, avg = 0, tbl;
