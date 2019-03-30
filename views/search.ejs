@@ -19,9 +19,7 @@
 		<%- include navbar.ejs %>
 		
 		<div id="wrapper">
-			<% if(!auth) { %>
-				<%- include loginsidebar.ejs %>
-			<% } else { %>
+			<% if(auth) { %>
 				<%- include sidebar.ejs %>
 			<% } %>
 			
