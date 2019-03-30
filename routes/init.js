@@ -23,6 +23,8 @@ function initRouter(app) {
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
 	app.get('/update'    , passport.authMiddleware(), update    );
 	app.get('/discover'    , passport.authMiddleware(), discover    );
+	app.get('/myself'    , passport.authMiddleware(), myself    );
+	app.get('/categories'    , passport.authMiddleware(), categories  );
 	
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
@@ -127,6 +129,13 @@ function discover(req, res, next) {
 	basic(req, res, 'discover', {auth: true});
 }
 
+function myself(req, res, next) {
+	basic(req, res, 'myself', {auth: true});
+}
+
+function categories(req, res, next) {
+	basic(req, res, 'categories', {auth: true});
+}
 /*
 function games(req, res, next) {
 	var ctx = 0, avg = 0, tbl;

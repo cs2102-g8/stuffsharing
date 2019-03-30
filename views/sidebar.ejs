@@ -11,8 +11,18 @@
 			<span>Update Personal Details</span></a>
 	</li>
 	<li class="nav-item">
+		<a class="nav-link <%= page==="myself" ? "active" : "" %>" href="<%= page==="myself" ? "#" : "/myself" %>">
+			<i class="fas fa-fw fa-trophy"></i>
+			<span>Myself</span></a>
+	</li>
+	<li class="nav-item">
 		<a class="nav-link <%= page==="discover" ? "active" : "" %>" href="<%= page==="discover" ? "#" : "/discover" %>">
 			<i class="fas fa-fw fa-trophy"></i>
 			<span>Discover</span></a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link <%= page==="categories" ? "active" : "" %>" href="<%= page==="categories" ? "#" : "/categories" %>">
+			<i class="fas fa-fw fa-trophy"></i>
+			<span>Categories</span></a>
 	</li>
 </ul>
