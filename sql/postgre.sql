@@ -16,9 +16,9 @@ drop table if exists Categories cascade;
 drop table if exists Belongs cascade;
 
 create table Areas(
-	city varchar(100),
+	region varchar(100),
 	country varchar(100),
-	primary key (city, country)
+	primary key (region, country)
 );
 
 create table Users(
@@ -26,10 +26,10 @@ create table Users(
 	username varchar(100) unique not null,
 	password varchar(64) not null,
 	phone integer not null,
-	city varchar(100),
+	region varchar(100),
 	country varchar(100),
 	primary key (uid),
-	foreign key (city, country) references Areas(city, country)
+	foreign key (region, country) references Areas(region, country)
 );
 
 create table Badges(
@@ -189,3 +189,9 @@ create trigger descriptionTrigger
 before insert on Descriptions
 for each row
 execute procedure descriptionCheck();
+
+insert into Areas values('Central', 'Singapore');
+insert into Areas values('East', 'Singapore');
+insert into Areas values('North', 'Singapore');
+insert into Areas values('North-East', 'Singapore');
+insert into Areas values('West', 'Singapore');

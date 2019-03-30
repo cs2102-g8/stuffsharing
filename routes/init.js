@@ -52,8 +52,7 @@ function basic(req, res, page, other) {
 		page: page,
 		username: req.user.username,
 		phone: req.user.phone,
-		address : req.user.address,
-		city   : req.user.city,
+		region   : req.user.region,
 		country: req.user.country
 	};
 	if(other) {
@@ -177,11 +176,10 @@ function retrieve(req, res, next) {
 function update_info(req, res, next) {
 	var username  = req.user.username;
 	var phone = req.body.phone;
-	var address  = req.body.address;
-	var city = req.body.city;
+	var region = req.body.region;
 	var country = req.body.country;
 
-	pool.query(sql_query.query.update_info, [username, phone, address, city, country], (err, data) => {
+	pool.query(sql_query.query.update_info, [username, phone, region, country], (err, data) => {
 		if(err) {
 			console.error("Error in update info");
 			res.redirect('/dashboard?info=fail');
@@ -242,11 +240,10 @@ function reg_user(req, res, next) {
 	var username  = req.body.username;
 	var password  = bcrypt.hashSync(req.body.password, salt);
 	var phone = req.body.phone;
-	var address = req.body.address;
-	var city = req.body.city;
+	var region = req.body.region;
 	var country  = req.body.country;
 
-	pool.query(sql_query.query.add_user, [uid,username,password,phone,address,city,country], (err, data) => {
+	pool.query(sql_query.query.add_user, [uid,username,password,phone,region,country], (err, data) => {
 		if(err) {
 			console.error("Error in adding user", err);
 			res.redirect('/register?reg=fail');
@@ -256,8 +253,7 @@ function reg_user(req, res, next) {
 				username    : username,
 				passwordHash: password,
 				phone   : phone,
-				address: address,
-				city    : city,
+				region    : region,
 				country      : country
 			}, function(err) {
 				if(err) {

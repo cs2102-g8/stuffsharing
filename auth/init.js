@@ -29,8 +29,7 @@ function findUser (username, callback) {
 				username    : data.rows[0].username,
 				passwordHash: data.rows[0].password,
 				phone   : data.rows[0].phone,
-                address : data.rows[0].address,
-				city    : data.rows[0].city,
+				region    : data.rows[0].region,
 				country      : data.rows[0].country
 			});
 		} else {
