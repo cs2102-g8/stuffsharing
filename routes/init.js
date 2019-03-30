@@ -25,6 +25,7 @@ function initRouter(app) {
 	app.get('/discover'    , passport.authMiddleware(), discover    );
 	app.get('/myself'    , passport.authMiddleware(), myself    );
 	app.get('/categories'    , passport.authMiddleware(), categories  );
+	app.get('/complain', passport.authMiddleware(), complain  );
 	
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
@@ -32,6 +33,7 @@ function initRouter(app) {
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
 	app.post('/update_pass', passport.authMiddleware(), update_pass);
+	app.post('/complain_file',  passport.authMiddleware(), complain_file);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
@@ -136,6 +138,9 @@ function myself(req, res, next) {
 function categories(req, res, next) {
 	basic(req, res, 'categories', {auth: true});
 }
+function complain(req, res, next) {
+	basic(req, res, 'complain', { info_msg: msg(req, 'info', 'Complaint successfully sent', 'Error in submitting complaint'), pass_msg: msg(req, 'pass', 'Complaint has been received.', 'Error in uploading complaint'),auth: true});
+}
 /*
 function games(req, res, next) {
 	var ctx = 0, avg = 0, tbl;
@@ -190,32 +195,48 @@ function retrieve(req, res, next) {
 
 // POST 
 function update_info(req, res, next) {
-	var username  = req.user.username;
+	var uid = req.user.uid;
 	var phone = req.body.phone;
 	var region = req.body.region;
 	var country = req.body.country;
 
-	pool.query(sql_query.query.update_info, [username, phone, region, country], (err, data) => {
+	pool.query(sql_query.query.update_info, [uid, phone, region, country], (err, data) => {
 		if(err) {
 			console.error("Error in update info");
-			res.redirect('/dashboard?info=fail');
+			res.redirect('/update?info=fail');
 		} else {
-			res.redirect('/dashboard?info=pass');
+			res.redirect('/update?info=pass');
 		}
 	});
 }
 function update_pass(req, res, next) {
-	var username = req.user.username;
+	var uid = req.user.uid;
 	var password = bcrypt.hashSync(req.body.password, salt);
-	pool.query(sql_query.query.update_pass, [username, password], (err, data) => {
+	pool.query(sql_query.query.update_pass, [uid, password], (err, data) => {
 		if(err) {
 			console.error("Error in update pass");
-			res.redirect('/dashboard?pass=fail');
+			res.redirect('/update?pass=fail');
 		} else {
-			res.redirect('/dashboard?pass=pass');
+			res.redirect('/update?pass=pass');
 		}
 	});
 }
+function complain_file(req, res, next) {
+	var cid = uuidv1();
+	var uid = req.user.uid;
+	var complain = req.body.complain;
+	var dateTime = new Date();
+
+	pool.query(sql_query.query.write_complaints, [cid,complain,dateTime, uid], (err, data) => {
+		if(err) {
+			console.error("Error in update pass");
+			res.redirect('/complain?pass=fail');
+		} else {
+			res.redirect('/complain?pass=pass');
+		}
+	});
+}
+
 
 /*
 function add_game(req, res, next) {
