@@ -2,8 +2,7 @@ drop table if exists Users cascade;
 drop table if exists Areas cascade;
 drop table if exists Earns cascade;
 drop table if exists Badges cascade;
-drop table if exists Complaints cascade;
-drop table if exists Complains cascade;
+drop table if exists writeComplaints cascade;
 drop table if exists Borrowers cascade;
 drop table if exists Lenders cascade;
 drop table if exists Stuffs cascade;
@@ -22,7 +21,7 @@ create table Areas(
 );
 
 create table Users(
-	uid varchar(100), 
+	uid varchar(100),
 	username varchar(100) unique not null,
 	password varchar(64) not null,
 	phone integer not null,
@@ -44,19 +43,16 @@ create table Earns(
 	foreign key (badgeName) references Badges(badgeName)
 );
 
-create table Complaints(
+create table writeComplaints (
 	cid	varchar(100),
 	complaint varchar(1000) not null,
 	dateTime timestamp not null,
-	primary key (cid)
+	uid varchar(100),
+	primary key(cid),
+	foreign key (uid) references Users(uid)
 );
 
-create table Complains(
-	uid varchar(100),
-	cid varchar(100),
-	foreign key (uid) references Users(uid),
-	foreign key (cid) references Complaints(cid)
-);
+
 
 create table Borrowers(
 	uid varchar(100) references Users(uid),
@@ -136,6 +132,7 @@ create table Belongs(
 	foreign key (categoryName) references Categories(categoryName)
 );
 
+
 insert into Areas values('Central', 'Singapore');
 insert into Areas values('East', 'Singapore');
 insert into Areas values('North', 'Singapore');
@@ -167,17 +164,11 @@ insert into Earns(uid, badgeName) values ('C30003', 'Resourceful Badge');
 insert into Earns(uid, badgeName) values ('C30003', 'Experienced Badge');
 insert into Earns(uid, badgeName) values ('J00000', 'Credit Badge');
 
-insert into Complaints(cid, complaint, dateTime) values (0, 'Lousy website', '20190101 10:00:00 AM');
-insert into Complaints(cid, complaint, dateTime) values (1, 'Rubbish', '20180102 08:00:00 PM');
-insert into Complaints(cid, complaint, dateTime) values (2, 'Please work harder', '20180908 10:50:33 AM');
-insert into Complaints(cid, complaint, dateTime) values (3, 'HAHA', '20190304 01:22:33 PM');
-insert into Complaints(cid, complaint, dateTime) values (4, 'I can do better than you', '20181202 03:04:05 AM');
-
-insert into Complains(uid, cid) values ('D40004', 0);
-insert into Complains(uid, cid) values ('D40004', 1);
-insert into Complains(uid, cid) values ('D40004', 3);
-insert into Complains(uid, cid) values ('G70007', 2);
-insert into Complains(uid, cid) values ('I90009', 4);
+insert into writeComplaints(cid, complaint, dateTime, uid) values (0, 'Lousy website', '20190101 10:00:00 AM', 'A10001');
+insert into writeComplaints(cid, complaint, dateTime, uid) values (1, 'Rubbish', '20180102 08:00:00 PM', 'B20002');
+insert into writeComplaints(cid, complaint, dateTime, uid) values (2, 'Please work harder', '20180908 10:50:33 AM', 'C30003');
+insert into writeComplaints(cid, complaint, dateTime, uid) values (3, 'HAHA', '20190304 01:22:33 PM', 'D40004');
+insert into writeComplaints(cid, complaint, dateTime, uid) values (4, 'I can do better than you', '20181202 03:04:05 AM', 'E50005');
 
 insert into Borrowers(uid) values ('A10001');
 insert into Borrowers(uid) values ('B20002');
@@ -326,6 +317,7 @@ insert into Belongs(sid, categoryName) values ('11', 'Others');
 insert into Belongs(sid, categoryName) values ('12', 'Others');
 insert into Belongs(sid, categoryName) values ('13', 'Others');
 insert into Belongs(sid, categoryName) values ('14', 'Electronics');
+
 
 create or replace function bidCheck() returns trigger as $$
 declare amount money;
