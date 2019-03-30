@@ -4,10 +4,10 @@ sql.query = {
 	showuser:  'select* from Users',
 
 	//insert
-	add_user: 'INSERT INTO Users (uid, username, password, phone, address, city, country) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+	add_user: 'INSERT INTO Users (uid, username, password, phone, region, country) VALUES ($1,$2,$3,$4,$5,$6)',
 
 	// Update
-	update_info: 'UPDATE Users SET phone=$2, address=$3, city=$4, country=$5 WHERE username=$1',
+	update_info: 'UPDATE Users SET phone=$2, region=$3, country=$4 WHERE username=$1',
 	update_pass: 'UPDATE Users SET password=$2 WHERE username=$1',
 
 	// Login
