@@ -91,7 +91,7 @@ function index(req, res, next) {
 			total = ctx%10 == 0 ? ctx/10 : (ctx - (ctx%10))/10 + 1;
 			console.log(idx*10, idx*10+10, total);
 			if(!req.isAuthenticated()) {
-				res.render('index', { page: '', auth: false, tbl: tbl, ctx: ctx, p: idx+1, t: total });
+				res.render('index', { page: '', auth: false});
 			} else {
 				basic(req, res, 'index', { page: '', auth: true, tbl: tbl, ctx: ctx, p: idx+1, t: total });
 			}
@@ -110,9 +110,7 @@ function search(req, res, next) {
 			ctx = data.rows.length;
 			tbl = data.rows;
 		}
-		if(!req.isAuthenticated()) {
-			res.render('search', { page: 'search', auth: false, tbl: tbl, ctx: ctx });
-		} else {
+		if(req.isAuthenticated()) {
 			basic(req, res, 'search', { page: 'search', auth: true, tbl: tbl, ctx: ctx });
 		}
 	});
