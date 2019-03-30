@@ -136,61 +136,6 @@ create table Belongs(
 	foreign key (categoryName) references Categories(categoryName)
 );
 
-create or replace function bidCheck() returns trigger as $$
-declare amount money;
-	begin
-		select nextMinimumBid into amount
-		from Stuffs
-		where new.sid = Stuffs.sid;
-		if new.bid > amount then
-			return new;
-		else
-			return null;
-		end if;
-	end;
-$$ language plpgsql;
-
-create trigger bidTrigger
-before insert on Bids
-for each row
-execute procedure bidCheck();
-
-create or replace function borrowCheck() returns trigger as $$
-declare count numeric;
-	begin
-		select count(*) into count
-		from Borrows
-		where new.uid = Borrows.uid;
-		if count > 10 then
-			return null;
-		else
-			return new;
-		end if;
-	end;
-$$ language plpgsql;
-
-create trigger borrowTrigger
-before insert on Borrows
-for each row
-execute procedure borrowCheck();
-
-create or replace function descriptionCheck() returns trigger as $$
-	begin
-		if new.pickUpTime >= new.returnTime then
-			return null;
-		else
-			delete from Borrows
-			where new.uid = Borrows.uid and new.sid = Borrows.sid;
-			return new;
-		end if;
-	end;
-$$ language plpgsql;
-
-create trigger descriptionTrigger
-before insert on Descriptions
-for each row
-execute procedure descriptionCheck();
-
 insert into Areas values('Central', 'Singapore');
 insert into Areas values('East', 'Singapore');
 insert into Areas values('North', 'Singapore');
@@ -381,3 +326,58 @@ insert into Belongs(sid, categoryName) values ('11', 'Others');
 insert into Belongs(sid, categoryName) values ('12', 'Others');
 insert into Belongs(sid, categoryName) values ('13', 'Others');
 insert into Belongs(sid, categoryName) values ('14', 'Electronics');
+
+create or replace function bidCheck() returns trigger as $$
+declare amount money;
+	begin
+		select nextMinimumBid into amount
+		from Stuffs
+		where new.sid = Stuffs.sid;
+		if new.bid > amount then
+			return new;
+		else
+			return null;
+		end if;
+	end;
+$$ language plpgsql;
+
+create trigger bidTrigger
+before insert on Bids
+for each row
+execute procedure bidCheck();
+
+create or replace function borrowCheck() returns trigger as $$
+declare count numeric;
+	begin
+		select count(*) into count
+		from Borrows
+		where new.uid = Borrows.uid;
+		if count > 10 then
+			return null;
+		else
+			return new;
+		end if;
+	end;
+$$ language plpgsql;
+
+create trigger borrowTrigger
+before insert on Borrows
+for each row
+execute procedure borrowCheck();
+
+create or replace function descriptionCheck() returns trigger as $$
+	begin
+		if new.pickUpTime >= new.returnTime then
+			return null;
+		else
+			delete from Borrows
+			where new.uid = Borrows.uid and new.sid = Borrows.sid;
+			return new;
+		end if;
+	end;
+$$ language plpgsql;
+
+create trigger descriptionTrigger
+before insert on Descriptions
+for each row
+execute procedure descriptionCheck();
