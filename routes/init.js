@@ -22,7 +22,7 @@ function initRouter(app) {
 	/* PROTECTED GET */
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
 	app.get('/update'    , passport.authMiddleware(), update    );
-	//app.get('/plays'    , passport.authMiddleware(), plays    );
+	app.get('/discover'    , passport.authMiddleware(), discover    );
 	
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
@@ -121,6 +121,10 @@ function dashboard(req, res, next) {
 
 function update(req, res, next) {
 	basic(req, res, 'update', { info_msg: msg(req, 'info', 'Information updated successfully', 'Error in updating information'), pass_msg: msg(req, 'pass', 'Password updated successfully', 'Error in updating password'), auth: true });
+}
+
+function discover(req, res, next) {
+	basic(req, res, 'discover', {auth: true});
 }
 
 /*
