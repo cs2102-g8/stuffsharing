@@ -127,7 +127,19 @@ function update(req, res, next) {
 }
 
 function discover(req, res, next) {
-	basic(req, res, 'discover', {auth: true});
+    var ctx  = 0, avg = 0, tbl;
+    pool.query(sql_query.query.discover, [req.user.username], (err, data) => {
+        if(err || !data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
+    }
+});
 }
 
 function myself(req, res, next) {
