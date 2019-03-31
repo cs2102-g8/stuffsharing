@@ -105,8 +105,7 @@ function index(req, res, next) {
 
 function search(req, res, next) {
 	var ctx  = 0, avg = 0, tbl;
-	var user = "%" + req.query.user + "%";
-	pool.query(sql_query.query.search_user, [user], (err, data) => {
+	pool.query(sql_query.query.search_stuff, [req.query.stuff], (err, data) => {
 		if(err || !data.rows || data.rows.length == 0) {
 			ctx = 0;
 			tbl = [];
