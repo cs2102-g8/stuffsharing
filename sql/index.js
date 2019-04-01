@@ -28,7 +28,7 @@ sql.query = {
 	borrowed: 'SELECT * FROM Borrows WHERE uid = $1',
 
 	// Lent
-	lent: 'SELECT * FROM Lends WHERE uid = $1',
+	lent: 'SELECT stuffname, pickupTime, returnTime, pickupLocation, returnLocation FROM Stuffs NATURAL JOIN Descriptions WHERE uid = $1',
 
 	// Lend_New_Stuff
 	checkLender: 'SELECT COUNT(uid) AS num FROM Lenders WHERE uid = $1 GROUP BY uid',

@@ -37,7 +37,8 @@
 									<thead>
 									<tr>
 										<th>Name</th>
-										<th>Borrower</th>
+										<th>Pickup Time</th>
+										<th>Return Time</th>
 										<th>Pickup Location</th>
 										<th>Return Location</th>
 									</tr>
@@ -46,7 +47,8 @@
 									<% for(var i=0; i<tbl.length; i++) { %>
 										<tr>
 											<td><%= tbl[i].stuffname%></td>
-											<td><%= tbl[i].username%></td>
+											<td><%= tbl[i].pickuptime%></td>
+											<td><%= tbl[i].returntime%></td>
 											<td><%= tbl[i].pickuplocation%></td>
 											<td><%= tbl[i].returnlocation%></td>
 										</tr>

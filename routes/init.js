@@ -147,33 +147,35 @@ function discover(req, res, next) {
 
 function borrowedstuff(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-        pool.query(sql_query.query.borrowed, [req.user.username], (err, data) => {
-            if(err || !data.rows || data.rows.length == 0) {
-            ctx = 0;
-            tbl = [];
-        } else {
-            ctx = data.rows.length;
-            tbl = data.rows;
-        }
-        if(req.isAuthenticated()) {
-            basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
-        }
+    pool.query(sql_query.query.borrowed, [req.user.username], (err, data) => {
+        if(err || !data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
+    }
     });
 }
 
 function lentstuff(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-        pool.query(sql_query.query.lent, [req.user.username], (err, data) => {
+    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+        pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
             if(err || !data.rows || data.rows.length == 0) {
-            ctx = 0;
-            tbl = [];
-        } else {
-            ctx = data.rows.length;
-            tbl = data.rows;
-        }
-        if(req.isAuthenticated()) {
-            basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, ctx: ctx, lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')});
-        }
+                ctx = 0;
+                tbl = [];
+            } else {
+                ctx = data.rows.length;
+                tbl = data.rows;
+            }
+            if(req.isAuthenticated()) {
+                basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, ctx: ctx, lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')});
+            }
+        });
     });
 }
 

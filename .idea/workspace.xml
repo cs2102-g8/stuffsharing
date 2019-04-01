@@ -15,29 +15,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/init.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3025">
-              <caret line="303" column="41" lean-forward="true" selection-start-line="303" selection-start-column="41" selection-end-line="303" selection-end-column="41" />
+            <state relative-caret-position="475">
+              <caret line="177" column="9" lean-forward="true" selection-start-line="177" selection-start-column="9" selection-end-line="177" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/update.ejs">
+        <entry file="file://$PROJECT_DIR$/sql/postgre.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3">
-              <caret line="66" column="66" selection-start-line="66" selection-start-column="66" selection-end-line="66" selection-end-column="66" />
+            <state relative-caret-position="3710">
+              <caret line="269" column="87" selection-start-line="269" selection-start-column="25" selection-end-line="269" selection-end-column="88" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sql/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="286">
-              <caret line="33" column="85" lean-forward="true" selection-start-line="33" selection-start-column="85" selection-end-line="33" selection-end-column="85" />
+              <caret line="30" column="138" lean-forward="true" selection-start-line="30" selection-start-column="138" selection-end-line="30" selection-end-column="138" />
             </state>
           </provider>
         </entry>
@@ -71,10 +71,10 @@
         <option value="$PROJECT_DIR$/views/borrowedstuff.ejs" />
         <option value="$PROJECT_DIR$/views/lendedstuff.ejs" />
         <option value="$PROJECT_DIR$/views/sidebar.ejs" />
-        <option value="$PROJECT_DIR$/views/lentstuff.ejs" />
         <option value="$PROJECT_DIR$/views/complain.ejs" />
-        <option value="$PROJECT_DIR$/sql/index.js" />
         <option value="$PROJECT_DIR$/routes/init.js" />
+        <option value="$PROJECT_DIR$/views/lentstuff.ejs" />
+        <option value="$PROJECT_DIR$/sql/index.js" />
       </list>
     </option>
   </component>
@@ -126,7 +126,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554130164411" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554133819207" />
     <property name="editorconfig.notification" value="tab;" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
@@ -269,13 +269,6 @@
     <entry file="file://$PROJECT_DIR$/sql/password.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/discover.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="45" column="43" lean-forward="true" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/borrowedstuff.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
@@ -304,13 +297,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/update.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3">
-          <caret line="66" column="66" selection-start-line="66" selection-start-column="66" selection-end-line="66" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/register.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-153" />
@@ -320,20 +306,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
           <caret line="247" column="12" selection-start-line="247" selection-start-column="12" selection-end-line="247" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sql/postgre.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1805">
-          <caret line="269" column="70" lean-forward="true" selection-start-line="269" selection-start-column="12" selection-end-line="269" selection-end-column="99" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/lentstuff.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="65" column="30" lean-forward="true" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -351,17 +323,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sql/index.js">
+    <entry file="file://$PROJECT_DIR$/views/discover.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="33" column="85" lean-forward="true" selection-start-line="33" selection-start-column="85" selection-end-line="33" selection-end-column="85" />
+        <state relative-caret-position="300">
+          <caret line="45" column="43" lean-forward="true" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/lentstuff.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="587">
+          <caret line="42" column="64" lean-forward="true" selection-start-line="42" selection-start-column="64" selection-end-line="42" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/postgre.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3710">
+          <caret line="269" column="87" selection-start-line="269" selection-start-column="25" selection-end-line="269" selection-end-column="88" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/update.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11">
+          <caret line="66" column="66" selection-start-line="66" selection-start-column="66" selection-end-line="66" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/init.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3025">
-          <caret line="303" column="41" lean-forward="true" selection-start-line="303" selection-start-column="41" selection-end-line="303" selection-end-column="41" />
+        <state relative-caret-position="475">
+          <caret line="177" column="9" lean-forward="true" selection-start-line="177" selection-start-column="9" selection-end-line="177" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="30" column="138" lean-forward="true" selection-start-line="30" selection-start-column="138" selection-end-line="30" selection-end-column="138" />
         </state>
       </provider>
     </entry>
