@@ -36,6 +36,7 @@ function initRouter(app) {
 	app.post('/update_info', passport.authMiddleware(), update_info);
 	app.post('/update_pass', passport.authMiddleware(), update_pass);
 	app.post('/complain_file',  passport.authMiddleware(), complain_file);
+	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
@@ -171,7 +172,7 @@ function lentstuff(req, res, next) {
             tbl = data.rows;
         }
         if(req.isAuthenticated()) {
-            basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, ctx: ctx });
+            basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, ctx: ctx, lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')});
         }
     });
 }
@@ -287,6 +288,61 @@ function complain_file(req, res, next) {
 	});
 }
 
+function lend(req, res, next) {
+	var sid = uuidv1();
+	var name = req.body.stuffname;
+	var username = req.user.username;
+	var price = req.body.nextMinimumBid;
+	var pickUpTime = req.body.pickUpTime;
+	var returnTime = req.body.returnTime;
+	var pickUpLocation = req.body.pickUpLocation;
+	var returnLocation = req.body.returnLocation;
+	var description = req.body.description;
+
+	pool.query(sql_query.query.findUid, [username], (err, data) => {
+        pool.query(sql_query.query.checkLender, [data.rows[0].uid], (err, data) => {
+            if (!data.rows[0].num == 0) {
+                pool.query(sql_query.query.findUid, [username], (err, data) => {
+                    pool.query(sql_query.query.insertToLenders, [data.rows[0].uid], (err, data) => {
+                        if (err) {
+                            console.error(err);
+                            res.redirect('/lentstuff?pass=fail');
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+
+    pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
+        if (err) {
+            console.error(err);
+            res.redirect('/lentstuff?pass=fail');
+        }else{
+            pool.query(sql_query.query.findUid, [username], (err, data) => {
+                pool.query(sql_query.query.insertToLends, [sid, data.rows[0].uid], (err, data) => {
+                     if (err){
+                        console.error(err);
+                        res.redirect('/lentstuff?pass=fail');
+                     }else{
+                        pool.query(sql_query.query.findUid, [username], (err, data) => {
+                            pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
+                                if(err) {
+                                    console.error(err);
+                                    res.redirect('/lentstuff?pass=fail');
+                                } else {
+                                    res.redirect('/lentstuff?pass=pass');
+                                }
+                            });
+                        });
+                     }
+
+                });
+            });
+        }
+    });
+}
 
 /*
 function add_game(req, res, next) {

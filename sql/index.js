@@ -30,6 +30,13 @@ sql.query = {
 	// Lent
 	lent: 'SELECT * FROM Lends WHERE uid = $1',
 
+	// Lend_New_Stuff
+	checkLender: 'SELECT COUNT(uid) AS num FROM Lenders WHERE uid = $1 GROUP BY uid',
+	insertToLenders: 'INSERT INTO Lenders(uid) VALUES ($1)',
+	insertToStuff: 'INSERT INTO Stuffs(sid, stuffName, nextMinimumBid) VALUES ($1, $2, $3)',
+	insertToLends: 'INSERT INTO Lends(sid, uid) VALUES ($1, $2)',
+	insertToDescription: 'INSERT INTO Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+
 	// Information
 	page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
 }
