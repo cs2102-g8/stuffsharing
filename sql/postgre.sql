@@ -15,121 +15,121 @@ drop table if exists Categories cascade;
 drop table if exists Belongs cascade;
 
 create table Areas(
-	region varchar(100),
-	country varchar(100),
-	primary key (region, country)
+region varchar(100),
+country varchar(100),
+primary key (region, country)
 );
 
 create table Users(
-	uid varchar(100),
-	username varchar(100) unique not null,
-	password varchar(64) not null,
-	phone integer not null,
-	region varchar(100),
-	country varchar(100),
-	primary key (uid),
-	foreign key (region, country) references Areas(region, country)
+uid varchar(100),
+username varchar(100) unique not null,
+password varchar(64) not null,
+phone integer not null,
+region varchar(100),
+country varchar(100),
+primary key (uid),
+foreign key (region, country) references Areas(region, country)
 );
 
 create table Badges(
-	badgeName varchar(30),
-	primary key (badgeName)
+badgeName varchar(30),
+primary key (badgeName)
 );
 
 create table Earns(
-	uid varchar(100),
-	badgeName varchar(30),
-	foreign key (uid) references Users(uid),
-	foreign key (badgeName) references Badges(badgeName)
+uid varchar(100),
+badgeName varchar(30),
+foreign key (uid) references Users(uid),
+foreign key (badgeName) references Badges(badgeName)
 );
 
 create table writeComplaints (
-	cid	varchar(100),
-	complaint varchar(1000) not null,
-	dateTime timestamp not null,
-	uid varchar(100),
-	primary key(cid),
-	foreign key (uid) references Users(uid)
+cid	varchar(100),
+complaint varchar(1000) not null,
+dateTime timestamp not null,
+uid varchar(100),
+primary key(cid),
+foreign key (uid) references Users(uid)
 );
 
 
 
 create table Borrowers(
-	uid varchar(100) references Users(uid),
-	primary key (uid)
+uid varchar(100) references Users(uid),
+primary key (uid)
 );
 
 create table Lenders(
-	uid varchar(100) references Users(uid),
-	primary key (uid)
+uid varchar(100) references Users(uid),
+primary key (uid)
 );
 
 create table Stuffs(
-	sid varchar(100),
-	stuffName varchar(100),
-	nextMinimumBid money not null,
-	primary key (sid)
+sid varchar(100),
+stuffName varchar(100),
+nextMinimumBid money not null,
+primary key (sid)
 );
 
 create table Bids(
-	uid varchar(100) not null,
-	sid varchar(100) not null,
-	bid money not null,
-	primary key (uid, sid),
-	foreign key (uid) references Borrowers(uid) on delete cascade,
-	foreign key (sid) references Stuffs(sid) on delete cascade
+uid varchar(100) not null,
+sid varchar(100) not null,
+bid money not null,
+primary key (uid, sid),
+foreign key (uid) references Borrowers(uid) on delete cascade,
+foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Borrows(
-	uid varchar(100),
-	sid varchar(100),
-	primary key (uid, sid),
-	foreign key (uid) references Borrowers(uid) on delete cascade,
-	foreign key (sid) references Stuffs(sid) on delete cascade
+uid varchar(100),
+sid varchar(100),
+primary key (uid, sid),
+foreign key (uid) references Borrowers(uid) on delete cascade,
+foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Lends(
-	uid varchar(100) not null,
-	sid varchar(100) not null,
-	primary key (uid, sid),
-	foreign key (uid) references Lenders(uid) on delete cascade,
-	foreign key (sid) references Stuffs(sid) on delete cascade
+uid varchar(100) not null,
+sid varchar(100) not null,
+primary key (uid, sid),
+foreign key (uid) references Lenders(uid) on delete cascade,
+foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Descriptions(
-	pickUpTime timestamp not null,
-	returnTime timestamp not null,
-	pickUpLocation varchar(100) not null,
-	returnLocation varchar(100) not null,
-	summary varchar(1000) not null,
-	uid varchar(100),
-	sid varchar(100),
-	primary key (uid, sid),
-	foreign key (uid, sid) references Lends(uid, sid) on delete cascade
+pickUpTime timestamp not null,
+returnTime timestamp not null,
+pickUpLocation varchar(100) not null,
+returnLocation varchar(100) not null,
+summary varchar(1000) not null,
+uid varchar(100),
+sid varchar(100),
+primary key (uid, sid),
+foreign key (uid, sid) references Lends(uid, sid) on delete cascade
 );
 
 create table Comments(
-	comment varchar(1000) not null,
-	updateTime timestamp not null,
-	uid varchar(100),
-	sid varchar(100),
-	rating integer,
-	check (rating <= 5 and rating >= 0),
-	primary key (uid, sid, updateTime),
-	foreign key (uid, sid) references Borrows(uid, sid) on delete cascade
+comment varchar(1000) not null,
+updateTime timestamp not null,
+uid varchar(100),
+sid varchar(100),
+rating integer,
+check (rating <= 5 and rating >= 0),
+primary key (uid, sid, updateTime),
+foreign key (uid, sid) references Borrows(uid, sid) on delete cascade
 );
 
 create table Categories(
-	categoryName varchar(100),
-	primary key (categoryName)
+categoryName varchar(100),
+primary key (categoryName)
 );
 
 create table Belongs(
-	sid varchar(100),
-	categoryName varchar(100),
-	primary key (sid, categoryName),
-	foreign key (sid) references Stuffs(sid),
-	foreign key (categoryName) references Categories(categoryName)
+sid varchar(100),
+categoryName varchar(100),
+primary key (sid, categoryName),
+foreign key (sid) references Stuffs(sid),
+foreign key (categoryName) references Categories(categoryName)
 );
 
 
@@ -254,35 +254,35 @@ insert into Lends(uid, sid) values ('J00000', '01');
 insert into Lends(uid, sid) values ('J00000', '00');
 
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180404 10:00:00 AM', '20180505 10:00:00 AM', 'Central', 'Central', 'My CS2102 Textbook. It will help you a lot!', 'J00000', '00');
+'20180404 10:00:00 AM', '20180505 10:00:00 AM', 'Central', 'Central', 'My CS2102 Textbook. It will help you a lot!', 'J00000', '00');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180711 08:00:00 PM', '20180719 09:00:00 PM', 'East', 'Central', 'Formal attire for interview.', 'J00000', '01');
+'20180711 08:00:00 PM', '20180719 09:00:00 PM', 'East', 'Central', 'Formal attire for interview.', 'J00000', '01');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180909 05:00:00 PM', '20180505 06:00:00 PM', 'Central', 'Central', 'This mouse is quite new and working fine.', 'H80008', '02');
+'20180909 05:00:00 PM', '20180505 06:00:00 PM', 'Central', 'Central', 'This mouse is quite new and working fine.', 'H80008', '02');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20181111 10:03:00 AM', '20181212 10:20:00 AM', 'East', 'North', 'Interesting fantasy fictions.', 'F60006', '03');
+'20181111 10:03:00 AM', '20181212 10:20:00 AM', 'East', 'North', 'Interesting fantasy fictions.', 'F60006', '03');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20190101 11:00:00 AM', '20190202 11:03:00 AM', 'North-East', 'North', 'A second-hand iPad. Enjoy it.', 'E50005', '04');
+'20190101 11:00:00 AM', '20190202 11:03:00 AM', 'North-East', 'North', 'A second-hand iPad. Enjoy it.', 'E50005', '04');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180409 10:00:00 AM', '20180805 05:00:00 PM', 'Central', 'East', 'A not-so-new headphone. You can use it to listen music.', 'C30003', '05');
+'20180409 10:00:00 AM', '20180805 05:00:00 PM', 'Central', 'East', 'A not-so-new headphone. You can use it to listen music.', 'C30003', '05');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180608 10:40:00 AM', '20180808 10:00:00 AM', 'Central', 'East', 'A not-so-old key board. Can still be used to play games.', 'C30003', '06');
+'20180608 10:40:00 AM', '20180808 10:00:00 AM', 'Central', 'East', 'A not-so-old key board. Can still be used to play games.', 'C30003', '06');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180101 10:00:00 AM', '20180111 08:00:00 PM', 'West', 'West', 'My old clothes. Borrow it if you like.', 'B20002', '07');
+'20180101 10:00:00 AM', '20180111 08:00:00 PM', 'West', 'West', 'My old clothes. Borrow it if you like.', 'B20002', '07');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180911 11:00:00 AM', '20181010 07:00:00 PM', 'West', 'West', 'My old backpack. Borrow it if you like.', 'B20002', '08');
+'20180911 11:00:00 AM', '20181010 07:00:00 PM', 'West', 'West', 'My old backpack. Borrow it if you like.', 'B20002', '08');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180330 10:00:00 AM', '20180411 08:00:00 PM', 'West', 'West', 'My old laptop. Borrow it if you like.', 'B20002', '09');
+'20180330 10:00:00 AM', '20180411 08:00:00 PM', 'West', 'West', 'My old laptop. Borrow it if you like.', 'B20002', '09');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180606 07:00:00 AM', '20180707 11:00:00 AM', 'Central', 'Central', 'What a fantastic box. I picked it on my way to school.', 'A10001', '10');
+'20180606 07:00:00 AM', '20180707 11:00:00 AM', 'Central', 'Central', 'What a fantastic box. I picked it on my way to school.', 'A10001', '10');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20181111 07:00:00 AM', '20181212 11:00:00 AM', 'Central', 'Central', 'This bike was left outside my house. It is very new!', 'A10001', '11');
+'20181111 07:00:00 AM', '20181212 11:00:00 AM', 'Central', 'Central', 'This bike was left outside my house. It is very new!', 'A10001', '11');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20181010 07:00:00 AM', '20181111 11:00:00 AM', 'Central', 'Central', 'Someone left this cup in my classroom. What a pity!', 'A10001', '12');
+'20181010 07:00:00 AM', '20181111 11:00:00 AM', 'Central', 'Central', 'Someone left this cup in my classroom. What a pity!', 'A10001', '12');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20180222 07:00:00 AM', '20180322 11:00:00 AM', 'Central', 'Central', 'I found this water bottle from the lost and found box. Lucky!', 'A10001', '13');
+'20180222 07:00:00 AM', '20180322 11:00:00 AM', 'Central', 'Central', 'I found this water bottle from the lost and found box. Lucky!', 'A10001', '13');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-	'20181001 07:00:00 AM', '20181221 11:00:00 AM', 'Central', 'Central', 'I borrowed this mouse from my classmate. It is very new and expensive.', 'A10001', '14');
+'20181001 07:00:00 AM', '20181221 11:00:00 AM', 'Central', 'Central', 'I borrowed this mouse from my classmate. It is very new and expensive.', 'A10001', '14');
 
 insert into Comments(comment, updateTime, uid, sid, rating) values ('I drew something on your book. Hope you like it.', '20180505 10:00:00 AM', 'A10001', '00', 5);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('Oh I failed my interview. It is your fault!', '20180719 09:00:00 PM', 'C30003', '01', 1);
@@ -321,16 +321,16 @@ insert into Belongs(sid, categoryName) values ('14', 'Electronics');
 
 create or replace function bidCheck() returns trigger as $$
 declare amount money;
-	begin
-		select nextMinimumBid into amount
-		from Stuffs
-		where new.sid = Stuffs.sid;
-		if new.bid > amount then
-			return new;
-		else
-			return null;
-		end if;
-	end;
+begin
+    select nextMinimumBid into amount
+    from Stuffs
+    where new.sid = Stuffs.sid;
+    if new.bid > amount then
+        return new;
+    else
+        return null;
+    end if;
+end;
 $$ language plpgsql;
 
 create trigger bidTrigger
@@ -340,16 +340,16 @@ execute procedure bidCheck();
 
 create or replace function borrowCheck() returns trigger as $$
 declare count numeric;
-	begin
-		select count(*) into count
-		from Borrows
-		where new.uid = Borrows.uid;
-		if count > 10 then
-			return null;
-		else
-			return new;
-		end if;
-	end;
+begin
+    select count(*) into count
+    from Borrows
+    where new.uid = Borrows.uid;
+    if count > 10 then
+        return null;
+    else
+        return new;
+    end if;
+end;
 $$ language plpgsql;
 
 create trigger borrowTrigger
@@ -358,15 +358,15 @@ for each row
 execute procedure borrowCheck();
 
 create or replace function descriptionCheck() returns trigger as $$
-	begin
-		if new.pickUpTime >= new.returnTime then
-			return null;
-		else
-			delete from Borrows
-			where new.uid = Borrows.uid and new.sid = Borrows.sid;
-			return new;
-		end if;
-	end;
+begin
+    if new.pickUpTime >= new.returnTime then
+        return null;
+    else
+        delete from Borrows
+        where new.uid = Borrows.uid and new.sid = Borrows.sid;
+        return new;
+    end if;
+end;
 $$ language plpgsql;
 
 create trigger descriptionTrigger

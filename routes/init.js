@@ -23,6 +23,8 @@ function initRouter(app) {
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
 	app.get('/update'    , passport.authMiddleware(), update    );
 	app.get('/discover'    , passport.authMiddleware(), discover    );
+	app.get('/borrowedstuff'    , passport.authMiddleware(), borrowedstuff   );
+	app.get('/lendedstuff'    , passport.authMiddleware(), borrowedstuff   );
 	app.get('/myself'    , passport.authMiddleware(), myself    );
 	app.get('/categories'    , passport.authMiddleware(), categories  );
 	app.get('/complain', passport.authMiddleware(), complain  );
@@ -140,6 +142,14 @@ function discover(req, res, next) {
         basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
     }
 });
+}
+
+function borrowedstuff(req, res, next) {
+    basic(req, res, 'borrowedstuff', {page: 'borrowedstuff', auth: true});
+}
+
+function lendedstuff(req, res, next) {
+    basic(req, res, 'lendedstuff', {page: 'lendedstuff', auth: true});
 }
 
 function myself(req, res, next) {

@@ -13,6 +13,20 @@
 			<span>Update Personal Details</span></a>
 	</li>
 	<li class="nav-item">
+    		<a class="nav-link <%= page==="borrowedstuff" ? "active" : "" %>" href="<%= page==="borrowedstuff" ? "#" : "/borrowedstuff" %>">
+    			<span style="color: Tomato;">
+    				<i class="fas fa-igloo"></i>
+    			</span>
+    			<span>Borrowed</span></a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link <%= page==="lendedstuff" ? "active" : "" %>" href="<%= page==="lendedstuff" ? "#" : "/lendedstuff" %>">
+                <span style="color: Tomato;">
+                    <i class="fas fa-igloo"></i>
+                </span>
+                <span>Lended</span></a>
+    </li>
+	<li class="nav-item">
 		<a class="nav-link <%= page==="myself" ? "active" : "" %>" href="<%= page==="myself" ? "#" : "/myself" %>">
 			<span style="color: Green;">
 				<i class="far fa-grin"></i>
