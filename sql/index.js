@@ -24,6 +24,12 @@ sql.query = {
 	// Discover
 	discover: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE Descriptions.pickUpLocation = (SELECT region FROM Users WHERE username = $1) OR Descriptions.returnLocation = (SELECT region FROM Users WHERE username = $1)',
 
+	// Borrowed
+	borrowed: 'SELECT * FROM Borrows WHERE uid = $1',
+
+	// Lent
+	lent: 'SELECT * FROM Lends WHERE uid = $1',
+
 	// Information
 	page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
 }

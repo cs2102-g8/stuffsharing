@@ -24,7 +24,7 @@ function initRouter(app) {
 	app.get('/update'    , passport.authMiddleware(), update    );
 	app.get('/discover'    , passport.authMiddleware(), discover    );
 	app.get('/borrowedstuff'    , passport.authMiddleware(), borrowedstuff   );
-	app.get('/lendedstuff'    , passport.authMiddleware(), borrowedstuff   );
+	app.get('/lentstuff'    , passport.authMiddleware(), lentstuff   );
 	app.get('/myself'    , passport.authMiddleware(), myself    );
 	app.get('/categories'    , passport.authMiddleware(), categories  );
 	app.get('/complain', passport.authMiddleware(), complain  );
@@ -145,11 +145,35 @@ function discover(req, res, next) {
 }
 
 function borrowedstuff(req, res, next) {
-    basic(req, res, 'borrowedstuff', {page: 'borrowedstuff', auth: true});
+    var ctx  = 0, avg = 0, tbl;
+        pool.query(sql_query.query.borrowed, [req.user.username], (err, data) => {
+            if(err || !data.rows || data.rows.length == 0) {
+            ctx = 0;
+            tbl = [];
+        } else {
+            ctx = data.rows.length;
+            tbl = data.rows;
+        }
+        if(req.isAuthenticated()) {
+            basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
+        }
+    });
 }
 
-function lendedstuff(req, res, next) {
-    basic(req, res, 'lendedstuff', {page: 'lendedstuff', auth: true});
+function lentstuff(req, res, next) {
+    var ctx  = 0, avg = 0, tbl;
+        pool.query(sql_query.query.lent, [req.user.username], (err, data) => {
+            if(err || !data.rows || data.rows.length == 0) {
+            ctx = 0;
+            tbl = [];
+        } else {
+            ctx = data.rows.length;
+            tbl = data.rows;
+        }
+        if(req.isAuthenticated()) {
+            basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, ctx: ctx });
+        }
+    });
 }
 
 function myself(req, res, next) {
