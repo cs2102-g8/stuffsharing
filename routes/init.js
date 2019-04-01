@@ -236,17 +236,20 @@ function update_pass(req, res, next) {
 }
 function complain_file(req, res, next) {
 	var cid = uuidv1();
-	var uid = req.user.uid;
+	var username = req.user.username;
 	var complain = req.body.complain;
 	var dateTime = new Date();
 
-	pool.query(sql_query.query.write_complaints, [cid,complain,dateTime, uid], (err, data) => {
-		if(err) {
-			console.error("Error in update pass");
-			res.redirect('/complain?pass=fail');
-		} else {
-			res.redirect('/complain?pass=pass');
-		}
+	pool.query(sql_query.query.findUid, [username], (err, data) => {
+		pool.query(sql_query.query.write_complaints, [cid,complain,dateTime, data.rows[0].uid], (err, data) => {
+			if(err) {
+				console.error("Error in submitting complain");
+				res.redirect('/complain?pass=fail');
+			} else {
+				res.redirect('/complain?pass=pass');
+			}
+		});
+
 	});
 }
 

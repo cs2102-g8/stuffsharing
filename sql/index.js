@@ -11,6 +11,7 @@ sql.query = {
 	update_pass: 'UPDATE Users SET password=$2 WHERE username=$1',
 
 	//complaints
+	findUid: 'select uid from Users WHERE lower(username) LIKE $1',
 	write_complaints: 'INSERT INTO writeComplaints (cid, complaint, dateTime, uid) VALUES ($1,$2,$3,$4)',
 
 	// Login
