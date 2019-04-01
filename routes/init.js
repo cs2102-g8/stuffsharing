@@ -195,24 +195,26 @@ function retrieve(req, res, next) {
 
 // POST 
 function update_info(req, res, next) {
-	var uid = req.user.uid;
+	var username = req.body.username;
 	var phone = req.body.phone;
 	var region = req.body.region;
 	var country = req.body.country;
 
-	pool.query(sql_query.query.update_info, [uid, phone, region, country], (err, data) => {
+	console.log(username);
+	pool.query(sql_query.query.update_info, [username, phone, region, country], (err, data) => {
 		if(err) {
 			console.error("Error in update info");
 			res.redirect('/update?info=fail');
 		} else {
+			console.log(region);
 			res.redirect('/update?info=pass');
 		}
 	});
 }
 function update_pass(req, res, next) {
-	var uid = req.user.uid;
+	var username = req.user.username;
 	var password = bcrypt.hashSync(req.body.password, salt);
-	pool.query(sql_query.query.update_pass, [uid, password], (err, data) => {
+	pool.query(sql_query.query.update_pass, [username, password], (err, data) => {
 		if(err) {
 			console.error("Error in update pass");
 			res.redirect('/update?pass=fail');
