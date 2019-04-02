@@ -32,13 +32,14 @@ function initRouter(app) {
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
     app.get('/bidding'  , bidding    );
-    app.get('/lentDetails'  , lentDetails    );
+    app.get('/lentDetails'  , passport.authMiddleware(), lentDetails    );
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
 	app.post('/update_pass', passport.authMiddleware(), update_pass);
 	app.post('/complain_file',  passport.authMiddleware(), complain_file);
 	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
+	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
@@ -231,7 +232,7 @@ function lentDetails(req, res, next) {
         tbl = data.rows;
     }
     if(req.isAuthenticated()) {
-        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx });
+        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff') });
     }
     });
 }
@@ -409,6 +410,19 @@ function lend(req, res, next) {
                 }
             });
         });
+    });
+}
+
+function deleteLent(req, res, next) {
+	var sid = req.body.sid;
+
+    pool.query(sql_query.query.delete_lent, [sid], (err, data) => {
+        if(err) {
+            console.error(err);
+            res.redirect('/lentDetail?delete=fail');
+        } else {
+            res.redirect('/lentstuff');
+        }
     });
 
 }

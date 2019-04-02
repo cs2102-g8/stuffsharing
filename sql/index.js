@@ -47,6 +47,9 @@ sql.query = {
 
 	//Bid action
 	bid_action: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
+
+	//Delete Lent
+	delete_lent: 'DELETE FROM Stuffs WHERE sid = $1'
 }
 
 module.exports = sql
