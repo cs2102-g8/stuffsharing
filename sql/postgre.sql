@@ -328,7 +328,7 @@ begin
     if new.bid > amount then
         return new;
     else
-        return null;
+    	raise exception 'Input less than next minimum bid';
     end if;
 end;
 $$ language plpgsql;
