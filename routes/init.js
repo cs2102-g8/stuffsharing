@@ -165,7 +165,10 @@ function lentstuff(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
-            if(err || !data.rows || data.rows.length == 0) {
+            if (err){
+                console.error("Error in update info");
+                res.redirect('/update?lentstuff=fail');
+            } else if(!data.rows || data.rows.length == 0) {
                 ctx = 0;
                 tbl = [];
             } else {
@@ -303,7 +306,7 @@ function lend(req, res, next) {
 
 	pool.query(sql_query.query.findUid, [username], (err, data) => {
         pool.query(sql_query.query.checkLender, [data.rows[0].uid], (err, data) => {
-            if (!data.rows[0].num == 0) {
+            if (data.rows[0].num == 0) {
                 pool.query(sql_query.query.findUid, [username], (err, data) => {
                     pool.query(sql_query.query.insertToLenders, [data.rows[0].uid], (err, data) => {
                         if (err) {
@@ -313,37 +316,36 @@ function lend(req, res, next) {
                     });
                 });
             }
+            pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
+                if (err) {
+                    console.error(err);
+                    res.redirect('/lentstuff?pass=fail');
+                }else{
+                    pool.query(sql_query.query.findUid, [username], (err, data) => {
+                        pool.query(sql_query.query.insertToLends, [sid, data.rows[0].uid], (err, data) => {
+                             if (err){
+                                console.error(err);
+                                res.redirect('/lentstuff?pass=fail');
+                             }else{
+                                pool.query(sql_query.query.findUid, [username], (err, data) => {
+                                    pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
+                                        if(err) {
+                                            console.error(err);
+                                            res.redirect('/lentstuff?pass=fail');
+                                        } else {
+                                            res.redirect('/lentstuff?pass=pass');
+                                        }
+                                    });
+                                });
+                             }
+
+                        });
+                    });
+                }
+            });
         });
     });
 
-
-    pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
-        if (err) {
-            console.error(err);
-            res.redirect('/lentstuff?pass=fail');
-        }else{
-            pool.query(sql_query.query.findUid, [username], (err, data) => {
-                pool.query(sql_query.query.insertToLends, [sid, data.rows[0].uid], (err, data) => {
-                     if (err){
-                        console.error(err);
-                        res.redirect('/lentstuff?pass=fail');
-                     }else{
-                        pool.query(sql_query.query.findUid, [username], (err, data) => {
-                            pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
-                                if(err) {
-                                    console.error(err);
-                                    res.redirect('/lentstuff?pass=fail');
-                                } else {
-                                    res.redirect('/lentstuff?pass=pass');
-                                }
-                            });
-                        });
-                     }
-
-                });
-            });
-        }
-    });
 }
 
 /*
