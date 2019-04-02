@@ -27,8 +27,11 @@ sql.query = {
 	// Borrowed
 	borrowed: 'SELECT * FROM (select sid, stuffname, nextminimumbid, returntime, returnlocation FROM Stuffs NATURAL JOIN Descriptions) as R NATURAL JOIN Borrows B WHERE B.uid = $1',
 
+	// Lending
+	lending: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions AS R WHERE NOT EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = R.sid) and uid = $1',
+
 	// Lent
-	lent: 'SELECT sid, stuffname, pickupTime, returnTime, pickupLocation, returnLocation FROM Stuffs NATURAL JOIN Descriptions WHERE uid = $1',
+	lent: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions AS R WHERE EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = R.sid) and uid = $1',
 
 	// Lent_Details
 	details: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions WHERE sid = $1',

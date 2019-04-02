@@ -171,9 +171,9 @@ function borrowedstuff(req, res, next) {
 }
 
 function lentstuff(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
+    var ctx  = 0, ctx2 = 0, avg = 0, tbl, tbl2;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
-        pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
+        pool.query(sql_query.query.lending, [data.rows[0].uid], (err, data) => {
             if (err){
                 console.error("Error in update info");
                 res.redirect('/lentstuff?update=fail');
@@ -184,9 +184,23 @@ function lentstuff(req, res, next) {
                 ctx = data.rows.length;
                 tbl = data.rows;
             }
-            if(req.isAuthenticated()) {
-                basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, ctx: ctx, lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')});
+
+        pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
+            if (err){
+                console.error("Error in update info");
+                res.redirect('/lentstuff?update=fail');
+            } else if(!data.rows || data.rows.length == 0) {
+                ctx2 = 0;
+                tbl2 = [];
+            } else {
+                ctx2 = data.rows.length;
+                tbl2 = data.rows;
             }
+
+            if(req.isAuthenticated()) {
+                basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, tbl2: tbl2, ctx: ctx, ctx2: ctx2, lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')});
+            }
+            });
         });
     });
 }
