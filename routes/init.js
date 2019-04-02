@@ -232,7 +232,7 @@ function lentDetails(req, res, next) {
         tbl = data.rows;
     }
     if(req.isAuthenticated()) {
-        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff') });
+        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
     }
     });
 }
@@ -424,7 +424,6 @@ function deleteLent(req, res, next) {
             res.redirect('/lentstuff');
         }
     });
-
 }
 
 /*

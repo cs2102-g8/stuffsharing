@@ -76,7 +76,24 @@
 						</form>
 					</div>
 
-
+					<div class="card mb-3">
+                        <div class="card-header">
+                            <span style="color: Tomato;">
+                                <i class="fas fa-key"></i> &nbsp; Password: must be at least 8 characters
+                            </span>
+                        </div>
+                        <form method="post" action="/accept">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="nextminimumbid" class="col-sm-2 col-form-label"><b>Maximum Bid:</b></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" required="required" readonly class="form-control-plaintext" id="nextminimumbid" value="<%= tbl[0].nextminimumbid %>" name="nextminimumbid">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Accept</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= accept_msg %></span></div>
+                        </form>
+                    </div>
 				</div>
 			</div>
 		</div>
