@@ -2,56 +2,52 @@
 <ul class="sidebar navbar-nav">
 	<li class="nav-item active">
 		<a class="nav-link <%= page==="dashboard" ? "active" : "" %>" href="<%= page==="dashboard" ? "#" : "/dashboard" %>">
-			<i class="fas fa-fw fa-address-card"></i>
-		</a>
-	</li>
-	<li class="nav-item">
-		<a class="nav-link <%= page==="update" ? "active" : "" %>" href="<%= page==="update" ? "#" : "/update" %>">
 			<span style="color: Tomato;">
-				<i class="fas fa-igloo"></i>
+				<i class="fas fa-fw fa-address-card"></i>
 			</span>
-			<span>Update Personal Details</span></a>
+			<span>Dashboard</span></a>
+		</a>
 	</li>
 	<li class="nav-item">
     		<a class="nav-link <%= page==="borrowedstuff" ? "active" : "" %>" href="<%= page==="borrowedstuff" ? "#" : "/borrowedstuff" %>">
     			<span style="color: yellowgreen;">
 					<i class="fas fa-anchor"></i>
 				</span>
-    			<span>Borrowed Items</span></a>
+    			<span>Borrowed Stuff</span></a>
     </li>
     <li class="nav-item">
             <a class="nav-link <%= page==="lentstuff" ? "active" : "" %>" href="<%= page==="lentstuff" ? "#" : "/lentstuff" %>">
                 <span style="color: #dc3545">
 					<i class="fas fa-anchor"></i>
 				</span>&nbsp;
-                <span>Lent Items</span></a>
+                <span>Lent Stuff</span></a>
     </li>
-	<li class="nav-item">
-		<a class="nav-link <%= page==="myself" ? "active" : "" %>" href="<%= page==="myself" ? "#" : "/myself" %>">
-			<span style="color: Green;">
-				<i class="far fa-grin"></i>
-			</span>
-			<span>Myself</span></a>
-	</li>
 	<li class="nav-item">
 		<a class="nav-link <%= page==="discover" ? "active" : "" %>" href="<%= page==="discover" ? "#" : "/discover" %>">
 			<span style="color: Yellow;">
 				<i class="fas fa-globe"></i>
 			</span>
-			<span>Discover</span></a>
+			<span>Discover Stuff</span></a>
 	</li>
 	<li class="nav-item">
 		<a class="nav-link <%= page==="categories" ? "active" : "" %>" href="<%= page==="categories" ? "#" : "/categories" %>">
 			<span style="color: #00B7FF;">
 				<i class="fas fa-shopping-basket"></i>
 			</span>
-			<span>Categories</span></a>
+			<span>Stuff Categories</span></a>
 	</li>
 	<li class="nav-item">
 		<a class="nav-link <%= page==="complain" ? "active" : "" %>" href="<%= page==="complain" ? "#" : "/complain" %>">
 			<span style="color: #e83e8c;">
 				<i class="fas fa-comment"></i>
 			</span>
-			<span>File Complain</span></a>
+			<span>Contact Us</span></a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link <%= page==="update" ? "active" : "" %>" href="<%= page==="update" ? "#" : "/update" %>">
+			<span style="color: Tomato;">
+				<i class="fas fa-igloo"></i>
+			</span>
+			<span>Account Settings</span></a>
 	</li>
 </ul>
