@@ -46,7 +46,7 @@ sql.query = {
 	bidding: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE sid=$1',
 
 	//Bid action
-	bid_action: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
+	bids: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
 
 	//Delete Lent
 	delete_lent: 'DELETE FROM Stuffs WHERE sid = $1',

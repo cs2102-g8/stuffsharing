@@ -46,7 +46,7 @@ function initRouter(app) {
 	
 	app.post('/reg_user', passport.antiMiddleware(), reg_user);
 
-    //app.post('/bids',  passport.authMiddleware(), bids);
+    app.post('/bids',  passport.authMiddleware(), bids);
 	/* LOGIN */
 	app.post('/login', passport.authenticate('local', {
 		successRedirect: '/dashboard',
@@ -438,11 +438,7 @@ function accept(req, res, next) {
 
 
 function bids(req, res, next) {
-	var username = req.user.username;
-    var sid = req.query.stuff;
-	var bids = req.body.bidValue;
-
-	pool.query(sql_query.query.findUid, [username], (err, data) => {
+	pool.query(sql_query.query.bids, [req.query.bidValue], (err, data) => {
 		pool.query(sql_query.query.bid_action, [data.rows[0].uid, sid, bids], (err, data) => {
 			if(err) {
 				console.error("Error in submitting bids");
