@@ -233,23 +233,6 @@ function complain(req, res, next) {
 	basic(req, res, 'complain', { info_msg: msg(req, 'info', 'Complaint successfully sent', 'Error in submitting complaint'), pass_msg: msg(req, 'pass', 'Complaint has been received.', 'Error in uploading complaint'),auth: true});
 }
 
-
-/*
-function bidding(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
-    pool.query(sql_query.query.bidding, [req.user.username], (err, data) => {
-        if(err || !data.rows || data.rows.length == 0) {
-        ctx = 0;
-        tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
-    }
-});}
-*/
 /*
 function games(req, res, next) {
 	var ctx = 0, avg = 0, tbl;
