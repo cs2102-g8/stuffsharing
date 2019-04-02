@@ -190,9 +190,9 @@ function categories(req, res, next) {
 }
 function bidding(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-    var sid = req.body.sid;
+    //var sid = req.body.sid;
 
-        pool.query(sql_query.query.bidding, [sid], (err, data) => {
+        pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
             if(err || !data.rows || data.rows.length == 0) {
             ctx = 0;
             tbl = [];
@@ -384,6 +384,25 @@ function lend(req, res, next) {
         }
     });
 }
+
+function bids(req, res, next) {
+	var username = req.user.username;
+    var sid = req.query.stuff;
+	var bids = req.body.bidValue;
+
+	pool.query(sql_query.query.findUid, [username], (err, data) => {
+		pool.query(sql_query.query.bid_action, [data.rows[0].uid, sid, bids], (err, data) => {
+			if(err) {
+				console.error("Error in submitting bids");
+				res.redirect('/discover?pass=fail');
+			} else {
+				res.redirect('/myself?pass=pass');
+			}
+		});
+
+	});
+}
+
 
 /*
 function add_game(req, res, next) {
