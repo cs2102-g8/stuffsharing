@@ -25,10 +25,13 @@ sql.query = {
 	discover: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE Descriptions.pickUpLocation = (SELECT region FROM Users WHERE username = $1) OR Descriptions.returnLocation = (SELECT region FROM Users WHERE username = $1)',
 
 	// Borrowed
-	borrowed: 'SELECT * FROM Borrows WHERE uid = $1',
+	borrowed: 'SELECT * FROM (select sid, stuffname, nextminimumbid, returntime, returnlocation FROM Stuffs NATURAL JOIN Descriptions) as R NATURAL JOIN Borrows B WHERE B.uid = $1',
 
 	// Lent
-	lent: 'SELECT stuffname, pickupTime, returnTime, pickupLocation, returnLocation FROM Stuffs NATURAL JOIN Descriptions WHERE uid = $1',
+	lent: 'SELECT sid, stuffname, pickupTime, returnTime, pickupLocation, returnLocation FROM Stuffs NATURAL JOIN Descriptions WHERE uid = $1',
+
+	// Lent_Details
+	details: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions WHERE sid = $1',
 
 	// Lend_New_Stuff
 	checkLender: 'SELECT COUNT(uid) AS num FROM Lenders WHERE uid = $1 GROUP BY uid',
@@ -44,6 +47,9 @@ sql.query = {
 
 	//Bid action
 	bid_action: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
+
+	//Delete Lent
+	delete_lent: 'DELETE FROM Stuffs WHERE sid = $1'
 }
 
 module.exports = sql

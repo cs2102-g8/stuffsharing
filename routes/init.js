@@ -32,18 +32,20 @@ function initRouter(app) {
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
     app.get('/bidding'  , bidding    );
+    app.get('/lentDetails'  , passport.authMiddleware(), lentDetails    );
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
 	app.post('/update_pass', passport.authMiddleware(), update_pass);
 	app.post('/complain_file',  passport.authMiddleware(), complain_file);
 	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
+	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
 	app.post('/reg_user'   , passport.antiMiddleware(), reg_user   );
 
-    app.post('/bids',  passport.authMiddleware(), bids);
+    //app.post('/bids',  passport.authMiddleware(), bids);
 	/* LOGIN */
 	app.post('/login', passport.authenticate('local', {
 		successRedirect: '/dashboard',
@@ -149,17 +151,21 @@ function discover(req, res, next) {
 
 function borrowedstuff(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-    pool.query(sql_query.query.borrowed, [req.user.username], (err, data) => {
-        if(err || !data.rows || data.rows.length == 0) {
-        ctx = 0;
-        tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
-    }
+    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+        pool.query(sql_query.query.borrowed, [data.rows[0].uid], (err, data) => {
+            if (err){
+                console.error(err);
+            } else if(!data.rows || data.rows.length == 0) {
+                ctx = 0;
+                tbl = [];
+            } else {
+                ctx = data.rows.length;
+                tbl = data.rows;
+            }
+            if(req.isAuthenticated()) {
+                basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
+            }
+        });
     });
 }
 
@@ -167,7 +173,10 @@ function lentstuff(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
-            if(err || !data.rows || data.rows.length == 0) {
+            if (err){
+                console.error("Error in update info");
+                res.redirect('/lentstuff?update=fail');
+            } else if(!data.rows || data.rows.length == 0) {
                 ctx = 0;
                 tbl = [];
             } else {
@@ -191,20 +200,39 @@ function categories(req, res, next) {
 function bidding(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
     //var sid = req.body.sid;
+  
+    pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
+        if(err || !data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
+    }
 
-        pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
-            if(err || !data.rows || data.rows.length == 0) {
-            ctx = 0;
-            tbl = [];
-        } else {
-            ctx = data.rows.length;
-            tbl = data.rows;
-        }
-        if(req.isAuthenticated()) {
-            basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
-        }
+function lentDetails(req, res, next) {
+    var ctx  = 0, avg = 0, tbl;
+    var sid = req.query.sid;
+
+    pool.query(sql_query.query.details, [sid], (err, data) => {
+    if (err){
+        console.error(err);
+        res.redirect('/lentDetails?detail=fail');
+    } else if(!data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
+    }
+
     });
-	/*basic(req, res, 'bidding', {auth: true});*/
 }
 
 function complain(req, res, next) {
@@ -342,7 +370,7 @@ function lend(req, res, next) {
 
 	pool.query(sql_query.query.findUid, [username], (err, data) => {
         pool.query(sql_query.query.checkLender, [data.rows[0].uid], (err, data) => {
-            if (!data.rows[0].num == 0) {
+            if (data.rows[0].num == 0) {
                 pool.query(sql_query.query.findUid, [username], (err, data) => {
                     pool.query(sql_query.query.insertToLenders, [data.rows[0].uid], (err, data) => {
                         if (err) {
@@ -352,35 +380,46 @@ function lend(req, res, next) {
                     });
                 });
             }
+            pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
+                if (err) {
+                    console.error(err);
+                    res.redirect('/lentstuff?pass=fail');
+                }else{
+                    pool.query(sql_query.query.findUid, [username], (err, data) => {
+                        pool.query(sql_query.query.insertToLends, [sid, data.rows[0].uid], (err, data) => {
+                             if (err){
+                                console.error(err);
+                                res.redirect('/lentstuff?pass=fail');
+                             }else{
+                                pool.query(sql_query.query.findUid, [username], (err, data) => {
+                                    pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
+                                        if(err) {
+                                            console.error(err);
+                                            res.redirect('/lentstuff?pass=fail');
+                                        } else {
+                                            res.redirect('/lentstuff?pass=pass');
+                                        }
+                                    });
+                                });
+                             }
+
+                        });
+                    });
+                }
+            });
         });
     });
+}
 
+function deleteLent(req, res, next) {
+	var sid = req.body.sid;
 
-    pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
-        if (err) {
+    pool.query(sql_query.query.delete_lent, [sid], (err, data) => {
+        if(err) {
             console.error(err);
-            res.redirect('/lentstuff?pass=fail');
-        }else{
-            pool.query(sql_query.query.findUid, [username], (err, data) => {
-                pool.query(sql_query.query.insertToLends, [sid, data.rows[0].uid], (err, data) => {
-                     if (err){
-                        console.error(err);
-                        res.redirect('/lentstuff?pass=fail');
-                     }else{
-                        pool.query(sql_query.query.findUid, [username], (err, data) => {
-                            pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
-                                if(err) {
-                                    console.error(err);
-                                    res.redirect('/lentstuff?pass=fail');
-                                } else {
-                                    res.redirect('/lentstuff?pass=pass');
-                                }
-                            });
-                        });
-                     }
-
-                });
-            });
+            res.redirect('/lentDetail?delete=fail');
+        } else {
+            res.redirect('/lentstuff');
         }
     });
 }
