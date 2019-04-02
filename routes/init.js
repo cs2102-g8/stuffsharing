@@ -203,16 +203,18 @@ function bidding(req, res, next) {
     //var sid = req.body.sid;
   
     pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
-        if(err || !data.rows || data.rows.length == 0) {
-        ctx = 0;
-        tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
-    }
+		if (err || !data.rows || data.rows.length == 0) {
+			ctx = 0;
+			tbl = [];
+		} else {
+			ctx = data.rows.length;
+			tbl = data.rows;
+		}
+		if (req.isAuthenticated()) {
+			basic(req, res, 'bidding', {page: 'bidding', auth: true, tbl: tbl, ctx: ctx});
+		}
+	});
+}
 
 function lentDetails(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
