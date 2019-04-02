@@ -85,9 +85,18 @@
                         <form method="post" action="/accept">
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label for="nextminimumbid" class="col-sm-2 col-form-label"><b>Maximum Bid:</b></label>
+                                    <label for="bid" class="col-sm-2 col-form-label"><b>Maximum Bid:</b></label>
                                     <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="nextminimumbid" value="<%= tbl[0].nextminimumbid %>" name="nextminimumbid">
+                                        <input type="text" required="required" readonly class="form-control-plaintext" id="bid" value="<%= bid %>" name="bid">
+                                    </div>
+                                    <label for="uid" class="col-sm-2 col-form-label"><b>Biding User ID:</b></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" required="required" readonly class="form-control-plaintext" id="uid" value="<%= uid %>" name="uid">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
                                     </div>
                                 </div>
                             </div>

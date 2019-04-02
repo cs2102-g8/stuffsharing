@@ -49,7 +49,13 @@ sql.query = {
 	bid_action: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
 
 	//Delete Lent
-	delete_lent: 'DELETE FROM Stuffs WHERE sid = $1'
+	delete_lent: 'DELETE FROM Stuffs WHERE sid = $1',
+
+	//Find Highest Bid
+	find_max_bid: 'SELECT * FROM Bids WHERE sid = $1 ORDER BY bid DESC LIMIT 1',
+
+	//Accept
+	accept: 'INSERT INTO Borrows(uid, sid) VALUES ($1, $2)'
 }
 
 module.exports = sql

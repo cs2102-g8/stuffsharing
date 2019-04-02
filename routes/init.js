@@ -217,7 +217,7 @@ function bidding(req, res, next) {
 }
 
 function lentDetails(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
+    var ctx  = 0, avg = 0, tbl, bid, uid;
     var sid = req.query.sid;
 
     pool.query(sql_query.query.details, [sid], (err, data) => {
@@ -231,10 +231,24 @@ function lentDetails(req, res, next) {
         ctx = data.rows.length;
         tbl = data.rows;
     }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
-    }
 
+    pool.query(sql_query.query.find_max_bid, [sid], (err, data) =>{
+        if (err){
+            console.error(err);
+            res.redirect('/lentDetails?detail=fail');
+        }else if (!data.rows || data.rows.length == 0) {
+            bid = 'No Bid';
+            uid = 'None';
+        }else{
+            bid = data.rows[0].bid;
+            uid = data.rows[0].uid;
+        }
+
+        if(req.isAuthenticated()) {
+            basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, bid: bid, uid: uid, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
+        }
+
+    });
     });
 }
 
@@ -430,15 +444,20 @@ function deleteLent(req, res, next) {
 
 function accept(req, res, next) {
 	var sid = req.body.sid;
+	var uid = req.body.uid;
 
-    pool.query(sql_query.query.accept, [sid], (err, data) => {
-        if(err) {
-            console.error(err);
-            res.redirect('/accept?pass=fail');
-        } else {
-            res.redirect('/lentstuff');
-        }
-    });
+    if (uid === 'None'){
+        res.redirect('back');
+    }else{
+        pool.query(sql_query.query.accept, [uid, sid], (err, data) => {
+            if(err) {
+                console.error(err);
+                res.redirect('back');
+            } else {
+                res.redirect('/lentstuff');
+            }
+        });
+    }
 }
 
 
