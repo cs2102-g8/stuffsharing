@@ -153,8 +153,7 @@ function borrowedstuff(req, res, next) {
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         pool.query(sql_query.query.borrowed, [data.rows[0].uid], (err, data) => {
             if (err){
-                console.error("Error in update info");
-                res.redirect('/borrowedstuff?update=fail');
+                console.error(err);
             } else if(!data.rows || data.rows.length == 0) {
                 ctx = 0;
                 tbl = [];
