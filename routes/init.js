@@ -21,28 +21,28 @@ function initRouter(app) {
 	
 	/* PROTECTED GET */
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
-	app.get('/update'    , passport.authMiddleware(), update    );
-	app.get('/discover'    , passport.authMiddleware(), discover    );
-	app.get('/borrowedstuff'    , passport.authMiddleware(), borrowedstuff   );
-	app.get('/lentstuff'    , passport.authMiddleware(), lentstuff   );
-	app.get('/categories'    , passport.authMiddleware(), categories  );
-	app.get('/complain', passport.authMiddleware(), complain  );
+	app.get('/update', passport.authMiddleware(), update);
+	app.get('/discover', passport.authMiddleware(), discover);
+	app.get('/borrowedstuff', passport.authMiddleware(), borrowedstuff);
+	app.get('/lentstuff', passport.authMiddleware(), lentstuff);
+	app.get('/categories', passport.authMiddleware(), categories);
+	app.get('/complain', passport.authMiddleware(), complain);
 	
-	app.get('/register' , passport.antiMiddleware(), register );
-	app.get('/password' , passport.antiMiddleware(), retrieve );
-    app.get('/bidding'  , bidding    );
-    app.get('/lentDetails'  , passport.authMiddleware(), lentDetails    );
+	app.get('/register', passport.antiMiddleware(), register);
+	app.get('/password', passport.antiMiddleware(), retrieve);
+    app.get('/bidding', bidding);
+    app.get('/lentDetails', passport.authMiddleware(), lentDetails);
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
 	app.post('/update_pass', passport.authMiddleware(), update_pass);
-	app.post('/complain_file',  passport.authMiddleware(), complain_file);
-	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
-	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
+	app.post('/complain_file', passport.authMiddleware(), complain_file);
+	app.post('/lendNewStuff', passport.authMiddleware(), lend);
+	app.post('/delete_lent', passport.authMiddleware(), deleteLent);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
-	app.post('/reg_user'   , passport.antiMiddleware(), reg_user   );
+	app.post('/reg_user', passport.antiMiddleware(), reg_user);
 
     //app.post('/bids',  passport.authMiddleware(), bids);
 	/* LOGIN */
@@ -138,14 +138,14 @@ function discover(req, res, next) {
         if(err || !data.rows || data.rows.length == 0) {
         ctx = 0;
         tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
-    }
-});
+		} else {
+			ctx = data.rows.length;
+			tbl = data.rows;
+		}
+		if(req.isAuthenticated()) {
+			basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
+		}
+	});
 }
 
 function borrowedstuff(req, res, next) {
@@ -194,8 +194,6 @@ function categories(req, res, next) {
 }
 function bidding(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-    //var sid = req.body.sid;
-  
     pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
 		if (err || !data.rows || data.rows.length == 0) {
 			ctx = 0;
@@ -215,20 +213,19 @@ function lentDetails(req, res, next) {
     var sid = req.query.sid;
 
     pool.query(sql_query.query.details, [sid], (err, data) => {
-    if (err){
-        console.error(err);
-        res.redirect('/lentDetails?detail=fail');
-    } else if(!data.rows || data.rows.length == 0) {
-        ctx = 0;
-        tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
-    }
-
+		if (err){
+			console.error(err);
+			res.redirect('/lentDetails?detail=fail');
+		} else if(!data.rows || data.rows.length == 0) {
+			ctx = 0;
+			tbl = [];
+		} else {
+			ctx = data.rows.length;
+			tbl = data.rows;
+		}
+		if(req.isAuthenticated()) {
+			basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
+		}
     });
 }
 
@@ -399,7 +396,6 @@ function lend(req, res, next) {
                                     });
                                 });
                              }
-
                         });
                     });
                 }
