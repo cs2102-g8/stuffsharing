@@ -40,6 +40,7 @@ function initRouter(app) {
 	app.post('/complain_file',  passport.authMiddleware(), complain_file);
 	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
 	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
+	app.post('/accept',  passport.authMiddleware(), accept);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
@@ -420,6 +421,19 @@ function deleteLent(req, res, next) {
         if(err) {
             console.error(err);
             res.redirect('/lentDetail?delete=fail');
+        } else {
+            res.redirect('/lentstuff');
+        }
+    });
+}
+
+function accept(req, res, next) {
+	var sid = req.body.sid;
+
+    pool.query(sql_query.query.accept, [sid], (err, data) => {
+        if(err) {
+            console.error(err);
+            res.redirect('/accept?pass=fail');
         } else {
             res.redirect('/lentstuff');
         }
