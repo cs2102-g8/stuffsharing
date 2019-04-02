@@ -2,7 +2,7 @@ drop table if exists Users cascade;
 drop table if exists Areas cascade;
 drop table if exists Earns cascade;
 drop table if exists Badges cascade;
-drop table if exists writeComplaints cascade;
+drop table if exists WriteComplaints cascade;
 drop table if exists Borrowers cascade;
 drop table if exists Lenders cascade;
 drop table if exists Stuffs cascade;
@@ -15,121 +15,121 @@ drop table if exists Categories cascade;
 drop table if exists Belongs cascade;
 
 create table Areas(
-region varchar(100),
-country varchar(100),
-primary key (region, country)
+	region varchar(100),
+	country varchar(100),
+	primary key (region, country)
 );
 
 create table Users(
-uid varchar(100),
-username varchar(100) unique not null,
-password varchar(64) not null,
-phone integer not null,
-region varchar(100),
-country varchar(100),
-primary key (uid),
-foreign key (region, country) references Areas(region, country)
+	uid varchar(100),
+	username varchar(100) unique not null,
+	password varchar(64) not null,
+	phone integer not null,
+	region varchar(100),
+	country varchar(100),
+	primary key (uid),
+	foreign key (region, country) references Areas(region, country)
 );
 
 create table Badges(
-badgeName varchar(30),
-primary key (badgeName)
+	badgeName varchar(30),
+	primary key (badgeName)
 );
 
 create table Earns(
-uid varchar(100),
-badgeName varchar(30),
-foreign key (uid) references Users(uid),
-foreign key (badgeName) references Badges(badgeName)
+	uid varchar(100),
+	badgeName varchar(30),
+	foreign key (uid) references Users(uid),
+	foreign key (badgeName) references Badges(badgeName)
 );
 
-create table writeComplaints (
-cid	varchar(100),
-complaint varchar(1000) not null,
-dateTime timestamp not null,
-uid varchar(100),
-primary key(cid),
-foreign key (uid) references Users(uid)
+create table WriteComplaints (
+	cid	varchar(100),
+	complaint varchar(1000) not null,
+	dateTime timestamp not null,
+	uid varchar(100),
+	primary key(cid),
+	foreign key (uid) references Users(uid)
 );
 
 
 
 create table Borrowers(
-uid varchar(100) references Users(uid),
-primary key (uid)
+	uid varchar(100) references Users(uid),
+	primary key (uid)
 );
 
 create table Lenders(
-uid varchar(100) references Users(uid),
-primary key (uid)
+	uid varchar(100) references Users(uid),
+	primary key (uid)
 );
 
 create table Stuffs(
-sid varchar(100),
-stuffName varchar(100),
-nextMinimumBid money not null,
-primary key (sid)
+	sid varchar(100),
+	stuffName varchar(100),
+	nextMinimumBid money not null,
+	primary key (sid)
 );
 
 create table Bids(
-uid varchar(100) not null,
-sid varchar(100) not null,
-bid money not null,
-primary key (uid, sid),
-foreign key (uid) references Borrowers(uid) on delete cascade,
-foreign key (sid) references Stuffs(sid) on delete cascade
+	uid varchar(100) not null,
+	sid varchar(100) not null,
+	bid money not null,
+	primary key (uid, sid),
+	foreign key (uid) references Borrowers(uid) on delete cascade,
+	foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Borrows(
-uid varchar(100),
-sid varchar(100),
-primary key (uid, sid),
-foreign key (uid) references Borrowers(uid) on delete cascade,
-foreign key (sid) references Stuffs(sid) on delete cascade
+	uid varchar(100),
+	sid varchar(100),
+	primary key (uid, sid),
+	foreign key (uid) references Borrowers(uid) on delete cascade,
+	foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Lends(
-uid varchar(100) not null,
-sid varchar(100) not null,
-primary key (uid, sid),
-foreign key (uid) references Lenders(uid) on delete cascade,
-foreign key (sid) references Stuffs(sid) on delete cascade
+	uid varchar(100) not null,
+	sid varchar(100) not null,
+	primary key (uid, sid),
+	foreign key (uid) references Lenders(uid) on delete cascade,
+	foreign key (sid) references Stuffs(sid) on delete cascade
 );
 
 create table Descriptions(
-pickUpTime timestamp not null,
-returnTime timestamp not null,
-pickUpLocation varchar(100) not null,
-returnLocation varchar(100) not null,
-summary varchar(1000) not null,
-uid varchar(100),
-sid varchar(100),
-primary key (uid, sid),
-foreign key (uid, sid) references Lends(uid, sid) on delete cascade
+	pickUpTime timestamp not null,
+	returnTime timestamp not null,
+	pickUpLocation varchar(100) not null,
+	returnLocation varchar(100) not null,
+	summary varchar(1000) not null,
+	uid varchar(100),
+	sid varchar(100),
+	primary key (uid, sid),
+	foreign key (uid, sid) references Lends(uid, sid) on delete cascade
 );
 
 create table Comments(
-comment varchar(1000) not null,
-updateTime timestamp not null,
-uid varchar(100),
-sid varchar(100),
-rating integer,
-check (rating <= 5 and rating >= 0),
-primary key (uid, sid, updateTime),
-foreign key (uid, sid) references Borrows(uid, sid) on delete cascade
+	comment varchar(1000) not null,
+	updateTime timestamp not null,
+	uid varchar(100),
+	sid varchar(100),
+	rating integer,
+	check (rating <= 5 and rating >= 0),
+	primary key (uid, sid, updateTime),
+	foreign key (uid, sid) references Borrows(uid, sid) on delete cascade
 );
 
 create table Categories(
-categoryName varchar(100),
-primary key (categoryName)
+	categoryName varchar(100),
+	primary key (categoryName)
 );
 
 create table Belongs(
-sid varchar(100),
-categoryName varchar(100),
-primary key (sid, categoryName),
-foreign key (sid) references Stuffs(sid),
-foreign key (categoryName) references Categories(categoryName)
+	sid varchar(100),
+	categoryName varchar(100),
+	primary key (sid, categoryName),
+	foreign key (sid) references Stuffs(sid),
+	foreign key (categoryName) references Categories(categoryName)
 );
 
 
