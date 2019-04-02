@@ -39,6 +39,11 @@ sql.query = {
 
 	// Information
 	page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
+	// Bidding
+	bidding: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE sid=$1',
+
+	//Bid action
+	bid_action: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
 }
 
 module.exports = sql

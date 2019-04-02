@@ -31,6 +31,7 @@ function initRouter(app) {
 	
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
+    app.get('/bidding'  , bidding    );
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
@@ -42,6 +43,7 @@ function initRouter(app) {
 	
 	app.post('/reg_user'   , passport.antiMiddleware(), reg_user   );
 
+    app.post('/bids',  passport.authMiddleware(), bids);
 	/* LOGIN */
 	app.post('/login', passport.authenticate('local', {
 		successRedirect: '/dashboard',
@@ -189,9 +191,46 @@ function myself(req, res, next) {
 function categories(req, res, next) {
 	basic(req, res, 'categories', {auth: true});
 }
+function bidding(req, res, next) {
+    var ctx  = 0, avg = 0, tbl;
+    var sid = req.body.sid;
+
+        pool.query(sql_query.query.bidding, [sid], (err, data) => {
+            if(err || !data.rows || data.rows.length == 0) {
+            ctx = 0;
+            tbl = [];
+        } else {
+            ctx = data.rows.length;
+            tbl = data.rows;
+        }
+        if(req.isAuthenticated()) {
+            basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
+        }
+    });
+	/*basic(req, res, 'bidding', {auth: true});*/
+}
+
 function complain(req, res, next) {
 	basic(req, res, 'complain', { info_msg: msg(req, 'info', 'Complaint successfully sent', 'Error in submitting complaint'), pass_msg: msg(req, 'pass', 'Complaint has been received.', 'Error in uploading complaint'),auth: true});
 }
+
+
+/*
+function bidding(req, res, next) {
+    var ctx  = 0, avg = 0, tbl;
+    pool.query(sql_query.query.bidding, [req.user.username], (err, data) => {
+        if(err || !data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
+    }
+});}
+*/
 /*
 function games(req, res, next) {
 	var ctx = 0, avg = 0, tbl;
