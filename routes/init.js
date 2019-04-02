@@ -21,18 +21,17 @@ function initRouter(app) {
 	
 	/* PROTECTED GET */
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
-	app.get('/update'    , passport.authMiddleware(), update    );
-	app.get('/discover'    , passport.authMiddleware(), discover    );
-	app.get('/borrowedstuff'    , passport.authMiddleware(), borrowedstuff   );
-	app.get('/lentstuff'    , passport.authMiddleware(), lentstuff   );
-	app.get('/myself'    , passport.authMiddleware(), myself    );
-	app.get('/categories'    , passport.authMiddleware(), categories  );
-	app.get('/complain', passport.authMiddleware(), complain  );
+	app.get('/update', passport.authMiddleware(), update);
+	app.get('/discover', passport.authMiddleware(), discover);
+	app.get('/borrowedstuff', passport.authMiddleware(), borrowedstuff);
+	app.get('/lentstuff', passport.authMiddleware(), lentstuff);
+	app.get('/categories', passport.authMiddleware(), categories);
+	app.get('/complain', passport.authMiddleware(), complain);
 	
-	app.get('/register' , passport.antiMiddleware(), register );
-	app.get('/password' , passport.antiMiddleware(), retrieve );
-    app.get('/bidding'  , bidding    );
-    app.get('/lentDetails'  , passport.authMiddleware(), lentDetails    );
+	app.get('/register', passport.antiMiddleware(), register);
+	app.get('/password', passport.antiMiddleware(), retrieve);
+    app.get('/bidding', bidding);
+    app.get('/lentDetails', passport.authMiddleware(), lentDetails);
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
@@ -41,10 +40,11 @@ function initRouter(app) {
 	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
 	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
 	app.post('/accept',  passport.authMiddleware(), accept);
+
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
 	
-	app.post('/reg_user'   , passport.antiMiddleware(), reg_user   );
+	app.post('/reg_user', passport.antiMiddleware(), reg_user);
 
     //app.post('/bids',  passport.authMiddleware(), bids);
 	/* LOGIN */
@@ -140,14 +140,14 @@ function discover(req, res, next) {
         if(err || !data.rows || data.rows.length == 0) {
         ctx = 0;
         tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
-    }
-});
+		} else {
+			ctx = data.rows.length;
+			tbl = data.rows;
+		}
+		if(req.isAuthenticated()) {
+			basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
+		}
+	});
 }
 
 function borrowedstuff(req, res, next) {
@@ -191,17 +191,11 @@ function lentstuff(req, res, next) {
     });
 }
 
-function myself(req, res, next) {
-	basic(req, res, 'myself', {auth: true});
-}
-
 function categories(req, res, next) {
 	basic(req, res, 'categories', {auth: true});
 }
 function bidding(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-    //var sid = req.body.sid;
-  
     pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
 		if (err || !data.rows || data.rows.length == 0) {
 			ctx = 0;
@@ -256,23 +250,6 @@ function complain(req, res, next) {
 	basic(req, res, 'complain', { info_msg: msg(req, 'info', 'Complaint successfully sent', 'Error in submitting complaint'), pass_msg: msg(req, 'pass', 'Complaint has been received.', 'Error in uploading complaint'),auth: true});
 }
 
-
-/*
-function bidding(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
-    pool.query(sql_query.query.bidding, [req.user.username], (err, data) => {
-        if(err || !data.rows || data.rows.length == 0) {
-        ctx = 0;
-        tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
-    }
-});}
-*/
 /*
 function games(req, res, next) {
 	var ctx = 0, avg = 0, tbl;
@@ -419,7 +396,6 @@ function lend(req, res, next) {
                                     });
                                 });
                              }
-
                         });
                     });
                 }

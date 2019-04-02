@@ -28,49 +28,49 @@
 					<div class="card mb-3">
 						<div class="card-header">
 							<span style="color: #e0a800;">
-								<i class="fas fa-globe"></i> Bidding for item
+								<i class="fas fa-couch"></i> <%= tbl[0].stuffname%>
 							</span>&nbsp;
 						</div>
 						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-									<thead>
-									<tr>
-										<th>Name</th>
-										<th>Lender</th>
-										<th>Next Minimum Bid</th>
-										<th>Pickup Location</th>
-										<th>Return Location</th>
-									</tr>
-									</thead>
-                                    <tbody>
-									    <% for(var i=0; i<tbl.length; i++) { %>
-										    <tr>
-											    <td><%= tbl[i].stuffname%></td>
-		    									<td><%= tbl[i].username%></td>
-			    								<td><%= tbl[i].nextminimumbid%></td>
-				    							<td><%= tbl[i].pickuplocation%></td>
-					    						<td><%= tbl[i].returnlocation%></td>
-						    				</tr>
-							    		<% } %>
-									</tbody>
-								</table>
-							</div>
-							    <form method="post" action="/bids">
-                            					<div class="card-body">
-                            						<div class="form-group row">
-                            						<label for="bid" class="col-sm-2 col-form-label"><b>Item ID:</b></label>
-                                                        <div class="col-sm-4">
-                            						        <input type="text" readonly class="form-control-plaintext" aria-label="Search" aria-describedby="basic-addon2" value="<%= tbl[0].sid%>" name="stuff">
-                            							 </div>
-                            						<label for="bid" class="col-sm-2 col-form-label"><b>Write Your Bid here:</b></label>
-                            							<div class="col-sm-4">
-                            								<input type="text" required="required" class="form-control" id="bidValue" placeholder="Write Bid here" name="bidValue" value="">
-                            							</div>
-                            						</div>
-                            					</div>
-                            					<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Submit Bid</button> &nbsp;&nbsp;&nbsp; </div>
-                            	</form>
+							Lender: <%= tbl[0].username%><br/>
+							Pickup Location: <%= tbl[0].pickuplocation%><br/>
+							Return Location: <%= tbl[0].returnlocation%><br/>
+							Next Minimum Bid: <%= tbl[0].nextminimumbid%><br/>
+							<br/>
+							<%= tbl[0].summary%><br/>
+<!--							<div class="table-responsive">-->
+<!--								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
+<!--									<thead>-->
+<!--									<tr>-->
+<!--										<th>Lender</th>-->
+<!--										<th>Next Minimum Bid</th>-->
+<!--										<th>Pickup Location</th>-->
+<!--										<th>Return Location</th>-->
+<!--									</tr>-->
+<!--									</thead>-->
+<!--									<tbody>-->
+<!--									<tr>-->
+<!--										<td><%= tbl[0].username%></td>-->
+<!--										<td><%= tbl[0].nextminimumbid%></td>-->
+<!--										<td><%= tbl[0].pickuplocation%></td>-->
+<!--										<td><%= tbl[0].returnlocation%></td>-->
+<!--									</tr>-->
+<!--									</tbody>-->
+<!--								</table>-->
+<!--							</div>-->
+							<form method="post" action="/bids">
+											<div class="card-body">
+												<div class="form-group row">
+												<label for="bid" class="col-sm-2 col-form-label"><b>Bid:</b></label>
+													<div class="col-sm-4">
+														<input type="text" required="required" class="form-control" id="bidValue" placeholder="Bid Amount" name="bidValue" value="">
+														<button type="submit" class="btn btn-secondary">Submit Bid</button><br/>
+													</div>
+												</div>
+												Your bid has to be higher than the next minimum bid!
+											</div>
+<!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Submit Bid</button> &nbsp;&nbsp;&nbsp; </div>-->
+							</form>
 						</div>
 						<div class="card-footer small text-muted">Stuff Sharing</div>
 					</div>
