@@ -32,6 +32,7 @@ function initRouter(app) {
 	app.get('/register' , passport.antiMiddleware(), register );
 	app.get('/password' , passport.antiMiddleware(), retrieve );
     app.get('/bidding'  , bidding    );
+    app.get('/lentDetails'  , lentDetails    );
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
@@ -43,7 +44,7 @@ function initRouter(app) {
 	
 	app.post('/reg_user'   , passport.antiMiddleware(), reg_user   );
 
-    app.post('/bids',  passport.authMiddleware(), bids);
+    //app.post('/bids',  passport.authMiddleware(), bids);
 	/* LOGIN */
 	app.post('/login', passport.authenticate('local', {
 		successRedirect: '/dashboard',
@@ -149,17 +150,22 @@ function discover(req, res, next) {
 
 function borrowedstuff(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
-    pool.query(sql_query.query.borrowed, [req.user.username], (err, data) => {
-        if(err || !data.rows || data.rows.length == 0) {
-        ctx = 0;
-        tbl = [];
-    } else {
-        ctx = data.rows.length;
-        tbl = data.rows;
-    }
-    if(req.isAuthenticated()) {
-        basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
-    }
+    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+        pool.query(sql_query.query.borrowed, [data.rows[0].uid], (err, data) => {
+            if (err){
+                console.error("Error in update info");
+                res.redirect('/borrowedstuff?update=fail');
+            } else if(!data.rows || data.rows.length == 0) {
+                ctx = 0;
+                tbl = [];
+            } else {
+                ctx = data.rows.length;
+                tbl = data.rows;
+            }
+            if(req.isAuthenticated()) {
+                basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
+            }
+        });
     });
 }
 
@@ -169,7 +175,7 @@ function lentstuff(req, res, next) {
         pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
             if (err){
                 console.error("Error in update info");
-                res.redirect('/update?lentstuff=fail');
+                res.redirect('/lentstuff?update=fail');
             } else if(!data.rows || data.rows.length == 0) {
                 ctx = 0;
                 tbl = [];
@@ -195,19 +201,40 @@ function bidding(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
     var sid = req.body.sid;
 
-        pool.query(sql_query.query.bidding, [sid], (err, data) => {
-            if(err || !data.rows || data.rows.length == 0) {
-            ctx = 0;
-            tbl = [];
-        } else {
-            ctx = data.rows.length;
-            tbl = data.rows;
-        }
-        if(req.isAuthenticated()) {
-            basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
-        }
+    pool.query(sql_query.query.bidding, [sid], (err, data) => {
+        if(err || !data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, ctx: ctx });
+    }
     });
-	/*basic(req, res, 'bidding', {auth: true});*/
+    /*basic(req, res, 'bidding', {auth: true});*/
+}
+
+function lentDetails(req, res, next) {
+    var ctx  = 0, avg = 0, tbl;
+    var sid = req.query.sid;
+
+    pool.query(sql_query.query.details, [sid], (err, data) => {
+    if (err){
+        console.error(err);
+        res.redirect('/lentDetails?detail=fail');
+    } else if(!data.rows || data.rows.length == 0) {
+        ctx = 0;
+        tbl = [];
+    } else {
+        ctx = data.rows.length;
+        tbl = data.rows;
+    }
+    if(req.isAuthenticated()) {
+        basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, ctx: ctx });
+    }
+    });
 }
 
 function complain(req, res, next) {
