@@ -484,17 +484,22 @@ function accept(req, res, next) {
 
 
 function bids(req, res, next) {
-	pool.query(sql_query.query.bids, [req.query.bidValue], (err, data) => {
-		pool.query(sql_query.query.bid_action, [data.rows[0].uid, sid, bids], (err, data) => {
-			if(err) {
-				console.error("Error in submitting bids");
-				res.redirect('/discover?pass=fail');
-			} else {
-				res.redirect('/myself?pass=pass');
-			}
-		});
+	var bid = req.body.bidValue;
+	var username = req.user.username;
+	var sid = req.body.sid;
 
-	});
+    pool.query(sql_query.query.findUid, [username], (err, data) => {
+        pool.query(sql_query.query.bidding, [data.rows[0].uid, sid, bid], (err, data) => {
+            if(err) {
+                console.error(err);
+                res.redirect('back');
+            } else {
+                res.redirect('back');
+            }
+        });
+
+    });
+
 }
 
 
