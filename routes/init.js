@@ -173,8 +173,10 @@ function borrowedstuff(req, res, next) {
 
 function lentstuff(req, res, next) {
     var ctx  = 0, ctx2 = 0, avg = 0, tbl, tbl2;
+    var uid;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
-        pool.query(sql_query.query.lending, [data.rows[0].uid], (err, data) => {
+        uid = data.rows[0].uid;
+        pool.query(sql_query.query.lending, [uid], (err, data) => {
             if (err){
                 console.error("Error in update info");
                 res.redirect('/lentstuff?update=fail');
@@ -186,7 +188,7 @@ function lentstuff(req, res, next) {
                 tbl = data.rows;
             }
 
-        pool.query(sql_query.query.lent, [data.rows[0].uid], (err, data) => {
+        pool.query(sql_query.query.lent, [uid], (err, data) => {
             if (err){
                 console.error("Error in update info");
                 res.redirect('/lentstuff?update=fail');
