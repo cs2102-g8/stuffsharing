@@ -38,7 +38,7 @@ sql.query = {
 	details: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions WHERE sid = $1',
 
 	// Lend_New_Stuff
-	checkLender: 'SELECT COUNT(uid) AS num FROM Lenders WHERE uid = $1 GROUP BY uid',
+	checkLender: 'SELECT uid FROM Lenders WHERE uid = $1',
 	insertToLenders: 'INSERT INTO Lenders(uid) VALUES ($1)',
 	insertToStuff: 'INSERT INTO Stuffs(sid, stuffName, nextMinimumBid) VALUES ($1, $2, $3)',
 	insertToLends: 'INSERT INTO Lends(sid, uid) VALUES ($1, $2)',

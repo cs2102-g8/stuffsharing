@@ -389,8 +389,9 @@ function lend(req, res, next) {
 	var description = req.body.description;
 
 	pool.query(sql_query.query.findUid, [username], (err, data) => {
-        pool.query(sql_query.query.checkLender, [data.rows[0].uid], (err, data) => {
-            if (data.rows[0].num == 0) {
+	    var uid = data.rows[0].uid;
+        pool.query(sql_query.query.checkLender, [uid], (err, data) => {
+            if (!data.rows || data.rows.length == 0) {
                 pool.query(sql_query.query.findUid, [username], (err, data) => {
                     pool.query(sql_query.query.insertToLenders, [data.rows[0].uid], (err, data) => {
                         if (err) {
@@ -489,7 +490,7 @@ function bids(req, res, next) {
 	var sid = req.body.sid;
 
     pool.query(sql_query.query.findUid, [username], (err, data) => {
-        pool.query(sql_query.query.bidding, [data.rows[0].uid, sid, bid], (err, data) => {
+        pool.query(sql_query.query.bids, [data.rows[0].uid, sid, bid], (err, data) => {
             if(err) {
                 console.error(err);
                 res.redirect('back');
