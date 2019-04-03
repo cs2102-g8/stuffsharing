@@ -145,7 +145,7 @@ function discover(req, res, next) {
 			ctx = data.rows.length;
 			tbl = data.rows;
 		}
-		pool.query(sql_query.query.discoverall, (err, data) => {
+		pool.query(sql_query.query.discover_all, (err, data) => {
 			if(err || !data.rows || data.rows.length == 0) {
 				ctx2 = 0;
 				tbl2 = [];
