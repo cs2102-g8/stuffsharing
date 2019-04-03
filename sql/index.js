@@ -23,6 +23,7 @@ sql.query = {
 
 	// Discover
 	discover: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE Descriptions.pickUpLocation = (SELECT region FROM Users WHERE username = $1) OR Descriptions.returnLocation = (SELECT region FROM Users WHERE username = $1)',
+	discoverall: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users ORDER BY stuffName',
 
 	// Borrowed
 	borrowed: 'SELECT * FROM (select sid, stuffname, nextminimumbid, returntime, returnlocation FROM Stuffs NATURAL JOIN Descriptions) as R NATURAL JOIN Borrows B WHERE B.uid = $1',

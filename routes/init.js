@@ -136,7 +136,7 @@ function update(req, res, next) {
 }
 
 function discover(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
+    var ctx  = 0, ctx2 = 0, tbl, tbl2;
     pool.query(sql_query.query.discover, [req.user.username], (err, data) => {
         if(err || !data.rows || data.rows.length == 0) {
         ctx = 0;
@@ -145,9 +145,18 @@ function discover(req, res, next) {
 			ctx = data.rows.length;
 			tbl = data.rows;
 		}
-		if(req.isAuthenticated()) {
-			basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, ctx: ctx });
-		}
+		pool.query(sql_query.query.discoverall, (err, data) => {
+			if(err || !data.rows || data.rows.length == 0) {
+				ctx2 = 0;
+				tbl2 = [];
+			} else {
+				ctx2 = data.rows.length;
+				tbl2 = data.rows;
+			}
+			if(req.isAuthenticated()) {
+				basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, tbl2: tbl2, ctx: ctx, ctx2: ctx2 });
+			}
+		});
 	});
 }
 
