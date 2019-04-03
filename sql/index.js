@@ -41,7 +41,7 @@ sql.query = {
 	insertToLenders: 'INSERT INTO Lenders(uid) VALUES ($1)',
 	insertToStuff: 'INSERT INTO Stuffs(sid, stuffName, nextMinimumBid) VALUES ($1, $2, $3)',
 	insertToLends: 'INSERT INTO Lends(sid, uid) VALUES ($1, $2)',
-	insertToDescription: 'INSERT INTO Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+	insertToDescription: 'INSERT INTO Descriptions(pickUpTime, returnTime, pickUpLocation, returnLocation, summary, uid, sid) VALUES ($1, $2, $3, $4, $5, $6, $7)',
 
 	// Information
 	page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
@@ -53,6 +53,9 @@ sql.query = {
 
 	//Delete Lent
 	delete_lent: 'DELETE FROM Stuffs WHERE sid = $1',
+
+	//Update Lent
+	update_lent: 'UPDATE Descriptions SET pickUpTime=$2, returnTime=$3, pickUpLocation=$4, returnLocation=$5, summary=$6 WHERE sid=$1',
 
 	//Find Highest Bid
 	find_max_bid: 'SELECT * FROM Bids WHERE sid = $1 ORDER BY bid DESC LIMIT 1',

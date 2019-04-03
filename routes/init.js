@@ -40,6 +40,7 @@ function initRouter(app) {
 	app.post('/lendNewStuff',  passport.authMiddleware(), lend);
 	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
 	app.post('/accept',  passport.authMiddleware(), accept);
+	app.post('/updateLent',  passport.authMiddleware(), updateLent);
 
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
@@ -253,7 +254,7 @@ function lentDetails(req, res, next) {
         }
 
         if(req.isAuthenticated()) {
-            basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, bid: bid, uid: uid, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting') });
+            basic(req, res, 'lentDetails', { page: 'lentDetails', auth: true, tbl: tbl, bid: bid, uid: uid, ctx: ctx, delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'), accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting'), update_msg: msg(req, 'update', 'Update successfully', 'Error in updating') });
         }
 
     });
@@ -424,12 +425,32 @@ function deleteLent(req, res, next) {
     pool.query(sql_query.query.delete_lent, [sid], (err, data) => {
         if(err) {
             console.error(err);
-            res.redirect('/lentDetail?delete=fail');
+            res.redirect('back');
         } else {
             res.redirect('/lentstuff');
         }
     });
 }
+
+function updateLent(req, res, next) {
+	var sid = req.body.sid;
+	var pickUpTime = req.body.pickUpTime;
+	var returnTime = req.body.returnTime;
+	var pickUpLocation = req.body.pickUpLocation;
+	var returnLocation = req.body.returnLocation;
+	var description = req.body.description;
+
+    pool.query(sql_query.query.update_lent, [sid, pickUpTime, returnTime, pickUpLocation, returnLocation, description], (err, data) => {
+        if(err) {
+            console.error(err);
+            res.redirect('back');
+        } else {
+            res.redirect('back');
+        }
+    });
+}
+
+
 
 
 function accept(req, res, next) {
