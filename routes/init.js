@@ -114,7 +114,7 @@ function index(req, res, next) {
 
 function search(req, res, next) {
 	var ctx  = 0, avg = 0, tbl;
-	pool.query(sql_query.query.search_stuff, [req.query.stuff], (err, data) => {
+	pool.query(sql_query.query.search_stuff, [req.query.query], (err, data) => {
 		if(err || !data.rows || data.rows.length == 0) {
 			ctx = 0;
 			tbl = [];
