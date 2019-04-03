@@ -132,6 +132,58 @@ create table Belongs(
 );
 
 
+create or replace function bidCheck() returns trigger as $$
+declare amount money;
+begin
+    select nextMinimumBid into amount
+    from Stuffs
+    where new.sid = Stuffs.sid;
+    if new.bid > amount then
+    	update Stuffs set nextMinimumBid = new.bid where new.sid = Stuffs.sid;
+        return new;
+    else
+    	raise exception 'Input less than next minimum bid';
+    end if;
+end;
+$$ language plpgsql;
+
+create trigger bidTrigger
+before insert on Bids
+for each row
+execute procedure bidCheck();
+
+create or replace function borrowCheck() returns trigger as $$
+declare count numeric;
+begin
+    select count(*) into count
+    from Borrows
+    where new.uid = Borrows.uid;
+    if count > 10 then
+        return null;
+    else
+        return new;
+    end if;
+end;
+$$ language plpgsql;
+
+create trigger borrowTrigger
+before insert on Borrows
+for each row
+execute procedure borrowCheck();
+
+create or replace function addUserCheck() returns trigger as $$
+begin
+	insert into Borrowers(uid) values (new.uid);
+	insert into Lenders(uid) values (new.uid);
+	return null;
+end;
+$$ language plpgsql;
+
+create trigger addUserTrigger
+after insert on Users
+for each row
+execute procedure addUserCheck();
+
 insert into Areas values('Central', 'Singapore');
 insert into Areas values('East', 'Singapore');
 insert into Areas values('North', 'Singapore');
@@ -169,27 +221,6 @@ insert into writeComplaints(cid, complaint, dateTime, uid) values (2, 'Please wo
 insert into writeComplaints(cid, complaint, dateTime, uid) values (3, 'HAHA', '20190304 01:22:33 PM', 'D40004');
 insert into writeComplaints(cid, complaint, dateTime, uid) values (4, 'I can do better than you', '20181202 03:04:05 AM', 'E50005');
 
-insert into Borrowers(uid) values ('A10001');
-insert into Borrowers(uid) values ('B20002');
-insert into Borrowers(uid) values ('C30003');
-insert into Borrowers(uid) values ('D40004');
-insert into Borrowers(uid) values ('E50005');
-insert into Borrowers(uid) values ('F60006');
-insert into Borrowers(uid) values ('G70007');
-insert into Borrowers(uid) values ('H80008');
-insert into Borrowers(uid) values ('I90009');
-insert into Borrowers(uid) values ('J00000');
-
-insert into Lenders(uid) values ('A10001');
-insert into Lenders(uid) values ('B20002');
-insert into Lenders(uid) values ('C30003');
-insert into Lenders(uid) values ('D40004');
-insert into Lenders(uid) values ('E50005');
-insert into Lenders(uid) values ('F60006');
-insert into Lenders(uid) values ('G70007');
-insert into Lenders(uid) values ('H80008');
-insert into Lenders(uid) values ('J00000');
-
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('00', 'Old Textbook', 0);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('01', 'Formal attire', 50);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('02', 'Mouse', 15);
@@ -206,20 +237,20 @@ insert into Stuffs(sid, stuffName, nextMinimumBid) values ('12', 'Cup', 10);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('13', 'Water Bottle', 0);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('14', 'Mouse', 10);
 
-insert into Bids(uid, sid, bid) values ('A10001', '00', 0);
+insert into Bids(uid, sid, bid) values ('A10001', '00', 1);
 insert into Bids(uid, sid, bid) values ('B20002', '01', 60);
 insert into Bids(uid, sid, bid) values ('C30003', '01', 70);
-insert into Bids(uid, sid, bid) values ('A10001', '03', 10);
+insert into Bids(uid, sid, bid) values ('A10001', '03', 15);
 insert into Bids(uid, sid, bid) values ('E50005', '04', 200);
-insert into Bids(uid, sid, bid) values ('E50005', '09', 200);
+insert into Bids(uid, sid, bid) values ('E50005', '09', 205);
 insert into Bids(uid, sid, bid) values ('F60006', '05', 60);
 insert into Bids(uid, sid, bid) values ('F60006', '03', 80);
-insert into Bids(uid, sid, bid) values ('F60006', '10', 10);
-insert into Bids(uid, sid, bid) values ('G70007', '06', 0);
+insert into Bids(uid, sid, bid) values ('F60006', '10', 15);
+insert into Bids(uid, sid, bid) values ('G70007', '06', 35);
 insert into Bids(uid, sid, bid) values ('G70007', '07', 50);
 insert into Bids(uid, sid, bid) values ('G70007', '08', 40);
 insert into Bids(uid, sid, bid) values ('H80008', '09', 300);
-insert into Bids(uid, sid, bid) values ('I90009', '10', 10);
+insert into Bids(uid, sid, bid) values ('I90009', '10', 20);
 insert into Bids(uid, sid, bid) values ('I90009', '12', 20);
 insert into Bids(uid, sid, bid) values ('J00000', '11', 120);
 
@@ -316,55 +347,3 @@ insert into Belongs(sid, categoryName) values ('11', 'Others');
 insert into Belongs(sid, categoryName) values ('12', 'Others');
 insert into Belongs(sid, categoryName) values ('13', 'Others');
 insert into Belongs(sid, categoryName) values ('14', 'Electronics');
-
-
-create or replace function bidCheck() returns trigger as $$
-declare amount money;
-begin
-    select nextMinimumBid into amount
-    from Stuffs
-    where new.sid = Stuffs.sid;
-    if new.bid > amount then
-        return new;
-    else
-    	raise exception 'Input less than next minimum bid';
-    end if;
-end;
-$$ language plpgsql;
-
-create trigger bidTrigger
-before insert on Bids
-for each row
-execute procedure bidCheck();
-
-create or replace function borrowCheck() returns trigger as $$
-declare count numeric;
-begin
-    select count(*) into count
-    from Borrows
-    where new.uid = Borrows.uid;
-    if count > 10 then
-        return null;
-    else
-        return new;
-    end if;
-end;
-$$ language plpgsql;
-
-create trigger borrowTrigger
-before insert on Borrows
-for each row
-execute procedure borrowCheck();
-
-create or replace function addUserCheck() returns trigger as $$
-begin
-	insert into Borrowers(uid) values (new.uid);
-	insert into Lenders(uid) values (new.uid);
-	return null;
-end;
-$$ language plpgsql;
-
-create trigger addUserTrigger
-after insert on Users
-for each row
-execute procedure addUserCheck();
