@@ -52,8 +52,6 @@ create table WriteComplaints (
 	foreign key (uid) references Users(uid)
 );
 
-
-
 create table Borrowers(
 	uid varchar(100) references Users(uid),
 	primary key (uid)
@@ -105,7 +103,8 @@ create table Descriptions(
 	uid varchar(100),
 	sid varchar(100),
 	primary key (uid, sid),
-	foreign key (uid, sid) references Lends(uid, sid) on delete cascade
+	foreign key (uid, sid) references Lends(uid, sid) on delete cascade,
+	check (pickUpTime < returnTime)
 );
 
 create table Comments(
@@ -258,7 +257,7 @@ insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation,
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
 '20180711 08:00:00 PM', '20180719 09:00:00 PM', 'East', 'Central', 'Formal attire for interview.', 'J00000', '01');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
-'20180909 05:00:00 PM', '20180505 06:00:00 PM', 'Central', 'Central', 'This mouse is quite new and working fine.', 'H80008', '02');
+'20180909 05:00:00 PM', '20181005 06:00:00 PM', 'Central', 'Central', 'This mouse is quite new and working fine.', 'H80008', '02');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
 '20181111 10:03:00 AM', '20181212 10:20:00 AM', 'East', 'North', 'Interesting fantasy fictions.', 'F60006', '03');
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
@@ -357,19 +356,15 @@ before insert on Borrows
 for each row
 execute procedure borrowCheck();
 
-create or replace function descriptionCheck() returns trigger as $$
+create or replace function addUserCheck() returns trigger as $$
 begin
-    if new.pickUpTime >= new.returnTime then
-        return null;
-    else
-        delete from Borrows
-        where new.uid = Borrows.uid and new.sid = Borrows.sid;
-        return new;
-    end if;
+	insert into Borrowers(uid) values (new.uid);
+	insert into Lenders(uid) values (new.uid);
+	return null;
 end;
 $$ language plpgsql;
 
-create trigger descriptionTrigger
-before insert on Descriptions
+create trigger addUserTrigger
+after insert on Users
 for each row
-execute procedure descriptionCheck();
+execute procedure addUserCheck();
