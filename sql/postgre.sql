@@ -140,7 +140,12 @@ begin
     where new.sid = Stuffs.sid;
     if new.bid > amount then
     	update Stuffs set nextMinimumBid = new.bid where new.sid = Stuffs.sid;
-        return new;
+    	if exists (select 1 from Bids where new.sid = Bids.sid and new.uid = Bids.uid) then
+    		update Bids set bid = new.bid where new.sid = Bids.sid and new.uid = Bids.uid;
+    		return null;
+    	else
+    		return new;
+    	end if;
     else
     	raise exception 'Input less than next minimum bid';
     end if;
