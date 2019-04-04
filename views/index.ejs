@@ -17,15 +17,15 @@
   </head>
 
 	<body id="page-top">
-		<%- include navbar.ejs %>
-
-		<div id="wrapper">
-			<% if(auth) { %>
-				<%- include sidebar.ejs %>
-			<% } %>
-		</div>
 		<div class="container">
-			<div class="card card-login mx-auto mt-5">
+			<div style="padding-top:70px">
+				<center>
+					<a class="logo-brand mr-1" href="/">
+						<img src="/images/Logo.png" alt="" width="400" height="400" top="70"/>
+					</a>
+				</center>
+			</div>
+			<div class="card card-login mx-auto mt-1">
 				<div class="card-header">Login</div>
 				<div class="card-body">
 					<form method="post" action="login">
