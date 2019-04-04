@@ -231,7 +231,7 @@ function bidding(req, res, next) {
 			tbl = data.rows;
 		}
 		if (req.isAuthenticated()) {
-			basic(req, res, 'bidding', {page: 'bidding', auth: true, tbl: tbl, ctx: ctx});
+			basic(req, res, 'bidding', {page: 'bidding', auth: true, tbl: tbl, ctx: ctx, info_msg: msg(req, 'info', 'Bid successfully', 'Error in bidding')});
 		}
 	});
 }
@@ -390,17 +390,6 @@ function lend(req, res, next) {
 
 	pool.query(sql_query.query.findUid, [username], (err, data) => {
 	    var uid = data.rows[0].uid;
-        pool.query(sql_query.query.checkLender, [uid], (err, data) => {
-            if (!data.rows || data.rows.length == 0) {
-                pool.query(sql_query.query.findUid, [username], (err, data) => {
-                    pool.query(sql_query.query.insertToLenders, [data.rows[0].uid], (err, data) => {
-                        if (err) {
-                            console.error(err);
-                            res.redirect('/lentstuff?pass=fail');
-                        }
-                    });
-                });
-            }
             pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
                 if (err) {
                     console.error(err);
@@ -427,7 +416,6 @@ function lend(req, res, next) {
                     });
                 }
             });
-        });
     });
 }
 
