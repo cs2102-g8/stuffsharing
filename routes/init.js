@@ -23,7 +23,6 @@ function initRouter(app) {
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
 	app.get('/update', passport.authMiddleware(), update);
 	app.get('/discover', passport.authMiddleware(), discover);
-	app.get('/borrowedstuff', passport.authMiddleware(), borrowedstuff);
 	app.get('/lentstuff', passport.authMiddleware(), lentstuff);
 	app.get('/categories', passport.authMiddleware(), categories);
 	app.get('/complain', passport.authMiddleware(), complain);
@@ -127,8 +126,38 @@ function search(req, res, next) {
 		}
 	});
 }
+
 function dashboard(req, res, next) {
-	basic(req, res, 'dashboard', { info_msg: msg(req, 'info', 'Information updated successfully', 'Error in updating information'), pass_msg: msg(req, 'pass', 'Password updated successfully', 'Error in updating password'), auth: true });
+	var ctx1 = 0, ctx2 = 0, avg = 0, tbl1, tbl2;
+	pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+		var uid = [data.rows[0].uid];
+		pool.query(sql_query.query.borrowed, [uid], (err, data) => {
+			if (err){
+				console.error(err);
+			} else if(!data.rows || data.rows.length == 0) {
+				ctx1 = 0;
+				tbl1 = [];
+			} else {
+				ctx1 = data.rows.length;
+				tbl1 = data.rows;
+			}
+			pool.query(sql_query.query.badges, [uid], (err, data) => {
+				if (err){
+					console.error("Error in loading badges");
+					res.redirect('/dashboard?badges=fail');
+				} else if(!data.rows || data.rows.length == 0) {
+					ctx2 = 0;
+					tbl2 = [];
+				} else {
+					ctx2 = data.rows.length;
+					tbl2 = data.rows;
+				}
+				if(req.isAuthenticated()) {
+					basic(req, res, 'dashboard', { page: 'dashboard', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2 });
+				}
+			});
+		});
+	});
 }
 
 function update(req, res, next) {
@@ -160,31 +189,12 @@ function discover(req, res, next) {
 	});
 }
 
-function borrowedstuff(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
-    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
-        pool.query(sql_query.query.borrowed, [data.rows[0].uid], (err, data) => {
-            if (err){
-                console.error(err);
-            } else if(!data.rows || data.rows.length == 0) {
-                ctx = 0;
-                tbl = [];
-            } else {
-                ctx = data.rows.length;
-                tbl = data.rows;
-            }
-            if(req.isAuthenticated()) {
-                basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
-            }
-        });
-    });
-}
-
 function lentstuff(req, res, next) {
     var ctx  = 0, ctx2 = 0, avg = 0, tbl, tbl2;
     var uid;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         uid = data.rows[0].uid;
+		console.log(uid);
         pool.query(sql_query.query.lending, [uid], (err, data) => {
             if (err){
                 console.error("Error in update info");

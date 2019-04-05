@@ -62,7 +62,11 @@ sql.query = {
 	find_max_bid: 'SELECT * FROM Bids WHERE sid = $1 ORDER BY bid DESC LIMIT 1',
 
 	//Accept
-	accept: 'INSERT INTO Borrows(uid, sid) VALUES ($1, $2)'
+	accept: 'INSERT INTO Borrows(uid, sid) VALUES ($1, $2)',
+
+	//Badges
+	badges: 'SELECT * from Earns WHERE uid=$1',
+	checkLends: 'SELECT count(*) from Lends WHERE uid=$1'
 }
 
 module.exports = sql
