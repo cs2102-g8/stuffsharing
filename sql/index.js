@@ -43,6 +43,7 @@ sql.query = {
 	insertToStuff: 'INSERT INTO Stuffs(sid, stuffName, nextMinimumBid) VALUES ($1, $2, $3)',
 	insertToLends: 'INSERT INTO Lends(sid, uid) VALUES ($1, $2)',
 	insertToDescription: 'INSERT INTO Descriptions(pickUpTime, returnTime, pickUpLocation, returnLocation, summary, uid, sid) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+	insertToBelongs: 'INSERT INTO Belongs(sid,categoryName) VALUES ($1,$2)',
 
 	// Information
 	page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
@@ -65,7 +66,10 @@ sql.query = {
 	accept: 'INSERT INTO Borrows(uid, sid) VALUES ($1, $2)',
 
 	//Badges
-	badges: 'SELECT badgeName FROM Earns WHERE uid=$1'
+	badges: 'SELECT * FROM Earns WHERE uid=$1',
+
+	//Category
+	categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1'
 }
 
 module.exports = sql

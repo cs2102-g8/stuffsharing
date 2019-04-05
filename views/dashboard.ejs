@@ -79,10 +79,13 @@
 							</thead>
 							<tbody>
 							<% for(var i=0; i<tbl2.length; i++) { %>
-								<tr>
-									<td><%= tbl2[i].badgeName%></td>
-								</tr>
-							<% } %>
+                                <%var a = tbl2[i].badgename%>
+								 <%if ( a== 'Credit Badge') {%>
+								 <tr>
+									<td><i class="fas fa-mountain"></i> Credit Badge </td>
+								 </tr>
+                                <%}%>
+							<% }%>
 							</tbody>
 						</table>
 					</div>
