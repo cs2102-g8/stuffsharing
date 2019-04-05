@@ -362,6 +362,9 @@ insert into Comments(comment, updateTime, uid, sid, rating) values ('I think thi
 insert into Categories(categoryName) values ('Electronics');
 insert into Categories(categoryName) values ('Clothing');
 insert into Categories(categoryName) values ('Books');
+insert into Categories(categoryName) values ('Furnitures');
+insert into Categories(categoryName) values ('Outdoor Gears');
+insert into Categories(categoryName) values ('Kitchen Wares');
 insert into Categories(categoryName) values ('Others');
 
 insert into Belongs(sid, categoryName) values ('00', 'Books');
