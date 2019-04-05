@@ -65,8 +65,7 @@ sql.query = {
 	accept: 'INSERT INTO Borrows(uid, sid) VALUES ($1, $2)',
 
 	//Badges
-	badges: 'SELECT * from Earns WHERE uid=$1',
-	checkLends: 'SELECT count(*) from Lends WHERE uid=$1'
+	badges: 'SELECT badgeName FROM Earns WHERE uid=$1'
 }
 
 module.exports = sql

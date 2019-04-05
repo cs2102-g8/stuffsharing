@@ -141,6 +141,7 @@ function dashboard(req, res, next) {
 				ctx1 = data.rows.length;
 				tbl1 = data.rows;
 			}
+			console.log("uid is "+uid);
 			pool.query(sql_query.query.badges, [uid], (err, data) => {
 				if (err){
 					console.error("Error in loading badges");
@@ -152,6 +153,7 @@ function dashboard(req, res, next) {
 					ctx2 = data.rows.length;
 					tbl2 = data.rows;
 				}
+				console.log(tbl2);
 				if(req.isAuthenticated()) {
 					basic(req, res, 'dashboard', { page: 'dashboard', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2 });
 				}
@@ -194,7 +196,6 @@ function lentstuff(req, res, next) {
     var uid;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         uid = data.rows[0].uid;
-		console.log(uid);
         pool.query(sql_query.query.lending, [uid], (err, data) => {
             if (err){
                 console.error("Error in update info");
@@ -228,6 +229,8 @@ function lentstuff(req, res, next) {
 }
 
 function categories(req, res, next) {
+
+
 	basic(req, res, 'categories', {auth: true});
 }
 function bidding(req, res, next) {
