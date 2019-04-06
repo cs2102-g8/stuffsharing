@@ -32,6 +32,9 @@ function initRouter(app) {
     app.get('/bidding', bidding);
     app.get('/lentDetails', passport.authMiddleware(), lentDetails);
     app.get('/categorySearch', categorySearch);
+
+    app.get('/leaderboard', leaderboard);
+
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
@@ -296,6 +299,26 @@ function lentDetails(req, res, next) {
         }
 
     });
+    });
+}
+
+function leaderboard(req, res, next) {
+	var ctx = 0, avg = 0, tbl;
+	var uidInfo;
+    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+        uidInfo = data.rows[0].uid;
+	    pool.query(sql_query.query.leaderboard, (err, data) => {
+            if (err || !data.rows || data.rows.length == 0) {
+                ctx = 0;
+                tbl = [];
+            } else {
+                ctx = data.rows.length;
+                tbl = data.rows;
+            }
+            if (req.isAuthenticated()) {
+                basic(req, res, 'leaderboard', {page: 'leaderboard', auth: true, uidInfo: uidInfo, tbl: tbl, ctx: ctx});
+            }
+        });
     });
 }
 

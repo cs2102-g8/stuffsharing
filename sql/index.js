@@ -69,7 +69,10 @@ sql.query = {
 	badges: 'SELECT * FROM Earns WHERE uid=$1',
 
 	//Category
-	categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1'
+	categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1',
+
+    //Leaderboard
+    leaderboard: 'SELECT uid, username, count(sid) as Score FROM lends NATURAL JOIN users GROUP BY uid, username ORDER BY Score desc',
 }
 
 module.exports = sql
