@@ -73,6 +73,16 @@ sql.query = {
 
     //Leaderboard
     leaderboard: 'SELECT uid, username, count(sid) as Score FROM lends NATURAL JOIN users GROUP BY uid, username ORDER BY Score desc',
+
+
+    //User Bid
+    user_bid: 'SELECT * FROM Bids WHERE uid = $1 AND sid = $2',
+
+    //Cancel Bid
+    cancelBid: 'DELETE FROM Bids WHERE uid = $1 AND sid = $2',
+
+    //cancelBidInStuff:
 }
+
 
 module.exports = sql
