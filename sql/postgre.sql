@@ -189,6 +189,33 @@ after insert on Users
 for each row
 execute procedure addUserCheck();
 
+
+create or replace function lendsCheck() returns trigger as $$
+declare count numeric;
+declare count2 numeric;
+begin
+	select count(*) into count
+    from Lends
+    where new.uid = Lends.uid;
+
+   	select count(*) into count2
+   	from Earns
+   	where new.uid=Earns.uid and Earns.badgeName='Credit Badge';
+
+    if count > 5 and count2 < 1 then
+        insert into Earns(uid, badgeName) values (new.uid, 'Credit Badge');
+    end if;
+    return new;
+end;
+$$ language plpgsql;
+
+create trigger addBadgesTrigger
+after insert on Lends
+for each row
+execute procedure lendsCheck();
+
+
+
 insert into Areas values('Central', 'Singapore');
 insert into Areas values('East', 'Singapore');
 insert into Areas values('North', 'Singapore');
@@ -335,6 +362,9 @@ insert into Comments(comment, updateTime, uid, sid, rating) values ('I think thi
 insert into Categories(categoryName) values ('Electronics');
 insert into Categories(categoryName) values ('Clothing');
 insert into Categories(categoryName) values ('Books');
+insert into Categories(categoryName) values ('Furnitures');
+insert into Categories(categoryName) values ('Outdoor Gears');
+insert into Categories(categoryName) values ('Kitchen Wares');
 insert into Categories(categoryName) values ('Others');
 
 insert into Belongs(sid, categoryName) values ('00', 'Books');
@@ -352,3 +382,4 @@ insert into Belongs(sid, categoryName) values ('11', 'Others');
 insert into Belongs(sid, categoryName) values ('12', 'Others');
 insert into Belongs(sid, categoryName) values ('13', 'Others');
 insert into Belongs(sid, categoryName) values ('14', 'Electronics');
+

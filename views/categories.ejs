@@ -14,14 +14,112 @@
 
 	<!-- Custom styles for this template-->
 	<link href="stylesheets/index.css" rel="stylesheet">
+
+	<!--semantic UI-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+
+
 </head>
 <body id="page-top">
-<%- include navbar.ejs %>
-
-<div id="wrapper">
-	<%- include sidebar.ejs %>
-</div>
-
-<%- include bottomscript.ejs %>
+	<%- include navbar.ejs %>
+	<div id="wrapper">
+		<%- include sidebar.ejs %>
+		<div class="ui three column grid">
+			<div class="column">
+				<div class="ui fluid card" >
+					<a class="image" href="/categorySearch?category=Electronics">
+						<img src="/images/electronics.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Electronics" >Electronics</a>
+						<div class="meta">
+							<a>TV/Laptop/Calculator...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="ui fluid card">
+					<a class="image" href="/categorySearch?category=Books">
+						<img src="/images/books.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Books" >Books</a>
+						<div class="meta">
+							<a>Novel/Magazine/Textbook...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="ui fluid card">
+					<a class="image" href="/categorySearch?category=Clothing">
+						<img src="/images/clothes.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Clothing" >Clothes</a>
+						<div class="meta">
+							<a>Baby/Children/Uniform...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="ui fluid card">
+					<a class="image" href="/categorySearch?category=Furnitures">
+						<img src="/images/furnitures.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Furnitures" >Furnitures</a>
+						<div class="meta">
+							<a>Sofa/Chair/Table Lamp...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="ui fluid card">
+					<a class="image" href="/categorySearch?category=Kitchen Wares">
+						<img src="/images/kitchen.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Kitchen Wares" >Kitchen Wares</a>
+						<div class="meta">
+							<a>Cooking pot/Ladder/Knife...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="ui fluid card">
+					<a class="image" href="/categorySearch?category=Outdoor Gears">
+						<img src="/images/outdoors.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Outdoor Gears" >Outdoor gears</a>
+						<div class="meta">
+							<a>Sleeping bag/Tent/Portable Stove...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="ui fluid card">
+					<a class="image" href="/categorySearch?category=Others">
+						<img src="/images/others.jpg">
+					</a>
+					<div class="content">
+						<a class="header" href="/categorySearch?category=Others" >Others</a>
+						<div class="meta">
+							<a>Others categories...</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%- include bottomscript.ejs %>
 </body>
 </html>

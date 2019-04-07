@@ -23,7 +23,6 @@ function initRouter(app) {
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
 	app.get('/update', passport.authMiddleware(), update);
 	app.get('/discover', passport.authMiddleware(), discover);
-	app.get('/borrowedstuff', passport.authMiddleware(), borrowedstuff);
 	app.get('/lentstuff', passport.authMiddleware(), lentstuff);
 	app.get('/categories', passport.authMiddleware(), categories);
 	app.get('/complain', passport.authMiddleware(), complain);
@@ -32,6 +31,7 @@ function initRouter(app) {
 	app.get('/password', passport.antiMiddleware(), retrieve);
     app.get('/bidding', bidding);
     app.get('/lentDetails', passport.authMiddleware(), lentDetails);
+    app.get('/categorySearch', categorySearch);
 	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
@@ -127,8 +127,38 @@ function search(req, res, next) {
 		}
 	});
 }
+
 function dashboard(req, res, next) {
-	basic(req, res, 'dashboard', { info_msg: msg(req, 'info', 'Information updated successfully', 'Error in updating information'), pass_msg: msg(req, 'pass', 'Password updated successfully', 'Error in updating password'), auth: true });
+	var ctx1 = 0, ctx2 = 0, avg = 0, tbl1, tbl2;
+	pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+		var uid = data.rows[0].uid;
+		pool.query(sql_query.query.borrowed, [uid], (err, data) => {
+			if (err){
+				console.error(err);
+			} else if(!data.rows || data.rows.length == 0) {
+				ctx1 = 0;
+				tbl1 = [];
+			} else {
+				ctx1 = data.rows.length;
+				tbl1 = data.rows;
+			}
+			pool.query(sql_query.query.badges, [uid], (err, data) => {
+				if (err){
+					console.error("Error in loading badges");
+					res.redirect('/dashboard?badges=fail');
+				} else if(!data.rows || data.rows.length == 0) {
+					ctx2 = 0;
+					tbl2 = [];
+				} else {
+					ctx2 = data.rows.length;
+					tbl2 = data.rows;
+				}
+				if(req.isAuthenticated()) {
+					basic(req, res, 'dashboard', { page: 'dashboard', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2 });
+				}
+			});
+		});
+	});
 }
 
 function update(req, res, next) {
@@ -158,26 +188,6 @@ function discover(req, res, next) {
 			}
 		});
 	});
-}
-
-function borrowedstuff(req, res, next) {
-    var ctx  = 0, avg = 0, tbl;
-    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
-        pool.query(sql_query.query.borrowed, [data.rows[0].uid], (err, data) => {
-            if (err){
-                console.error(err);
-            } else if(!data.rows || data.rows.length == 0) {
-                ctx = 0;
-                tbl = [];
-            } else {
-                ctx = data.rows.length;
-                tbl = data.rows;
-            }
-            if(req.isAuthenticated()) {
-                basic(req, res, 'borrowedstuff', { page: 'borrowedstuff', auth: true, tbl: tbl, ctx: ctx });
-            }
-        });
-    });
 }
 
 function lentstuff(req, res, next) {
@@ -220,6 +230,23 @@ function lentstuff(req, res, next) {
 function categories(req, res, next) {
 	basic(req, res, 'categories', {auth: true});
 }
+
+function categorySearch(req,res,next) {
+	var ctx, tbl;
+	pool.query(sql_query.query.categorySearch, [req.query.category], (err, data) => {
+		if (err || !data.rows || data.rows.length == 0) {
+			ctx = 0;
+			tbl = [];
+		} else {
+			ctx = data.rows.length;
+			tbl = data.rows;
+		}
+		if (req.isAuthenticated()) {
+			basic(req, res, 'categorySearch', {page: 'categorySearch', auth: true, tbl: tbl, ctx: ctx});
+		}
+	});
+}
+
 function bidding(req, res, next) {
     var ctx  = 0, avg = 0, tbl;
     pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
@@ -276,58 +303,12 @@ function complain(req, res, next) {
 	basic(req, res, 'complain', { info_msg: msg(req, 'info', 'Complaint successfully sent', 'Error in submitting complaint'), pass_msg: msg(req, 'pass', 'Complaint has been received.', 'Error in uploading complaint'),auth: true});
 }
 
-/*
-function games(req, res, next) {
-	var ctx = 0, avg = 0, tbl;
-	pool.query(sql_query.query.avg_rating, [req.user.username], (err, data) => {
-		if(err || !data.rows || data.rows.length == 0) {
-			avg = 0;
-		} else {
-			avg = data.rows[0].avg;
-		}
-		pool.query(sql_query.query.all_games, [req.user.username], (err, data) => {
-			if(err || !data.rows || data.rows.length == 0) {
-				ctx = 0;
-				tbl = [];
-			} else {
-				ctx = data.rows.length;
-				tbl = data.rows;
-			}
-			basic(req, res, 'games', { ctx: ctx, avg: avg, tbl: tbl, game_msg: msg(req, 'add', 'Game added successfully', 'Game does not exist'), auth: true });
-		});
-	});
-}
-function plays(req, res, next) {
-	var win = 0, avg = 0, ctx = 0, tbl;
-	pool.query(sql_query.query.count_wins, [req.user.username], (err, data) => {
-		if(err || !data.rows || data.rows.length == 0) {
-			win = 0;
-		} else {
-			win = data.rows[0].count;
-		}
-		pool.query(sql_query.query.all_plays, [req.user.username], (err, data) => {
-			if(err || !data.rows || data.rows.length == 0) {
-				ctx = 0;
-				avg = 0;
-				tbl = [];
-			} else {
-				ctx = data.rows.length;
-				avg = win == 0 ? 0 : win/ctx;
-				tbl = data.rows;
-			}
-			basic(req, res, 'plays', { win: win, ctx: ctx, avg: avg, tbl: tbl, play_msg: msg(req, 'add', 'Play added successfully', 'Invalid parameter in play'), auth: true });
-		});
-	});
-}
-*/
 function register(req, res, next) {
 	res.render('register', { page: 'register', auth: false });
 }
 function retrieve(req, res, next) {
 	res.render('retrieve', { page: 'retrieve', auth: false });
 }
-
-
 // POST 
 function update_info(req, res, next) {
 	var username = req.body.username;
@@ -387,6 +368,7 @@ function lend(req, res, next) {
 	var pickUpLocation = req.body.pickUpLocation;
 	var returnLocation = req.body.returnLocation;
 	var description = req.body.description;
+	var category = req.body.category;
 
 	pool.query(sql_query.query.findUid, [username], (err, data) => {
 	    var uid = data.rows[0].uid;
@@ -403,12 +385,14 @@ function lend(req, res, next) {
                              }else{
                                 pool.query(sql_query.query.findUid, [username], (err, data) => {
                                     pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
-                                        if(err) {
-                                            console.error(err);
-                                            res.redirect('/lentstuff?pass=fail');
-                                        } else {
-                                            res.redirect('/lentstuff?pass=pass');
-                                        }
+										 pool.query(sql_query.query.insertToBelongs, [sid, category], (err,data)=> {
+											 if (err) {
+												 console.error(err);
+												 res.redirect('/lentstuff?pass=fail');
+											 } else {
+												 res.redirect('/lentstuff?pass=pass');
+											 }
+										 });
                                     });
                                 });
                              }
@@ -450,9 +434,6 @@ function updateLent(req, res, next) {
     });
 }
 
-
-
-
 function accept(req, res, next) {
 	var sid = req.body.sid;
 	var uid = req.body.uid;
@@ -470,7 +451,6 @@ function accept(req, res, next) {
         });
     }
 }
-
 
 function bids(req, res, next) {
 	var bid = req.body.bidValue;
@@ -491,41 +471,6 @@ function bids(req, res, next) {
 
 }
 
-
-
-/*
-function add_game(req, res, next) {
-	var username = req.user.username;
-	var gamename = req.body.gamename;
-
-	pool.query(sql_query.query.add_game, [username, gamename], (err, data) => {
-		if(err) {
-			console.error("Error in adding game");
-			res.redirect('/games?add=fail');
-		} else {
-			res.redirect('/games?add=pass');
-		}
-	});
-}
-function add_play(req, res, next) {
-	var username = req.user.username;
-	var player1  = req.body.player1;
-	var player2  = req.body.player2;
-	var gamename = req.body.gamename;
-	var winner   = req.body.winner;
-	if(username != player1 || player1 == player2 || (winner != player1 && winner != player2)) {
-		res.redirect('/plays?add=fail');
-	}
-	pool.query(sql_query.query.add_play, [player1, player2, gamename, winner], (err, data) => {
-		if(err) {
-			console.error("Error in adding play");
-			res.redirect('/plays?add=fail');
-		} else {
-			res.redirect('/plays?add=pass');
-		}
-	});
-}
-*/
 function reg_user(req, res, next) {
 
 	var uid = uuidv1();
@@ -557,7 +502,6 @@ function reg_user(req, res, next) {
 		}
 	});
 }
-
 
 // LOGOUT
 function logout(req, res, next) {

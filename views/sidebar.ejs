@@ -2,25 +2,18 @@
 <ul class="sidebar navbar-nav">
 	<li class="nav-item active">
 		<a class="nav-link <%= page==="dashboard" ? "active" : "" %>" href="<%= page==="dashboard" ? "#" : "/dashboard" %>">
-			<span style="color: Tomato;">
+			<span style="color:  yellowgreen;">
 				<i class="fas fa-fw fa-address-card"></i>
 			</span>
 			<span>Dashboard</span></a>
 		</a>
 	</li>
-	<li class="nav-item">
-    		<a class="nav-link <%= page==="borrowedstuff" ? "active" : "" %>" href="<%= page==="borrowedstuff" ? "#" : "/borrowedstuff" %>">
-    			<span style="color: yellowgreen;">
-					<i class="fas fa-anchor"></i>
-				</span>
-    			<span>Borrowed Stuff</span></a>
-    </li>
     <li class="nav-item">
             <a class="nav-link <%= page==="lentstuff" ? "active" : "" %>" href="<%= page==="lentstuff" ? "#" : "/lentstuff" %>">
                 <span style="color: #dc3545">
 					<i class="fas fa-anchor"></i>
 				</span>&nbsp;
-                <span>Lent Stuff</span></a>
+                <span>Lend Stuff</span></a>
     </li>
 	<li class="nav-item">
 		<a class="nav-link <%= page==="discover" ? "active" : "" %>" href="<%= page==="discover" ? "#" : "/discover" %>">
