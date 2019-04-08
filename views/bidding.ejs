@@ -99,6 +99,38 @@
 						</div>
 						<div class="card-footer small text-muted">Stuff Sharing</div>
 					</div>
+					<div class="card mb-3">
+                        <div class="card-header">
+                            <span style="color: #dc3545">
+                                <i class="fas fa-anchor"></i> Comments of This Item
+                            </span>&nbsp;
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Post Time</th>
+                                        <th>Comment</th>
+                                        <th>Rating</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% for(var i=0; i<tbl3.length; i++) { %>
+                                        <tr>
+                                            <td><%= tbl3[i].username%></td>
+                                            <td><%= tbl3[i].updatetime%></td>
+                                            <td><%= tbl3[i].comment%></td>
+                                            <td><%= tbl3[i].rating%></td>
+                                        </tr>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Stuff Sharing</div>
+                    </div>
 				</div>
 			</div>
 		</div>
