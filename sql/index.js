@@ -26,7 +26,7 @@ sql.query = {
 	discover_all: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users ORDER BY stuffName',
 
 	// Borrowed
-	borrowed: 'SELECT * FROM (select sid, stuffname, nextminimumbid, returntime, returnlocation FROM Stuffs NATURAL JOIN Descriptions) as R NATURAL JOIN Borrows B WHERE B.uid = $1',
+	borrowed: 'SELECT R2.sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation, U.username from (SELECT R.sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation, R.uid FROM (select * FROM Stuffs NATURAL JOIN Descriptions) as R JOIN Borrows B ON B.uid = $1 AND R.sid = B.sid) AS R2 JOIN Users U ON R2.uid = U.uid',
 
 	// Lending
 	lending: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions AS R WHERE NOT EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = R.sid) and uid = $1',
@@ -49,6 +49,12 @@ sql.query = {
 	page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
 	// Bidding
 	bidding: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE sid=$1',
+
+    // Comment
+    commentList: 'SELECT * FROM Comments NATURAL JOIN Users WHERE sid = $1',
+
+    // Submit comment
+    submit_comment: 'insert into Comments(comment, updateTime, uid, sid, rating) values ($1, $2, $3, $4, $5)',
 
 	//Bid action
 	bids: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',

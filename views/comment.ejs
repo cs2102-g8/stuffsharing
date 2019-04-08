@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Stuff Sharing</title>
+
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+		<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template-->
+		<link href="stylesheets/index.css" rel="stylesheet">
+  </head>
+	<body id="page-top">
+		<%- include navbar.ejs %>
+
+		<div id="wrapper">
+			<% if(auth) { %>
+				<%- include sidebar.ejs %>
+			<% } %>
+
+			<div id="content-wrapper">
+				<div class="container-fluid">
+					<div class="card mb-3">
+						<div class="card-header">
+							<span style="color: #dc3545">
+								<i class="fas fa-anchor"></i> Comments of This Item
+							</span>&nbsp;
+						</div>
+						<div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Post Time</th>
+                                        <th>Comment</th>
+                                        <th>Rating</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% for(var i=0; i<tbl.length; i++) { %>
+                                        <tr>
+                                            <td><%= tbl[i].username%></td>
+                                            <td><%= tbl[i].updatetime%></td>
+                                            <td><%= tbl[i].comment%></td>
+                                            <td><%= tbl[i].rating%></td>
+                                        </tr>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer small text-muted">Stuff Sharing</div>
+                    </div>
+
+					<div class="card mb-3">
+                        <div class="card-header">
+                            <span style="color: Tomato;">
+                                <i class="fas fa-key"></i> &nbsp; Write Your Comment
+                            </span>
+                        </div>
+                        <form method="post" action="/submitComment">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="nextMinimumBid" class="col-sm-2 col-form-label"><b>Rating:</b></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" required="required" class="form-control" id="rating" placeholder="1 for Very Bad; 5 for Very Good" name="rating">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="comment" class="col-sm-2 col-form-label"><b>Comment:</b></label>
+                                    <div class="col-sm-10">
+                                        <input type="text" required="required" class="form-control" id="comment" placeholder="Write your comment here" name="comment">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <input type="hidden" id="sid" value="<%= sid %>" name="sid">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="hidden" id="uid" value="<%= uid %>" name="uid">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Submit Comment</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= comment_msg %></span></div>
+                        </form>
+                    </div>
+				</div>
+			</div>
+
+		</div>
+
+		<%- include bottomscript.ejs %>
+  </body>
+</html>

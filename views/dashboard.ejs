@@ -39,8 +39,11 @@
 								<th>Name</th>
 								<th>Lender</th>
 								<th>Price</th>
+								<th>Pick Up Time</th>
+                                <th>Pick Up Location</th>
 								<th>Return Time</th>
 								<th>Return Location</th>
+								<th>Comment</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -48,9 +51,24 @@
 								<tr>
 									<td><%= tbl1[i].stuffname%></td>
 									<td><%= tbl1[i].username%></td>
-									<td><%= tbl1[i].nextMinimumBid%></td>
-									<td><%= tbl1[i].returnTime%></td>
-									<td><%= tbl1[i].returnLocation%></td>
+									<td><%= tbl1[i].nextminimumbid%></td>
+									<td><%= tbl1[i].pickuptime%></td>
+                                    <td><%= tbl1[i].pickuplocation%></td>
+									<td><%= tbl1[i].returntime%></td>
+									<td><%= tbl1[i].returnlocation%></td>
+									<td>
+                                        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" action="/comment">
+                                            <div class="input-group">
+                                                <div class="col-sm-40">
+                                                    <input type="hidden" readonly class="form-control-plaintext" aria-label="Search" aria-describedby="basic-addon2" value="<%= tbl1[i].sid%>" name="sid">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="submit">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </td>
 								</tr>
 							<% } %>
 							</tbody>
