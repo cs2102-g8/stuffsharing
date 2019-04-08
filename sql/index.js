@@ -75,7 +75,21 @@ sql.query = {
 	badges: 'SELECT * FROM Earns WHERE uid=$1',
 
 	//Category
-	categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1'
+	categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1',
+
+    //Leaderboard
+    leaderboard: 'SELECT uid, username, count(sid) as Score FROM lends NATURAL JOIN users GROUP BY uid, username ORDER BY Score desc',
+
+
+    //User Bid
+    user_bid: 'SELECT * FROM Bids WHERE uid = $1 AND sid = $2',
+
+    //Cancel Bid
+    cancelBid: 'DELETE FROM Bids WHERE uid = $1 AND sid = $2',
+
+    //Replace bid
+    replace_bid: 'UPDATE Stuffs SET nextminimumbid=$2 WHERE sid=$1',
 }
+
 
 module.exports = sql

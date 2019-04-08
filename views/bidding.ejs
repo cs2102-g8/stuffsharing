@@ -36,6 +36,7 @@
 							Pickup Location: <%= tbl[0].pickuplocation%><br/>
 							Return Location: <%= tbl[0].returnlocation%><br/>
 							Next Minimum Bid: <%= tbl[0].nextminimumbid%><br/>
+
 							<br/>
 							<%= tbl[0].summary%><br/>
 <!--							<div class="table-responsive">-->
@@ -54,6 +55,7 @@
 <!--										<td><%= tbl[0].nextminimumbid%></td>-->
 <!--										<td><%= tbl[0].pickuplocation%></td>-->
 <!--										<td><%= tbl[0].returnlocation%></td>-->
+
 <!--									</tr>-->
 <!--									</tbody>-->
 <!--								</table>-->
@@ -74,6 +76,26 @@
 											</div>
 <!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Submit Bid</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= info_msg %></span></div>
 							</form>
+                            <% if(ctx2 != 0){ %>
+
+                                <form method="post" action="/cancelBid">
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                        <label for="bid" class="col-sm-2 col-form-label"><b>Your current bid is:</b></label>
+                                            <div class="col-sm-4">
+                                                <input type="text" required="required" readonly class="form-control-plaintext" id="bidValue" value="<%=  tbl2[0].bid %>" name="bidValue">
+                                                <button type="submit" class="btn btn-secondary">Cancel Bid</button><br/>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="hidden" id="sid" value="<%= tbl2[0].sid %>" name="sid">
+                                                <input type="hidden" id="uid" value="<%= tbl2[0].uid %>" name="uid">
+                                            </div>
+                                        </div>
+                                        Are you sure you would like to cancel your bid?
+                                    </div>
+<!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Cancel Bid/button> &nbsp;&nbsp;&nbsp; </div>-->
+                                </form>
+                            <% } %>
 						</div>
 						<div class="card-footer small text-muted">Stuff Sharing</div>
 					</div>
