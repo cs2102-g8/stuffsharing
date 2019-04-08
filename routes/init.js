@@ -31,6 +31,7 @@ function initRouter(app) {
 	app.get('/password', passport.antiMiddleware(), retrieve);
     app.get('/bidding', bidding);
     app.get('/lentDetails', passport.authMiddleware(), lentDetails);
+    app.get('/comment', passport.authMiddleware(), comment);
     app.get('/categorySearch', categorySearch);
 	
 	/* PROTECTED POST */
@@ -41,6 +42,7 @@ function initRouter(app) {
 	app.post('/delete_lent',  passport.authMiddleware(), deleteLent);
 	app.post('/accept',  passport.authMiddleware(), accept);
 	app.post('/updateLent',  passport.authMiddleware(), updateLent);
+	app.post('/submitComment',  passport.authMiddleware(), submitComment);
 
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
@@ -296,6 +298,44 @@ function lentDetails(req, res, next) {
         }
 
     });
+    });
+}
+
+function comment(req, res, next) {
+    var ctx  = 0, avg = 0, tbl, uid;
+    var sid = req.query.sid, username = req.user.username;
+
+    pool.query(sql_query.query.findUid, [username], (err, data) => {
+        uid = data.rows[0].uid;
+        pool.query(sql_query.query.commentList, [sid], (err, data) => {
+            if (err || !data.rows || data.rows.length == 0) {
+                ctx = 0;
+                tbl = [];
+            } else {
+                ctx = data.rows.length;
+                tbl = data.rows;
+            }
+            if (req.isAuthenticated()) {
+                basic(req, res, 'comment', {page: 'comment', auth: true, sid: sid, uid: uid, tbl: tbl, ctx: ctx, comment_msg: msg(req, 'comment', 'Comment successfully', 'Error in comment')});
+            }
+        });
+    });
+}
+
+function submitComment(req, res, next) {
+    var comment = req.body.comment;
+    var rating = req.body.rating;
+    var updateTime = new Date();
+	var sid = req.body.sid;
+	var uid = req.body.uid;
+
+    pool.query(sql_query.query.submit_comment, [comment, updateTime, uid, sid, rating], (err, data) => {
+        if(err) {
+            console.error(err);
+            res.redirect('back');
+        } else {
+            res.redirect('back');
+        }
     });
 }
 
