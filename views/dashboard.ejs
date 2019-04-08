@@ -39,6 +39,8 @@
 								<th>Name</th>
 								<th>Lender</th>
 								<th>Price</th>
+								<th>Pick Up Time</th>
+                                <th>Pick Up Location</th>
 								<th>Return Time</th>
 								<th>Return Location</th>
 							</tr>
@@ -48,9 +50,11 @@
 								<tr>
 									<td><%= tbl1[i].stuffname%></td>
 									<td><%= tbl1[i].username%></td>
-									<td><%= tbl1[i].nextMinimumBid%></td>
-									<td><%= tbl1[i].returnTime%></td>
-									<td><%= tbl1[i].returnLocation%></td>
+									<td><%= tbl1[i].nextminimumbid%></td>
+									<td><%= tbl1[i].pickuptime%></td>
+                                    <td><%= tbl1[i].pickuplocation%></td>
+									<td><%= tbl1[i].returntime%></td>
+									<td><%= tbl1[i].returnlocation%></td>
 								</tr>
 							<% } %>
 							</tbody>

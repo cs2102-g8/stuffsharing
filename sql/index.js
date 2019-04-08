@@ -26,7 +26,7 @@ sql.query = {
 	discover_all: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users ORDER BY stuffName',
 
 	// Borrowed
-	borrowed: 'SELECT * FROM (select sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation FROM Stuffs NATURAL JOIN Descriptions) as R NATURAL JOIN Borrows B WHERE B.uid = $1',
+	borrowed: 'SELECT R2.sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation, U.username from (SELECT R.sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation, R.uid FROM (select * FROM Stuffs NATURAL JOIN Descriptions) as R JOIN Borrows B ON B.uid = $1 AND R.sid = B.sid) AS R2 JOIN Users U ON R2.uid = U.uid',
 
 	// Lending
 	lending: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions AS R WHERE NOT EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = R.sid) and uid = $1',
