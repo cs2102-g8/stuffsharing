@@ -532,15 +532,30 @@ function cancelBid(req, res, next) {
     var bid = req.body.bidValue;
 	var username = req.user.username;
 	var sid = req.body.sid;
+	var uid;
+	var highest_bid;
+
+	var debugging;
 
     pool.query(sql_query.query.findUid, [username], (err, data) => {
-        pool.query(sql_query.query.cancelBid, [data.rows[0].uid, sid], (err, data) => {
-            if(err) {
-                console.error(err);
-                res.redirect('back');
-            } else {
-                res.redirect('back');
-            }
+        uid = data.rows[0].uid;
+        pool.query(sql_query.query.cancelBid, [uid, sid], (err, data) => {
+            pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
+
+                highest_bid = data.rows[0].bid;
+
+                if(highest_bid == undefined) {
+                    highest_bid = 0;
+                }
+                pool.query(sql_query.query.replace_bid, [sid, highest_bid], (err, data) => {
+                    if(err) {
+                        console.error(err);
+                        res.redirect('back');
+                    } else {
+                        res.redirect('back');
+                    }
+                });
+            });
         });
 
     });

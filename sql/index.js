@@ -81,7 +81,8 @@ sql.query = {
     //Cancel Bid
     cancelBid: 'DELETE FROM Bids WHERE uid = $1 AND sid = $2',
 
-    //cancelBidInStuff:
+    //Replace bid
+    replace_bid: 'UPDATE Stuffs SET nextminimumbid=$2 WHERE sid=$1',
 }
 
 
