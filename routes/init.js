@@ -280,7 +280,7 @@ function categorySearch(req,res,next) {
 			tbl = data.rows;
 		}
 		if (req.isAuthenticated()) {
-			basic(req, res, 'categorySearch', {page: 'categorySearch', auth: true, tbl: tbl, ctx: ctx});
+			basic(req, res, 'categorySearch', {page: 'categorySearch', auth: true, tbl: tbl, ctx: ctx, user: req.user.username});
 		}
 	});
 }
