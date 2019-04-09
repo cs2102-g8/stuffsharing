@@ -18,7 +18,10 @@ function initRouter(app) {
 	/* GET */
 	app.get('/'      , index );
 	app.get('/search', search);
-	
+	app.get('/bidding', bidding);
+	app.get('/categorySearch', categorySearch);
+	app.get('/leaderboard', leaderboard);
+
 	/* PROTECTED GET */
 	app.get('/dashboard', passport.authMiddleware(), dashboard);
 	app.get('/update', passport.authMiddleware(), update);
@@ -26,17 +29,12 @@ function initRouter(app) {
 	app.get('/lentstuff', passport.authMiddleware(), lentstuff);
 	app.get('/categories', passport.authMiddleware(), categories);
 	app.get('/complain', passport.authMiddleware(), complain);
-	
 	app.get('/register', passport.antiMiddleware(), register);
 	app.get('/password', passport.antiMiddleware(), retrieve);
-    app.get('/bidding', bidding);
     app.get('/lentDetails', passport.authMiddleware(), lentDetails);
     app.get('/comment', passport.authMiddleware(), comment);
-    app.get('/categorySearch', categorySearch);
+	app.get('/profile', passport.authMiddleware(), profile);
 
-    app.get('/leaderboard', leaderboard);
-
-	
 	/* PROTECTED POST */
 	app.post('/update_info', passport.authMiddleware(), update_info);
 	app.post('/update_pass', passport.authMiddleware(), update_pass);
@@ -46,21 +44,18 @@ function initRouter(app) {
 	app.post('/accept',  passport.authMiddleware(), accept);
 	app.post('/updateLent',  passport.authMiddleware(), updateLent);
 	app.post('/submitComment',  passport.authMiddleware(), submitComment);
-
+	app.post('/reg_user', passport.antiMiddleware(), reg_user);
+	app.post('/bids',  passport.authMiddleware(), bids);
+	app.post('/cancelBid',  passport.authMiddleware(), cancelBid);
 	//app.post('/add_game'   , passport.authMiddleware(), add_game   );
 	//app.post('/add_play'   , passport.authMiddleware(), add_play   );
-	
-	app.post('/reg_user', passport.antiMiddleware(), reg_user);
-
-    app.post('/bids',  passport.authMiddleware(), bids);
-    app.post('/cancelBid',  passport.authMiddleware(), cancelBid);
 
 	/* LOGIN */
 	app.post('/login', passport.authenticate('local', {
 		successRedirect: '/dashboard',
 		failureRedirect: '/'
 	}));
-	
+
 	/* LOGOUT */
 	app.get('/logout', passport.authMiddleware(), logout);
 }
@@ -82,9 +77,11 @@ function basic(req, res, page, other) {
 	}
 	res.render(page, info);
 }
+
 function query(req, fld) {
 	return req.query[fld] ? req.query[fld] : '';
 }
+
 function msg(req, fld, pass, fail) {
 	var info = query(req, fld);
 	return info ? (info=='pass' ? pass : fail) : '';
@@ -168,6 +165,40 @@ function dashboard(req, res, next) {
 	});
 }
 
+function profile(req, res, next) {
+	var ctx1 = 0, ctx2 = 0, avg = 0, tbl1, tbl2;
+	console.log(req.query.user);
+	pool.query(sql_query.query.findUid, [req.query.user], (err, data) => {
+		var uid = data.rows[0].uid;
+		pool.query(sql_query.query.borrowed, [uid], (err, data) => {
+			if (err){
+				console.error(err);
+			} else if(!data.rows || data.rows.length == 0) {
+				ctx1 = 0;
+				tbl1 = [];
+			} else {
+				ctx1 = data.rows.length;
+				tbl1 = data.rows;
+			}
+			pool.query(sql_query.query.badges, [uid], (err, data) => {
+				if (err){
+					console.error("Error in loading badges");
+					res.redirect('/profile?badges=fail');
+				} else if(!data.rows || data.rows.length == 0) {
+					ctx2 = 0;
+					tbl2 = [];
+				} else {
+					ctx2 = data.rows.length;
+					tbl2 = data.rows;
+				}
+				if(req.isAuthenticated()) {
+					basic(req, res, 'profile', { page: 'profile', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2 });
+				}
+			});
+		});
+	});
+}
+
 function update(req, res, next) {
 	basic(req, res, 'update', { info_msg: msg(req, 'info', 'Information updated successfully', 'Error in updating information'), pass_msg: msg(req, 'pass', 'Password updated successfully', 'Error in updating password'), auth: true });
 }
@@ -191,7 +222,7 @@ function discover(req, res, next) {
 				tbl2 = data.rows;
 			}
 			if(req.isAuthenticated()) {
-				basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, tbl2: tbl2, ctx: ctx, ctx2: ctx2 });
+				basic(req, res, 'discover', { page: 'discover', auth: true, tbl: tbl, tbl2: tbl2, ctx: ctx, ctx2: ctx2, user: req.user.username });
 			}
 		});
 	});
