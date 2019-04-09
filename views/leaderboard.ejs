@@ -44,16 +44,15 @@
 							<% for(var i=0; i<tbl.length; i++) { %>
 								<tr>
 								    <% if(uidInfo == tbl[i].uid){ %>
-                                       <h1><td>
-                                            <a class="view-stuff" href="/dashboard %>" type="submit">
-                                                <%= tbl[i].username%>
-                                       </td></h1>
-                                     <% } else{ %>
-
-                                     <!-- Missing links to link to other people profile page. -->
-
-
-                                       <h1><td><%= tbl[i].username%></td></h1>
+									    <h1><td>
+											<a class="view-profile" href="/dashboard %>" type="submit">
+												<%= tbl[i].username%>
+									    </td></h1>
+									<% } else{ %>
+										<h1><td>
+											<a class="view-profile" href="/profile?user=<%= tbl[i].username%>" type="submit">
+												<%= tbl[i].username%>
+										</td></h1>
                                     <% } %>
 									<td><%= tbl[i].score%></td>
 								</tr>
