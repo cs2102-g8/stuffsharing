@@ -51,7 +51,15 @@
 												<a class="view-stuff" href="/bidding?stuff=<%= tbl[i].sid %>" type="submit">
 													<%= tbl[i].stuffname %>
 											</td>
-											<td><%= tbl[i].username%></td>
+                                            <td>
+                                                <% if(tbl[i].username == user) { %>
+                                                    <a class="view-profile" href="/dashboard" type="submit">
+                                                        <%= tbl[i].username%>
+                                                <% } else { %>
+                                                    <a class="view-profile" href="/profile?user=<%= tbl[i].username%>" type="submit">
+                                                        <%= tbl[i].username%>
+                                                <% } %>
+                                            </td>
 											<td><%= tbl[i].nextminimumbid %></td>
 											<td><%= tbl[i].pickuplocation %></td>
 											<td><%= tbl[i].returnlocation %></td>
@@ -80,7 +88,10 @@
 												<a class="view-stuff" href="/bidding?stuff=<%= tbl2[i].sid %>" type="submit">
 													<%= tbl2[i].stuffname %>
 											</td>
-											<td><%= tbl2[i].username%></td>
+                                            <td>
+                                                <a class="view-profile" href="/profile?user=<%= tbl2[i].username%>" type="submit">
+                                                    <%= tbl2[i].username%>
+                                            </td>
 											<td><%= tbl2[i].nextminimumbid %></td>
 											<td><%= tbl2[i].pickuplocation %></td>
 											<td><%= tbl2[i].returnlocation %></td>
