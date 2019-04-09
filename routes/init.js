@@ -322,7 +322,7 @@ function bidding(req, res, next) {
            }
 
             if(req.isAuthenticated()) {
-                basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, tbl2: tbl2, tbl3: tbl3, ctx: ctx, ctx2: ctx2, ctx3: ctx3, sid: sid, lend_msg: msg(req, 'bid', 'Bid stuff successfully', 'Error in stuff information')});
+                basic(req, res, 'bidding', { page: 'bidding', auth: true, tbl: tbl, tbl2: tbl2, tbl3: tbl3, ctx: ctx, ctx2: ctx2, ctx3: ctx3, sid: sid, user: req.user.username, lend_msg: msg(req, 'bid', 'Bid stuff successfully', 'Error in stuff information')});
             }
             });
         });

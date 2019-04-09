@@ -119,7 +119,15 @@
                                     <tbody>
                                     <% for(var i=0; i<tbl3.length; i++) { %>
                                         <tr>
-                                            <td><%= tbl3[i].username%></td>
+                                            <td>
+                                                <% if(tbl3[i].username == user) { %>
+                                                    <a class="view-profile" href="/dashboard" type="submit">
+                                                        <%= tbl3[i].username%>
+                                                <% } else { %>
+                                                    <a class="view-profile" href="/profile?user=<%= tbl3[i].username%>" type="submit">
+                                                        <%= tbl3[i].username%>
+                                                <% } %>
+                                            </td>
                                             <td><%= tbl3[i].updatetime%></td>
                                             <td><%= tbl3[i].comment%></td>
                                             <td><%= tbl3[i].rating%></td>
