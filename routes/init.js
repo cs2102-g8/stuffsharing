@@ -127,7 +127,7 @@ function search(req, res, next) {
 			tbl = data.rows;
 		}
 		if(req.isAuthenticated()) {
-			basic(req, res, 'search', { page: 'search', auth: true, tbl: tbl, ctx: ctx });
+			basic(req, res, 'search', { page: 'search', auth: true, tbl: tbl, ctx: ctx, user: req.user.username });
 		}
 	});
 }
