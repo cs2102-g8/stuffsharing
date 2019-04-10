@@ -635,7 +635,7 @@ function accept(req, res, next) {
                 console.error(err);
                 res.redirect('back');
             } else {
-                res.redirect('/lentstuff');
+                res.redirect('/dashboard');
             }
         });
     }
