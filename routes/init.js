@@ -39,9 +39,9 @@ function initRouter(app) {
     app.post('/update_pass', passport.authMiddleware(), update_pass);
     app.post('/submit_feedback', passport.authMiddleware(), submit_feedback);
     app.post('/lendNewStuff', passport.authMiddleware(), lend);
-    app.post('/delete_lent', passport.authMiddleware(), deleteLent);
+    app.post('/deleteStuff', passport.authMiddleware(), deleteStuff);
     app.post('/accept', passport.authMiddleware(), accept);
-    app.post('/updateLent', passport.authMiddleware(), updateLent);
+    app.post('/updateStuff', passport.authMiddleware(), updateStuff);
     app.post('/submitComment', passport.authMiddleware(), submitComment);
     app.post('/reg_user', passport.antiMiddleware(), reg_user);
     app.post('/bids', passport.authMiddleware(), bids);
@@ -592,9 +592,9 @@ function lend(req, res, next) {
     });
 }
 
-function deleteLent(req, res, next) {
+function deleteStuff(req, res, next) {
     var sid = req.body.sid;
-    pool.query(sql_query.query.delete_lent, [sid], (err, data) => {
+    pool.query(sql_query.query.delete_stuff, [sid], (err, data) => {
         if (err) {
             console.error(err);
             res.redirect('back');
@@ -604,14 +604,14 @@ function deleteLent(req, res, next) {
     });
 }
 
-function updateLent(req, res, next) {
+function updateStuff(req, res, next) {
     var sid = req.body.sid;
     var pickUpTime = req.body.pickUpTime;
     var returnTime = req.body.returnTime;
     var pickUpLocation = req.body.pickUpLocation;
     var returnLocation = req.body.returnLocation;
     var description = req.body.description;
-    pool.query(sql_query.query.update_lent, [sid, pickUpTime, returnTime, pickUpLocation, returnLocation, description], (err, data) => {
+    pool.query(sql_query.query.update_stuff, [sid, pickUpTime, returnTime, pickUpLocation, returnLocation, description], (err, data) => {
         if (err) {
             console.error(err);
             res.redirect('back');

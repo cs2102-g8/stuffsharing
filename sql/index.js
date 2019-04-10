@@ -58,11 +58,11 @@ sql.query = {
     // Bid action
     bids: 'INSERT INTO Bids (uid, sid, bid) VALUES ($1,$2,$3)',
 
-    // Delete Lent
-    delete_lent: 'DELETE FROM Stuffs WHERE sid = $1',
+    // Delete Stuff
+    delete_stuff: 'DELETE FROM Stuffs WHERE sid = $1',
 
-    // Update Lent
-    update_lent: 'UPDATE Descriptions SET pickUpTime=$2, returnTime=$3, pickUpLocation=$4, returnLocation=$5, summary=$6 WHERE sid=$1',
+    // Update Stuff
+    update_stuff: 'UPDATE Descriptions SET pickUpTime=$2, returnTime=$3, pickUpLocation=$4, returnLocation=$5, summary=$6 WHERE sid=$1',
 
     // Find Highest Bid
     find_max_bid: 'SELECT * FROM Bids NATURAL JOIN Users WHERE sid = $1 ORDER BY bid DESC LIMIT 1',
