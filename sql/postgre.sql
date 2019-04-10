@@ -382,4 +382,3 @@ insert into Belongs(sid, categoryName) values ('11', 'Others');
 insert into Belongs(sid, categoryName) values ('12', 'Others');
 insert into Belongs(sid, categoryName) values ('13', 'Others');
 insert into Belongs(sid, categoryName) values ('14', 'Electronics');
-

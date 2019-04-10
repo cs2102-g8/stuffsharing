@@ -74,7 +74,8 @@ sql.query = {
     badges: 'SELECT * FROM Earns WHERE uid=$1',
 
     // Leaderboard
-    leaderboard: 'SELECT uid, username, count(sid) as Score FROM lends NATURAL JOIN users GROUP BY uid, username ORDER BY Score desc',
+    leaderboard: 'WITH NumLends AS (SELECT uid, username, count(sid) AS num FROM Users NATURAL JOIN Lends GROUP BY uid, username), NumBorrows AS (SELECT uid, username, count(sid) AS num FROM Users NATURAL JOIN Borrows GROUP BY uid, username)' +
+        'SELECT Users.uid, Users.username, COALESCE(NL.num, 0) + COALESCE(nb.num, 0) AS Score FROM Users LEFT JOIN NumLends NL ON Users.uid = NL.uid LEFT JOIN NumBorrows NB ON Users.uid = NB.uid ORDER BY Score DESC',
 
     // User Bid
     user_bid: 'SELECT * FROM Bids WHERE uid = $1 AND sid = $2',
