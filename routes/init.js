@@ -47,8 +47,6 @@ function initRouter(app) {
     app.post('/reg_user', passport.antiMiddleware(), reg_user);
     app.post('/bids', passport.authMiddleware(), bids);
     app.post('/cancelBid', passport.authMiddleware(), cancelBid);
-    //app.post('/add_game'   , passport.authMiddleware(), add_game   );
-    //app.post('/add_play'   , passport.authMiddleware(), add_play   );
 
     /* LOGIN */
     app.post('/login', passport.authenticate('local', {
