@@ -25,7 +25,7 @@ function initRouter(app) {
     app.get('/dashboard', passport.authMiddleware(), dashboard);
     app.get('/update', passport.authMiddleware(), update);
     app.get('/discover', passport.authMiddleware(), discover);
-    app.get('/lentstuff', passport.authMiddleware(), lentstuff);
+    app.get('/mystuff', passport.authMiddleware(), mystuff);
     app.get('/categories', passport.authMiddleware(), categories);
     app.get('/feedback', passport.authMiddleware(), feedback);
     app.get('/register', passport.antiMiddleware(), register);
@@ -258,7 +258,7 @@ function discover(req, res, next) {
     });
 }
 
-function lentstuff(req, res, next) {
+function mystuff(req, res, next) {
     var ctx = 0, tbl;
     var uid;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
@@ -266,7 +266,7 @@ function lentstuff(req, res, next) {
         pool.query(sql_query.query.lending, [uid], (err, data) => {
             if (err) {
                 console.error("Error in update info");
-                res.redirect('/lentstuff?update=fail');
+                res.redirect('/mystuff?update=fail');
             } else if (!data.rows || data.rows.length == 0) {
                 ctx = 0;
                 tbl = [];
@@ -275,8 +275,8 @@ function lentstuff(req, res, next) {
                 tbl = data.rows;
             }
             if (req.isAuthenticated()) {
-                basic(req, res, 'lentstuff', {
-                    page: 'lentstuff',
+                basic(req, res, 'mystuff', {
+                    page: 'mystuff',
                     auth: true,
                     tbl: tbl,
                     ctx: ctx,
@@ -566,22 +566,22 @@ function lend(req, res, next) {
         pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
             if (err) {
                 console.error(err);
-                res.redirect('/lentstuff?pass=fail');
+                res.redirect('/mystuff?pass=fail');
             } else {
                 pool.query(sql_query.query.findUid, [username], (err, data) => {
                     pool.query(sql_query.query.insertToLends, [sid, data.rows[0].uid], (err, data) => {
                         if (err) {
                             console.error(err);
-                            res.redirect('/lentstuff?pass=fail');
+                            res.redirect('/mystuff?pass=fail');
                         } else {
                             pool.query(sql_query.query.findUid, [username], (err, data) => {
                                 pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
                                     pool.query(sql_query.query.insertToBelongs, [sid, category], (err, data) => {
                                         if (err) {
                                             console.error(err);
-                                            res.redirect('/lentstuff?pass=fail');
+                                            res.redirect('/mystuff?pass=fail');
                                         } else {
-                                            res.redirect('/lentstuff?pass=pass');
+                                            res.redirect('/mystuff?pass=pass');
                                         }
                                     });
                                 });
@@ -601,7 +601,7 @@ function deleteLent(req, res, next) {
             console.error(err);
             res.redirect('back');
         } else {
-            res.redirect('/lentstuff');
+            res.redirect('/mystuff');
         }
     });
 }

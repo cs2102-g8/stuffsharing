@@ -10,20 +10,12 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link <%= page === "lentstuff" ? "active" : "" %>"
-           href="<%= page === "lentstuff" ? "#" : "/lentstuff" %>">
+        <a class="nav-link <%= page === "mystuff" ? "active" : "" %>"
+           href="<%= page === "mystuff" ? "#" : "/mystuff" %>">
                 <span style="color: #dc3545">
 					<i class="fas fa-truck-moving"></i>
 				</span>&nbsp;
-            <span>Lend Stuff</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link <%= page === "leaderboard" ? "active" : "" %>"
-           href="<%= page === "leaderboard" ? "#" : "/leaderboard" %>">
-    		<span style="color: #ab27B0">
-    			<i class="fas fa-trophy"></i>
-    		</span>
-            <span class="ml-2">Leaderboard</span></a>
+            <span>My Stuff</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "discover" ? "active" : "" %>"
@@ -39,7 +31,15 @@
 			<span style="color: #00B7FF;">
 				<i class="fas fa-shopping-basket"></i>
 			</span>
-            <span class="ml-2">Stuff Categories</span></a>
+            <span class="ml-2">Categories</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <%= page === "leaderboard" ? "active" : "" %>"
+           href="<%= page === "leaderboard" ? "#" : "/leaderboard" %>">
+    		<span style="color: #ab27B0">
+    			<i class="fas fa-trophy"></i>
+    		</span>
+            <span class="ml-2">Leaderboard</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "feedback" ? "active" : "" %>"
