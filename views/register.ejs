@@ -1,77 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-		<title>Stuff Sharing</title>
+    <title>Stuff Sharing</title>
 
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-		<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-		<!-- Custom styles for this template-->
-		<link href="stylesheets/index.css" rel="stylesheet">
-  </head>
-	<body class="bg-dark">
-		<div class="container">
-			<div class="card card-register mx-auto mt-5">
-				<div class="card-header">Register an Account</div>
-				<div class="card-body">
-					<form action="/reg_user" method="post">
-						<div class="form-group">
-							<div class="form-row">
-								<div class="col-md-6">
-									<div class="form-label-group">
-										<input type="text" id="username" class="form-control" placeholder="Username" required="required" autofocus="autofocus" name="username">
-										<label for="username">Username</label>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-label-group">
-										<input type="text" id="phone" class="form-control" placeholder="Phone" required="required" name="phone">
-										<label for="phone">Phone</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="form-row">
-								<div class="col-md-6">
-									<div class="form-label-group">
-										<input type="text" id="region" class="form-control" placeholder="Region" required="required" name="region">
-										<label for="region">Region</label>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-label-group">
-										<input type="text" id="country" class="form-control" placeholder="Country" required="required" name="country">
-										<label for="country">Country</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="form-row">
-								<div class="col-md-12">
-									<div class="form-label-group">
-										<input type="password" id="password" class="form-control" placeholder="Password" required="required" name="password">
-										<label for="password">Password</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button class="btn btn-primary btn-block" type="submit">Register</button>
-					</form>
-					<div class="text-center">
-						<a class="d-block small mt-3" href="/">Back to home</a>
-						<a class="d-block small" href="/password">Forgot Password?</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<%- include bottomscript.ejs %>
-  </body>
+    <!-- Custom styles for this template-->
+    <link href="stylesheets/index.css" rel="stylesheet">
+</head>
+<body class="bg-dark">
+<div class="container">
+    <div class="card card-register mx-auto mt-5">
+        <div class="card-header">Register an Account</div>
+        <div class="card-body">
+            <form action="/reg_user" method="post">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="text" id="username" class="form-control" placeholder="Username"
+                                       required="required" autofocus="autofocus" name="username">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="text" id="phone" class="form-control" placeholder="Phone"
+                                       required="required" name="phone">
+                                <label for="phone">Phone</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="text" id="region" class="form-control" placeholder="Region"
+                                       required="required" name="region">
+                                <label for="region">Region</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="text" id="country" class="form-control" placeholder="Country"
+                                       required="required" name="country">
+                                <label for="country">Country</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-label-group">
+                                <input type="password" id="password" class="form-control" placeholder="Password"
+                                       required="required" name="password">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Register</button>
+            </form>
+            <div class="text-center">
+                <a class="d-block small mt-3" href="/">Back to home</a>
+                <a class="d-block small" href="/password">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include bottomscript.ejs %>
+</body>
 </html>

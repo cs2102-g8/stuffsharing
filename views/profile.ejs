@@ -1,169 +1,169 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-	<title>Stuff Sharing</title>
+    <title>Stuff Sharing</title>
 
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-	<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-	<!-- Custom styles for this template-->
-	<link href="stylesheets/index.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="stylesheets/index.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <%- include navbar.ejs %>
-
 <div id="wrapper">
-	<% if(auth) { %>
-		<%- include sidebar.ejs %>
-	<% } %>
-
-	<div id="content-wrapper">
-		<div class="container-fluid">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item">
-					<i class="fas fa-chess-pawn fa-fw"></i>
-					<%= user %>
-				</li>
-			</ol>
-			<div class="card mb-3">
-				<div class="card-header">
+    <% if(auth) { %>
+        <%- include sidebar.ejs %>
+    <% } %>
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <i class="fas fa-chess-pawn fa-fw"></i>
+                    <%= user %>
+                </li>
+            </ol>
+            <div class="card mb-3">
+                <div class="card-header">
 					<span style="color: yellowgreen;">
 						<i class="fas fa-palette"></i> Badges earned
 					</span>&nbsp;
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-							<thead>
-							<tr>
-								<th>Badges</th>
-							</tr>
-							</thead>
-							<tbody>
-							<% for(var i=0; i<tbl2.length; i++) { %>
-								<%var a = tbl2[i].badgename%>
-								<%if ( a== 'Credit Badge') {%>
-									<tr>
-										<td><i class="fas fa-mountain"></i> Credit Badge </td>
-									</tr>
-								<%}%>
-							<% }%>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="card-footer small text-muted">Stuff Sharing</div>
-			</div>
-
-			<div class="card mb-3">
-				<div class="card-header">
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Badges</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(var i = 0; i < tbl2.length; i++) { %>
+                                <% var a = tbl2[i].badgename %>
+                                <% if ( a == 'Credit Badge') { %>
+                                    <tr>
+                                        <td><i class="fas fa-mountain"></i> Credit Badge</td>
+                                    </tr>
+                                <% } %>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
 					<span style="color: yellowgreen;">
 						<i class="fas fa-fw fa-address-card"></i> Borrowed Items
 					</span>&nbsp;
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-							<thead>
-							<tr>
-								<th>Name</th>
-								<th>Lender</th>
-								<th>Price</th>
-								<th>Pick Up Time</th>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Lender</th>
+                                <th>Price</th>
+                                <th>Pick Up Time</th>
                                 <th>Pick Up Location</th>
-								<th>Return Time</th>
-								<th>Return Location</th>
-								<th>Comment</th>
-							</tr>
-							</thead>
-							<tbody>
-							<% for(var i=0; i<tbl1.length; i++) { %>
-								<tr>
-									<td>
-										<a class="view-stuff" href="/bidding?stuff=<%= tbl1[i].sid %>">
-											<%= tbl1[i].stuffname %>
-									</td>
-									<td>
-										<% if(tbl1[i].username == user) { %>
-											<a class="view-profile" href="/dashboard">
-												<%= tbl1[i].username%>
-										<% } else { %>
-											<a class="view-profile" href="/profile?user=<%= tbl1[i].username%>">
-												<%= tbl1[i].username%>
-										<% } %>
-									</td>
-									<td><%= tbl1[i].nextminimumbid%></td>
-									<td><%= tbl1[i].pickuptime%></td>
-                                    <td><%= tbl1[i].pickuplocation%></td>
-									<td><%= tbl1[i].returntime%></td>
-									<td><%= tbl1[i].returnlocation%></td>
-									<td>
-                                        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" action="/comment">
+                                <th>Return Time</th>
+                                <th>Return Location</th>
+                                <th>Comment</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(var i = 0; i < tbl1.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <a class="view-stuff" href="/bidding?stuff=<%= tbl1[i].sid %>">
+                                            <%= tbl1[i].stuffname %>
+                                    </td>
+                                    <td>
+                                        <% if(tbl1[i].username == user) { %>
+                                            <a class="view-profile" href="/dashboard">
+                                                <%= tbl1[i].username %>
+                                        <% } else { %>
+                                            <a class="view-profile" href="/profile?user=<%= tbl1[i].username %>">
+                                                <%= tbl1[i].username %>
+                                        <% } %>
+                                    </td>
+                                    <td><%= tbl1[i].nextminimumbid %></td>
+                                    <td><%= tbl1[i].pickuptime %></td>
+                                    <td><%= tbl1[i].pickuplocation %></td>
+                                    <td><%= tbl1[i].returntime %></td>
+                                    <td><%= tbl1[i].returnlocation %></td>
+                                    <td>
+                                        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
+                                              action="/comment">
                                             <div class="input-group">
                                                 <div class="col-sm-40">
-                                                    <input type="hidden" readonly class="form-control-plaintext" aria-label="Search" aria-describedby="basic-addon2" value="<%= tbl1[i].sid%>" name="sid">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-primary" type="submit">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
+                                                    <input type="hidden" readonly class="form-control-plaintext"
+                                                           aria-label="Search" aria-describedby="basic-addon2"
+                                                           value="<%= tbl1[i].sid %>" name="sid">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary" type="submit">
+                                                            <i class="fas fa-search"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </form>
                                     </td>
-								</tr>
-							<% } %>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="card-footer small text-muted">Stuff Sharing</div>
-			</div>
-
-			<div class="card mb-3">
-				<div class="card-header">
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
 							<span style="color: yellowgreen">
 								<i class="fas fa-anchor"></i> Lent Items
 							</span>&nbsp;
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-							<thead>
-							<tr>
-								<th>Name</th>
-								<th>Pickup Time</th>
-								<th>Return Time</th>
-								<th>Pickup Location</th>
-								<th>Return Location</th>
-							</tr>
-							</thead>
-							<tbody>
-							<% for(var i=0; i<tbl3.length; i++) { %>
-								<tr>
-									<td>
-										<a class="view-stuff" href="/bidding?stuff=<%= tbl3[i].sid %>">
-											<%= tbl3[i].stuffname %>
-									</td>
-									<td><%= tbl3[i].pickuptime%></td>
-									<td><%= tbl3[i].returntime%></td>
-									<td><%= tbl3[i].pickuplocation%></td>
-									<td><%= tbl3[i].returnlocation%></td>
-								</tr>
-							<% } %>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="card-footer small text-muted">Stuff Sharing</div>
-			</div>
-		</div>
-	</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Pickup Time</th>
+                                <th>Return Time</th>
+                                <th>Pickup Location</th>
+                                <th>Return Location</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(var i = 0; i < tbl3.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <a class="view-stuff" href="/bidding?stuff=<%= tbl3[i].sid %>">
+                                            <%= tbl3[i].stuffname %>
+                                    </td>
+                                    <td><%= tbl3[i].pickuptime %></td>
+                                    <td><%= tbl3[i].returntime %></td>
+                                    <td><%= tbl3[i].pickuplocation %></td>
+                                    <td><%= tbl3[i].returnlocation %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
+        </div>
+    </div>
 </div>
 <%- include bottomscript.ejs %>
 </body>
