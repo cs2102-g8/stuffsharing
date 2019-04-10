@@ -2,7 +2,7 @@ const sql_query = require('../sql');
 const passport = require('passport');
 const bcrypt = require('bcrypt')
 
-// Postgre SQL Connection
+// PostgreSQL Connection
 const {Pool} = require('pg');
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -11,7 +11,6 @@ const pool = new Pool({
 
 const round = 10;
 const salt = bcrypt.genSaltSync(round);
-
 const uuidv1 = require('uuid/v1'); // npm install uuid
 
 function initRouter(app) {
@@ -87,31 +86,11 @@ function msg(req, fld, pass, fail) {
 
 // GET
 function index(req, res, next) {
-    var ctx = 0, idx = 0, tbl, total;
-    if (Object.keys(req.query).length > 0 && req.query.p) {
-        idx = req.query.p - 1;
+    if (!req.isAuthenticated()) {
+        res.render('index', {page: '', auth: false});
+    } else {
+        basic(req, res, 'index', {page: '', auth: true});
     }
-    pool.query(sql_query.query.page_lims, [idx * 10], (err, data) => {
-        if (err || !data.rows || data.rows.length == 0) {
-            tbl = [];
-        } else {
-            tbl = data.rows;
-        }
-        pool.query(sql_query.query.showuser, (err, data) => {
-            if (err || !data.rows || data.rows.length == 0) {
-                ctx = 0;
-            } else {
-                ctx = data.rows[0].count;
-            }
-            total = ctx % 10 == 0 ? ctx / 10 : (ctx - (ctx % 10)) / 10 + 1;
-            console.log(idx * 10, idx * 10 + 10, total);
-            if (!req.isAuthenticated()) {
-                res.render('index', {page: '', auth: false});
-            } else {
-                basic(req, res, 'index', {page: '', auth: true, tbl: tbl, ctx: ctx, p: idx + 1, t: total});
-            }
-        });
-    });
 }
 
 function search(req, res, next) {
@@ -169,6 +148,7 @@ function dashboard(req, res, next) {
                         basic(req, res, 'dashboard', {
                             page: 'dashboard',
                             auth: true,
+                            user: req.user.username,
                             tbl1: tbl1,
                             ctx1: ctx1,
                             tbl2: tbl2,
@@ -398,7 +378,6 @@ function bidding(req, res, next) {
 function lentDetails(req, res, next) {
     var ctx = 0, tbl, bid, user, uid;
     var sid = req.query.sid;
-
     pool.query(sql_query.query.details, [sid], (err, data) => {
         if (err) {
             console.error(err);
@@ -410,7 +389,6 @@ function lentDetails(req, res, next) {
             ctx = data.rows.length;
             tbl = data.rows;
         }
-
         pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
             if (err) {
                 console.error(err);
@@ -424,7 +402,6 @@ function lentDetails(req, res, next) {
                 user = data.rows[0].username;
                 uid = data.rows[0].uid;
             }
-
             if (req.isAuthenticated()) {
                 basic(req, res, 'lentDetails', {
                     page: 'lentDetails',
@@ -439,7 +416,6 @@ function lentDetails(req, res, next) {
                     update_msg: msg(req, 'update', 'Update successfully', 'Error in updating')
                 });
             }
-
         });
     });
 }
@@ -451,7 +427,6 @@ function leaderboard(req, res, next) {
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         uidInfo = data.rows[0].uid;
         pool.query(sql_query.query.leaderboard, (err, data) => {
-
             if (err || !data.rows || data.rows.length == 0) {
                 ctx = 0;
                 tbl = [];
@@ -470,7 +445,6 @@ function leaderboard(req, res, next) {
 function comment(req, res, next) {
     var ctx = 0, avg = 0, tbl, uid;
     var sid = req.query.sid, username = req.user.username;
-
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         uid = data.rows[0].uid;
         pool.query(sql_query.query.commentList, [sid], (err, data) => {
@@ -503,7 +477,6 @@ function submitComment(req, res, next) {
     var updateTime = new Date();
     var sid = req.body.sid;
     var uid = req.body.uid;
-
     pool.query(sql_query.query.submit_comment, [comment, updateTime, uid, sid, rating], (err, data) => {
         if (err) {
             console.error(err);
@@ -536,7 +509,6 @@ function update_info(req, res, next) {
     var phone = req.body.phone;
     var region = req.body.region;
     var country = req.body.country;
-
     console.log(username);
     pool.query(sql_query.query.update_info, [username, phone, region, country], (err, data) => {
         if (err) {
@@ -567,7 +539,6 @@ function complain_file(req, res, next) {
     var username = req.user.username;
     var complain = req.body.complain;
     var dateTime = new Date();
-
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         pool.query(sql_query.query.write_complaints, [cid, complain, dateTime, data.rows[0].uid], (err, data) => {
             if (err) {
@@ -577,7 +548,6 @@ function complain_file(req, res, next) {
                 res.redirect('/complain?pass=pass');
             }
         });
-
     });
 }
 
@@ -592,7 +562,6 @@ function lend(req, res, next) {
     var returnLocation = req.body.returnLocation;
     var description = req.body.description;
     var category = req.body.category;
-
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         var uid = data.rows[0].uid;
         pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
@@ -628,7 +597,6 @@ function lend(req, res, next) {
 
 function deleteLent(req, res, next) {
     var sid = req.body.sid;
-
     pool.query(sql_query.query.delete_lent, [sid], (err, data) => {
         if (err) {
             console.error(err);
@@ -646,7 +614,6 @@ function updateLent(req, res, next) {
     var pickUpLocation = req.body.pickUpLocation;
     var returnLocation = req.body.returnLocation;
     var description = req.body.description;
-
     pool.query(sql_query.query.update_lent, [sid, pickUpTime, returnTime, pickUpLocation, returnLocation, description], (err, data) => {
         if (err) {
             console.error(err);
@@ -660,7 +627,6 @@ function updateLent(req, res, next) {
 function accept(req, res, next) {
     var sid = req.body.sid;
     var uid = req.body.uid;
-
     if (uid === 'None') {
         res.redirect('back');
     } else {
@@ -679,7 +645,6 @@ function bids(req, res, next) {
     var bid = req.body.bidValue;
     var username = req.user.username;
     var sid = req.body.sid;
-
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         pool.query(sql_query.query.bids, [data.rows[0].uid, sid, bid], (err, data) => {
             if (err) {
@@ -700,16 +665,11 @@ function cancelBid(req, res, next) {
     var sid = req.body.sid;
     var uid;
     var highest_bid;
-
-    var debugging;
-
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         uid = data.rows[0].uid;
         pool.query(sql_query.query.cancelBid, [uid, sid], (err, data) => {
             pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
-
                 highest_bid = data.rows[0].bid;
-
                 if (highest_bid == undefined) {
                     highest_bid = 0;
                 }
@@ -729,14 +689,12 @@ function cancelBid(req, res, next) {
 }
 
 function reg_user(req, res, next) {
-
     var uid = uuidv1();
     var username = req.body.username;
     var password = bcrypt.hashSync(req.body.password, salt);
     var phone = req.body.phone;
     var region = req.body.region;
     var country = req.body.country;
-
     pool.query(sql_query.query.add_user, [uid, username, password, phone, region, country], (err, data) => {
         if (err) {
             console.error("Error in adding user", err);

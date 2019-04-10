@@ -1,141 +1,122 @@
 <!DOCTYPE html>
 <html>
-  <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-		<title>Stuff Sharing</title>
+    <title>Stuff Sharing</title>
 
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-		<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-		<!-- Custom styles for this template-->
-		<link href="stylesheets/index.css" rel="stylesheet">
-  </head>
-	<body id="page-top">
-		<%- include navbar.ejs %>
-
-		<div id="wrapper">
-			<%- include sidebar.ejs %>
-
-			<div id="content-wrapper">
-				<div class="container-fluid">
-					<%- include name.ejs %>
-
-					<div class="card mb-3">
-						<div class="card-header">
-							<span style="color: Tomato;">
-  								<i class="fas fa-igloo"></i> &nbsp; Basic Information
-							</span>
-						</div>
-						<form method="post" action="/delete_lent">
-							<div class="card-body">
-								<div class="form-group row">
-									<label for="stuffname" class="col-sm-2 col-form-label"><b>Name:</b></label>
-									<div class="col-sm-4">
-										<input type="text" required="required" readonly class="form-control-plaintext" id="stuffname" value="<%= tbl[0].stuffname %>" name="stuffname">
-									</div>
-									<div class="col-sm-4">
-										<input type="hidden" id="uid" value="<%= tbl[0].uid %>" name="uid">
-									</div>
-
-								</div>
-								<div class="form-group row">
-                                    <label for="pickuptime" class="col-sm-2 col-form-label"><b>Pick Up Time:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="pickuptime" value="<%= tbl[0].pickuptime %>" name="pickuptime">
-                                    </div>
-                                    <label for="returntime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="returntime" value="<%= tbl[0].returntime %>" name="returntime">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="pickuplocation" class="col-sm-2 col-form-label"><b>Pick Up Location:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="pickuplocation" value="<%= tbl[0].pickuplocation %>" name="pickuplocation">
-                                    </div>
-                                    <label for="returnlocation" class="col-sm-2 col-form-label"><b>Return Location:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="returnlocation" value="<%= tbl[0].returnlocation %>" name="returnlocation">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="description" class="col-sm-2 col-form-label"><b>Description:</b></label>
-                                    <div class="col-sm-10">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="description" value="<%= tbl[0].summary %>" name="description">
-                                    </div>
-                                </div>
-							</div>
-							<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Delete</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= delete_msg %></span></div>
-						</form>
-					</div>
-
-					<div class="card mb-3">
-                        <div class="card-header">
-                            <span style="color: Tomato;">
-                                <i class="fas fa-key"></i> &nbsp; Update Information
-                            </span>
-                        </div>
-                        <form method="post" action="/updateLent">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="pickUpTime" class="col-sm-2 col-form-label"><b>Pick Up Time:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" class="form-control" id="pickUpTime" placeholder="YYYYMMDD HH:MM:SS AM/PM" name="pickUpTime">
-                                    </div>
-                                    <label for="returnTime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" class="form-control" id="returnTime" placeholder="YYYYMMDD HH:MM:SS AM/PM" name="returnTime">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="pickUpLocation" class="col-sm-2 col-form-label"><b>Pick Up Location:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" class="form-control" id="pickUpLocation" placeholder="East/West/South/South-East/Central" name="pickUpLocation">
-                                    </div>
-                                    <label for="returnLocation" class="col-sm-2 col-form-label"><b>Return Location:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" class="form-control" id="returnLocation" placeholder="East/West/South/South-East/Central" name="returnLocation">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="description" class="col-sm-2 col-form-label"><b>Description:</b></label>
-                                    <div class="col-sm-10">
-                                        <input type="text" required="required" class="form-control" id="description" placeholder="Describe the stuff" name="description">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-4">
-                                        <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
-                                    </div>
-                                </div>
+    <!-- Custom styles for this template-->
+    <link href="stylesheets/index.css" rel="stylesheet">
+</head>
+<body id="page-top">
+<%- include navbar.ejs %>
+<div id="wrapper">
+    <%- include sidebar.ejs %>
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <%- include name.ejs %>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <span style="color: Tomato;">
+                        <i class="fas fa-igloo"></i> &nbsp; Basic Information
+                    </span>
+                </div>
+                <form method="post" action="/delete_lent">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="stuffname" class="col-sm-2 col-form-label"><b>Name:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="stuffname" value="<%= tbl[0].stuffname %>" name="stuffname">
                             </div>
-                            <div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Update</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= update_msg %></span></div>
-                        </form>
-                    </div>
-
-					<div class="card mb-3">
-                        <div class="card-header">
-                            <span style="color: Tomato;">
-                                <i class="fas fa-key"></i> &nbsp; Accept the bid and lend the stuff
-                            </span>
                         </div>
-                        <form method="post" action="/accept">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="bid" class="col-sm-2 col-form-label"><b>Current Bid:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="bid" value="<%= bid %>" name="bid">
-                                    </div>
-                                    <label for="uid" class="col-sm-2 col-form-label"><b>Bid by:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext" id="user" value="<%= user %>" name="user">
-                                    </div>
-                                </div>
+                        <div class="form-group row">
+                            <label for="pickuptime" class="col-sm-2 col-form-label"><b>Pick Up Time:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="pickuptime" value="<%= tbl[0].pickuptime %>" name="pickuptime">
+                            </div>
+                            <label for="returntime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="returntime" value="<%= tbl[0].returntime %>" name="returntime">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="pickuplocation" class="col-sm-2 col-form-label"><b>Pick Up Location:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="pickuplocation" value="<%= tbl[0].pickuplocation %>" name="pickuplocation">
+                            </div>
+                            <label for="returnlocation" class="col-sm-2 col-form-label"><b>Return Location:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="returnlocation" value="<%= tbl[0].returnlocation %>" name="returnlocation">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label"><b>Description:</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="description" value="<%= tbl[0].summary %>" name="description">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted">
+                        <button type="submit" class="btn btn-secondary">Delete</button> &nbsp;&nbsp;&nbsp; <span
+                                class="badge badge-pill badge-info"><%= delete_msg %></span></div>
+                </form>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <span style="color: Tomato;">
+                        <i class="fas fa-key"></i> &nbsp; Update Information
+                    </span>
+                </div>
+                <form method="post" action="/updateLent">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="pickUpTime" class="col-sm-2 col-form-label"><b>Pick Up Time:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" class="form-control" id="pickUpTime"
+                                       placeholder="YYYYMMDD HH:MM:SS AM/PM" name="pickUpTime">
+                            </div>
+                            <label for="returnTime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" class="form-control" id="returnTime"
+                                       placeholder="YYYYMMDD HH:MM:SS AM/PM" name="returnTime">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="pickUpLocation" class="col-sm-2 col-form-label"><b>Pick Up Location:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" class="form-control" id="pickUpLocation"
+                                       placeholder="East/West/South/South-East/Central" name="pickUpLocation">
+                            </div>
+                            <label for="returnLocation" class="col-sm-2 col-form-label"><b>Return Location:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" class="form-control" id="returnLocation"
+                                       placeholder="East/West/South/South-East/Central" name="returnLocation">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label"><b>Description:</b></label>
+                            <div class="col-sm-10">
+                                <input type="text" required="required" class="form-control" id="description"
+                                       placeholder="Describe the stuff" name="description">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
                             </div>
                             <div class="card-body">
                                 <div class="form-group row">
@@ -147,13 +128,44 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Accept</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= accept_msg %></span></div>
-                        </form>
+                        </div>
                     </div>
-				</div>
-			</div>
-		</div>
-
-		<%- include bottomscript.ejs %>
-  </body>
+                    <div class="card-footer small text-muted">
+                        <button type="submit" class="btn btn-secondary">Update</button> &nbsp;&nbsp;&nbsp; <span
+                                class="badge badge-pill badge-info"><%= update_msg %></span></div>
+                </form>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <span style="color: Tomato;">
+                        <i class="fas fa-key"></i> &nbsp; Accept the bid and lend the stuff
+                    </span>
+                </div>
+                <form method="post" action="/accept">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="bid" class="col-sm-2 col-form-label"><b>Current Bid:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="bid"
+                                       value="<%= bid %>" name="bid">
+                            </div>
+                            <label for="uid" class="col-sm-2 col-form-label"><b>Bid by:</b></label>
+                            <div class="col-sm-4">
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="user"
+                                       value="<%= user %>" name="user">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted">
+                        <button type="submit" class="btn btn-secondary">Accept</button> &nbsp;&nbsp;&nbsp; <span
+                                class="badge badge-pill badge-info"><%= accept_msg %></span></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include bottomscript.ejs %>
+</body>
 </html>

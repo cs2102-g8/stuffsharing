@@ -1,148 +1,149 @@
 <!DOCTYPE html>
 <html>
-  <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-		<title>Stuff Sharing</title>
+    <title>Stuff Sharing</title>
 
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-		<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-		<!-- Custom styles for this template-->
-		<link href="stylesheets/index.css" rel="stylesheet">
-  </head>
-	<body id="page-top">
-		<%- include navbar.ejs %>
-
-		<div id="wrapper">
-			<% if(auth) { %>
-				<%- include sidebar.ejs %>
-			<% } %>
-
-			<div id="content-wrapper">
-				<div class="container-fluid">
-					<div class="card mb-3">
-						<div class="card-header">
+    <!-- Custom styles for this template-->
+    <link href="stylesheets/index.css" rel="stylesheet">
+</head>
+<body id="page-top">
+<%- include navbar.ejs %>
+<div id="wrapper">
+    <% if(auth) { %>
+        <%- include sidebar.ejs %>
+    <% } %>
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <div class="card mb-3">
+                <div class="card-header">
 							<span style="color: #e0a800;">
-								<i class="fas fa-dollar-sign"></i> <%= tbl[0].stuffname%>
+								<i class="fas fa-dollar-sign"></i> <%= tbl[0].stuffname %>
 							</span>&nbsp;
-						</div>
-						<div class="card-body">
-							Lender: <%= tbl[0].username%><br/>
-							Pickup Location: <%= tbl[0].pickuplocation%><br/>
-							Return Location: <%= tbl[0].returnlocation%><br/>
-							Next Minimum Bid: <%= tbl[0].nextminimumbid%><br/>
+                </div>
+                <div class="card-body">
+                    Lender: <%= tbl[0].username %><br/>
+                    Pickup Location: <%= tbl[0].pickuplocation %><br/>
+                    Return Location: <%= tbl[0].returnlocation %><br/>
+                    Next Minimum Bid: <%= tbl[0].nextminimumbid %><br/>
+                    <br/>
+                    <%= tbl[0].summary %><br/>
+                    <!--							<div class="table-responsive">-->
+                    <!--								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
+                    <!--									<thead>-->
+                    <!--									<tr>-->
+                    <!--										<th>Lender</th>-->
+                    <!--										<th>Next Minimum Bid</th>-->
+                    <!--										<th>Pickup Location</th>-->
+                    <!--										<th>Return Location</th>-->
+                    <!--									</tr>-->
+                    <!--									</thead>-->
+                    <!--									<tbody>-->
+                    <!--									<tr>-->
+                    <!--										<td><%= tbl[0].username %></td>-->
+                    <!--										<td><%= tbl[0].nextminimumbid %></td>-->
+                    <!--										<td><%= tbl[0].pickuplocation %></td>-->
+                    <!--										<td><%= tbl[0].returnlocation %></td>-->
 
-							<br/>
-							<%= tbl[0].summary%><br/>
-<!--							<div class="table-responsive">-->
-<!--								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
-<!--									<thead>-->
-<!--									<tr>-->
-<!--										<th>Lender</th>-->
-<!--										<th>Next Minimum Bid</th>-->
-<!--										<th>Pickup Location</th>-->
-<!--										<th>Return Location</th>-->
-<!--									</tr>-->
-<!--									</thead>-->
-<!--									<tbody>-->
-<!--									<tr>-->
-<!--										<td><%= tbl[0].username%></td>-->
-<!--										<td><%= tbl[0].nextminimumbid%></td>-->
-<!--										<td><%= tbl[0].pickuplocation%></td>-->
-<!--										<td><%= tbl[0].returnlocation%></td>-->
+                    <!--									</tr>-->
+                    <!--									</tbody>-->
+                    <!--								</table>-->
+                    <!--							</div>-->
+                    <form method="post" action="/bids">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="bid" class="col-sm-2 col-form-label"><b>Bid:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" class="form-control" id="bidValue"
+                                           placeholder="Bid Amount" name="bidValue">
+                                    <button type="submit" class="btn btn-secondary">Submit Bid</button>
+                                    <br/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
+                                </div>
+                            </div>
+                            Your bid has to be higher than the next minimum bid!
+                        </div>
+                        <!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Submit Bid</button> &nbsp;&nbsp;&nbsp; </div>-->
+                    </form>
+                    <% if(ctx2 != 0){ %>
 
-<!--									</tr>-->
-<!--									</tbody>-->
-<!--								</table>-->
-<!--							</div>-->
-							<form method="post" action="/bids">
-											<div class="card-body">
-												<div class="form-group row">
-												<label for="bid" class="col-sm-2 col-form-label"><b>Bid:</b></label>
-													<div class="col-sm-4">
-														<input type="text" required="required" class="form-control" id="bidValue" placeholder="Bid Amount" name="bidValue">
-														<button type="submit" class="btn btn-secondary">Submit Bid</button><br/>
-													</div>
-													<div class="col-sm-4">
-                                                        <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
-                                                    </div>
-												</div>
-												Your bid has to be higher than the next minimum bid!
-											</div>
-<!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Submit Bid</button> &nbsp;&nbsp;&nbsp; </div>-->
-							</form>
-                            <% if(ctx2 != 0){ %>
-
-                                <form method="post" action="/cancelBid">
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                        <label for="bid" class="col-sm-2 col-form-label"><b>Your current bid is:</b></label>
-                                            <div class="col-sm-4">
-                                                <input type="text" required="required" readonly class="form-control-plaintext" id="bidValue" value="<%=  tbl2[0].bid %>" name="bidValue">
-                                                <button type="submit" class="btn btn-secondary">Cancel Bid</button><br/>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <input type="hidden" id="sid" value="<%= tbl2[0].sid %>" name="sid">
-                                                <input type="hidden" id="uid" value="<%= tbl2[0].uid %>" name="uid">
-                                            </div>
-                                        </div>
-                                        Are you sure you would like to cancel your bid?
+                        <form method="post" action="/cancelBid">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="bid" class="col-sm-2 col-form-label"><b>Your current bid is:</b></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" required="required" readonly class="form-control-plaintext"
+                                               id="bidValue" value="<%= tbl2[0].bid %>" name="bidValue">
+                                        <button type="submit" class="btn btn-secondary">Cancel Bid</button>
+                                        <br/>
                                     </div>
-<!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Cancel Bid/button> &nbsp;&nbsp;&nbsp; </div>-->
-                                </form>
-                            <% } %>
-						</div>
-						<div class="card-footer small text-muted">Stuff Sharing</div>
-					</div>
-					<div class="card mb-3">
-                        <div class="card-header">
+                                    <div class="col-sm-4">
+                                        <input type="hidden" id="sid" value="<%= tbl2[0].sid %>" name="sid">
+                                        <input type="hidden" id="uid" value="<%= tbl2[0].uid %>" name="uid">
+                                    </div>
+                                </div>
+                                Are you sure you would like to cancel your bid?
+                            </div>
+                            <!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Cancel Bid/button> &nbsp;&nbsp;&nbsp; </div>-->
+                        </form>
+                    <% } %>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
                             <span style="color: #dc3545">
                                 <i class="fas fa-anchor"></i> Comments of This Item
                             </span>&nbsp;
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>User</th>
-                                        <th>Post Time</th>
-                                        <th>Comment</th>
-                                        <th>Rating</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <% for(var i=0; i<tbl3.length; i++) { %>
-                                        <tr>
-                                            <td>
-                                                <% if(tbl3[i].username == user) { %>
-                                                    <a class="view-profile" href="/dashboard">
-                                                        <%= tbl3[i].username%>
-                                                <% } else { %>
-                                                    <a class="view-profile" href="/profile?user=<%= tbl3[i].username%>">
-                                                        <%= tbl3[i].username%>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Post Time</th>
+                                <th>Comment</th>
+                                <th>Rating</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(var i = 0; i < tbl3.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <% if(tbl3[i].username == user) { %>
+                                        <a class="view-profile" href="/dashboard">
+                                            <%= tbl3[i].username %>
+                                            <% } else { %>
+                                            <a class="view-profile" href="/profile?user=<%= tbl3[i].username %>">
+                                                <%= tbl3[i].username %>
                                                 <% } %>
-                                            </td>
-                                            <td><%= tbl3[i].updatetime%></td>
-                                            <td><%= tbl3[i].comment%></td>
-                                            <td><%= tbl3[i].rating%></td>
-                                        </tr>
-                                    <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer small text-muted">Stuff Sharing</div>
+                                    </td>
+                                    <td><%= tbl3[i].updatetime %></td>
+                                    <td><%= tbl3[i].comment %></td>
+                                    <td><%= tbl3[i].rating %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
                     </div>
-				</div>
-			</div>
-		</div>
-
-		<%- include bottomscript.ejs %>
-  </body>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include bottomscript.ejs %>
+</body>
 </html>

@@ -1,74 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-	<title>Stuff Sharing</title>
+    <title>Stuff Sharing</title>
 
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-	<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-	<!-- Custom styles for this template-->
-	<link href="stylesheets/index.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="stylesheets/index.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <%- include navbar.ejs %>
-
 <div id="wrapper">
-	<% if(auth) { %>
-		<%- include sidebar.ejs %>
-	<% } %>
-
-	<div id="content-wrapper">
-		<div class="container-fluid">
-			<div class="card mb-3">
-				<div class="card-header">
+    <% if(auth) { %>
+        <%- include sidebar.ejs %>
+    <% } %>
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <div class="card mb-3">
+                <div class="card-header">
 							<span style="color: #ab27B0;">
 								<i class="fas fa-trophy"></i> Leaderboard
 							</span>&nbsp;
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-							<thead>
-							<tr>
-								<th>Name</th>
-								<th>Score</th>
-							</tr>
-							</thead>
-							<tbody>
-							<% for(var i=0; i<tbl.length; i++) { %>
-								<tr>
-								    <% if(uidInfo == tbl[i].uid){ %>
-									    <h1><td>
-											<a class="view-profile" href="/dashboard %>">
-												<%= tbl[i].username%>
-									    </td></h1>
-									<% } else{ %>
-										<h1><td>
-											<a class="view-profile" href="/profile?user=<%= tbl[i].username%>">
-												<%= tbl[i].username%>
-										</td></h1>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Score</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(var i = 0; i < tbl.length; i++) { %>
+                                <tr>
+                                    <% if(uidInfo == tbl[i].uid){ %>
+                                        <h1>
+                                            <td>
+                                                <a class="view-profile" href="/dashboard %>">
+                                                    <%= tbl[i].username %>
+                                            </td>
+                                        </h1>
+                                    <% } else{ %>
+                                        <h1>
+                                            <td>
+                                                <a class="view-profile" href="/profile?user=<%= tbl[i].username %>">
+                                                    <%= tbl[i].username %>
+                                            </td>
+                                        </h1>
                                     <% } %>
-									<td><%= tbl[i].score%></td>
-								</tr>
-							<% } %>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="card-footer small text-muted">Stuff Sharing</div>
-			</div>
-
-			<br>
-			<br>
-
-		</div>
-	</div>
+                                    <td><%= tbl[i].score %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
 </div>
 <%- include bottomscript.ejs %>
 </body>
