@@ -65,7 +65,7 @@ sql.query = {
 	update_lent: 'UPDATE Descriptions SET pickUpTime=$2, returnTime=$3, pickUpLocation=$4, returnLocation=$5, summary=$6 WHERE sid=$1',
 
 	//Find Highest Bid
-	find_max_bid: 'SELECT * FROM Bids WHERE sid = $1 ORDER BY bid DESC LIMIT 1',
+	find_max_bid: 'SELECT * FROM Bids NATURAL JOIN Users WHERE sid = $1 ORDER BY bid DESC LIMIT 1',
 
 	//Accept
 	accept: 'INSERT INTO Borrows(uid, sid) VALUES ($1, $2)',

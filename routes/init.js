@@ -398,7 +398,7 @@ function bidding(req, res, next) {
 }
 
 function lentDetails(req, res, next) {
-    var ctx = 0, avg = 0, tbl, bid, uid;
+    var ctx = 0, tbl, bid, user;
     var sid = req.query.sid;
 
     pool.query(sql_query.query.details, [sid], (err, data) => {
@@ -419,10 +419,10 @@ function lentDetails(req, res, next) {
                 res.redirect('/lentDetails?detail=fail');
             } else if (!data.rows || data.rows.length == 0) {
                 bid = 'No Bid';
-                uid = 'None';
+                user = 'None';
             } else {
                 bid = data.rows[0].bid;
-                uid = data.rows[0].uid;
+                user = data.rows[0].username;
             }
 
             if (req.isAuthenticated()) {
@@ -431,7 +431,7 @@ function lentDetails(req, res, next) {
                     auth: true,
                     tbl: tbl,
                     bid: bid,
-                    uid: uid,
+                    user: user,
                     ctx: ctx,
                     delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'),
                     accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting'),
