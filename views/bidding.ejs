@@ -121,10 +121,10 @@
                                         <tr>
                                             <td>
                                                 <% if(tbl3[i].username == user) { %>
-                                                    <a class="view-profile" href="/dashboard" type="submit">
+                                                    <a class="view-profile" href="/dashboard">
                                                         <%= tbl3[i].username%>
                                                 <% } else { %>
-                                                    <a class="view-profile" href="/profile?user=<%= tbl3[i].username%>" type="submit">
+                                                    <a class="view-profile" href="/profile?user=<%= tbl3[i].username%>">
                                                         <%= tbl3[i].username%>
                                                 <% } %>
                                             </td>

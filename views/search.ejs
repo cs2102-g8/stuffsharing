@@ -47,15 +47,15 @@
 									<% for(var i=0; i<tbl.length; i++) { %>
 										<tr>
 											<td>
-												<a class="view-stuff" href="/bidding?stuff=<%= tbl[i].sid %>" type="submit">
+												<a class="view-stuff" href="/bidding?stuff=<%= tbl[i].sid %>">
 													<%= tbl[i].stuffname %>
 											</td>
 											<td>
 												<% if(tbl[i].username == user) { %>
-													<a class="view-profile" href="/dashboard" type="submit">
+													<a class="view-profile" href="/dashboard">
 														<%= tbl[i].username%>
 												<% } else { %>
-													<a class="view-profile" href="/profile?user=<%= tbl[i].username%>" type="submit">
+													<a class="view-profile" href="/profile?user=<%= tbl[i].username%>">
 														<%= tbl[i].username%>
 												<% } %>
 											</td>

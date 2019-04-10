@@ -45,12 +45,12 @@
 								<tr>
 								    <% if(uidInfo == tbl[i].uid){ %>
 									    <h1><td>
-											<a class="view-profile" href="/dashboard %>" type="submit">
+											<a class="view-profile" href="/dashboard %>">
 												<%= tbl[i].username%>
 									    </td></h1>
 									<% } else{ %>
 										<h1><td>
-											<a class="view-profile" href="/profile?user=<%= tbl[i].username%>" type="submit">
+											<a class="view-profile" href="/profile?user=<%= tbl[i].username%>">
 												<%= tbl[i].username%>
 										</td></h1>
                                     <% } %>
