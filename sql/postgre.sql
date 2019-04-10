@@ -127,8 +127,8 @@ create table Belongs(
 	sid varchar(100),
 	categoryName varchar(100),
 	primary key (sid, categoryName),
-	foreign key (sid) references Stuffs(sid),
-	foreign key (categoryName) references Categories(categoryName)
+	foreign key (sid) references Stuffs(sid) on delete cascade,
+	foreign key (categoryName) references Categories(categoryName) on delete cascade
 );
 
 
