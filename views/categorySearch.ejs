@@ -26,12 +26,11 @@
             <div class="container-fluid">
                 <div class="card mb-3">
                     <div class="card-header">
-							<span style="color: #00B7FF;">
-				                <i class="fas fa-shopping-basket"></i>
-			                </span>
+                        <span style="color: #00B7FF;">
+                            <i class="fas fa-shopping-basket"></i> <%= category %>
+                        </span>
                     </div>
                     <div class="card-body">
-                        <b>Stuff Listing</b><br/>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -52,7 +51,7 @@
                                         </td>
                                         <td>
                                             <% if(tbl[i].username == user) { %>
-                                            <a class="view-profile" href="/dashboard" type="submit">
+                                            <a class="view-profile" href="/dashboard">
                                                 <%= tbl[i].username%>
                                                 <% } else { %>
                                                 <a class="view-profile" href="/profile?user=<%= tbl[i].username%>">
@@ -67,7 +66,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <br/>
+                    </div>
+                    <div class="card-footer small text-muted">Stuff Sharing</div>
+                </div>
+            </div>
+        </div>
 </div>
 <%- include bottomscript.ejs %>
 </body>
