@@ -2,7 +2,7 @@ drop table if exists Users cascade;
 drop table if exists Areas cascade;
 drop table if exists Earns cascade;
 drop table if exists Badges cascade;
-drop table if exists WriteComplaints cascade;
+drop table if exists Feedbacks cascade;
 drop table if exists Borrowers cascade;
 drop table if exists Lenders cascade;
 drop table if exists Stuffs cascade;
@@ -43,12 +43,12 @@ create table Earns(
 	foreign key (badgeName) references Badges(badgeName)
 );
 
-create table WriteComplaints (
-	cid	varchar(100),
-	complaint varchar(1000) not null,
+create table Feedbacks (
+	fid	varchar(100),
+	feedback varchar(1000) not null,
 	dateTime timestamp not null,
 	uid varchar(100),
-	primary key(cid),
+	primary key(fid),
 	foreign key (uid) references Users(uid)
 );
 
@@ -247,11 +247,11 @@ insert into Earns(uid, badgeName) values ('C30003', 'Resourceful Badge');
 insert into Earns(uid, badgeName) values ('C30003', 'Experienced Badge');
 insert into Earns(uid, badgeName) values ('J00000', 'Credit Badge');
 
-insert into writeComplaints(cid, complaint, dateTime, uid) values (0, 'Lousy website', '20190101 10:00:00 AM', 'A10001');
-insert into writeComplaints(cid, complaint, dateTime, uid) values (1, 'Rubbish', '20180102 08:00:00 PM', 'B20002');
-insert into writeComplaints(cid, complaint, dateTime, uid) values (2, 'Please work harder', '20180908 10:50:33 AM', 'C30003');
-insert into writeComplaints(cid, complaint, dateTime, uid) values (3, 'HAHA', '20190304 01:22:33 PM', 'D40004');
-insert into writeComplaints(cid, complaint, dateTime, uid) values (4, 'I can do better than you', '20181202 03:04:05 AM', 'E50005');
+insert into Feedbacks(fid, feedback, dateTime, uid) values (0, 'Lousy website', '20190101 10:00:00 AM', 'A10001');
+insert into Feedbacks(fid, feedback, dateTime, uid) values (1, 'Rubbish', '20180102 08:00:00 PM', 'B20002');
+insert into Feedbacks(fid, feedback, dateTime, uid) values (2, 'Please work harder', '20180908 10:50:33 AM', 'C30003');
+insert into Feedbacks(fid, feedback, dateTime, uid) values (3, 'HAHA', '20190304 01:22:33 PM', 'D40004');
+insert into Feedbacks(fid, feedback, dateTime, uid) values (4, 'I can do better than you', '20181202 03:04:05 AM', 'E50005');
 
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('00', 'Old Textbook', 0);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('01', 'Formal attire', 50);

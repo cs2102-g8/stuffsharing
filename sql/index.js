@@ -8,9 +8,9 @@ sql.query = {
     update_info: 'UPDATE Users SET phone=$2, region=$3, country=$4 WHERE username=$1',
     update_pass: 'UPDATE Users SET password=$2 WHERE username=$1',
 
-    // Complaints
+    // Feedback
     findUid: 'select uid from Users WHERE lower(username) LIKE lower($1)',
-    write_complaints: 'INSERT INTO writeComplaints (cid, complaint, dateTime, uid) VALUES ($1,$2,$3,$4)',
+    submit_feedback: 'INSERT INTO Feedbacks (fid, feedback, dateTime, uid) VALUES ($1,$2,$3,$4)',
 
     // Login
     userpass: 'SELECT * FROM Users WHERE username=$1',

@@ -27,7 +27,7 @@ function initRouter(app) {
     app.get('/discover', passport.authMiddleware(), discover);
     app.get('/lentstuff', passport.authMiddleware(), lentstuff);
     app.get('/categories', passport.authMiddleware(), categories);
-    app.get('/complain', passport.authMiddleware(), complain);
+    app.get('/feedback', passport.authMiddleware(), feedback);
     app.get('/register', passport.antiMiddleware(), register);
     app.get('/password', passport.antiMiddleware(), retrieve);
     app.get('/lentDetails', passport.authMiddleware(), lentDetails);
@@ -37,7 +37,7 @@ function initRouter(app) {
     /* PROTECTED POST */
     app.post('/update_info', passport.authMiddleware(), update_info);
     app.post('/update_pass', passport.authMiddleware(), update_pass);
-    app.post('/complain_file', passport.authMiddleware(), complain_file);
+    app.post('/submit_feedback', passport.authMiddleware(), submit_feedback);
     app.post('/lendNewStuff', passport.authMiddleware(), lend);
     app.post('/delete_lent', passport.authMiddleware(), deleteLent);
     app.post('/accept', passport.authMiddleware(), accept);
@@ -486,10 +486,10 @@ function submitComment(req, res, next) {
     });
 }
 
-function complain(req, res, next) {
-    basic(req, res, 'complain', {
-        info_msg: msg(req, 'info', 'Complaint successfully sent', 'Error in submitting complaint'),
-        pass_msg: msg(req, 'pass', 'Complaint has been received.', 'Error in uploading complaint'),
+function feedback(req, res, next) {
+    basic(req, res, 'feedback', {
+        info_msg: msg(req, 'info', 'Feedback successfully submitted', 'Error in submitting feedback'),
+        pass_msg: msg(req, 'pass', 'Feedback has been received.', 'Error in uploading feedback'),
         auth: true
     });
 }
@@ -533,18 +533,18 @@ function update_pass(req, res, next) {
     });
 }
 
-function complain_file(req, res, next) {
-    var cid = uuidv1();
+function submit_feedback(req, res, next) {
+    var fid = uuidv1();
     var username = req.user.username;
-    var complain = req.body.complain;
+    var feedback = req.body.feedback;
     var dateTime = new Date();
     pool.query(sql_query.query.findUid, [username], (err, data) => {
-        pool.query(sql_query.query.write_complaints, [cid, complain, dateTime, data.rows[0].uid], (err, data) => {
+        pool.query(sql_query.query.submit_feedback, [fid, feedback, dateTime, data.rows[0].uid], (err, data) => {
             if (err) {
-                console.error("Error in submitting complain");
-                res.redirect('/complain?pass=fail');
+                console.error("Error in submitting feedback");
+                res.redirect('/feedback?pass=fail');
             } else {
-                res.redirect('/complain?pass=pass');
+                res.redirect('/feedback?pass=pass');
             }
         });
     });
