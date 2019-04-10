@@ -30,7 +30,7 @@ function initRouter(app) {
     app.get('/feedback', passport.authMiddleware(), feedback);
     app.get('/register', passport.antiMiddleware(), register);
     app.get('/password', passport.antiMiddleware(), retrieve);
-    app.get('/lentDetails', passport.authMiddleware(), lentDetails);
+    app.get('/manageStuff', passport.authMiddleware(), manageStuff);
     app.get('/comment', passport.authMiddleware(), comment);
     app.get('/profile', passport.authMiddleware(), profile);
 
@@ -320,7 +320,7 @@ function stuff(req, res, next) {
     var sid;
     pool.query(sql_query.query.match_stuff, [req.user.username, req.query.sid], (err, data) => {
         if (data.rows.length > 0) {
-            res.redirect('/lentDetails?sid=' + req.query.sid);
+            res.redirect('/manageStuff?sid=' + req.query.sid);
         }
         pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
             uid = data.rows[0].uid;
@@ -375,13 +375,13 @@ function stuff(req, res, next) {
     });
 }
 
-function lentDetails(req, res, next) {
+function manageStuff(req, res, next) {
     var ctx = 0, tbl, bid, user, uid;
     var sid = req.query.sid;
     pool.query(sql_query.query.details, [sid], (err, data) => {
         if (err) {
             console.error(err);
-            res.redirect('/lentDetails?detail=fail');
+            res.redirect('/manageStuff?detail=fail');
         } else if (!data.rows || data.rows.length == 0) {
             ctx = 0;
             tbl = [];
@@ -392,7 +392,7 @@ function lentDetails(req, res, next) {
         pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
             if (err) {
                 console.error(err);
-                res.redirect('/lentDetails?detail=fail');
+                res.redirect('/manageStuff?detail=fail');
             } else if (!data.rows || data.rows.length == 0) {
                 bid = 'No Bid';
                 user = 'None';
@@ -403,8 +403,8 @@ function lentDetails(req, res, next) {
                 uid = data.rows[0].uid;
             }
             if (req.isAuthenticated()) {
-                basic(req, res, 'lentDetails', {
-                    page: 'lentDetails',
+                basic(req, res, 'manageStuff', {
+                    page: 'manageStuff',
                     auth: true,
                     tbl: tbl,
                     bid: bid,
