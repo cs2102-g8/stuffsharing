@@ -85,8 +85,19 @@
 							<tbody>
 							<% for(var i=0; i<tbl1.length; i++) { %>
 								<tr>
-									<td><%= tbl1[i].stuffname%></td>
-									<td><%= tbl1[i].username%></td>
+									<td>
+										<a class="view-stuff" href="/bidding?stuff=<%= tbl1[i].sid %>">
+											<%= tbl1[i].stuffname %>
+									</td>
+									<td>
+										<% if(tbl1[i].username == user) { %>
+											<a class="view-profile" href="/dashboard">
+												<%= tbl1[i].username%>
+										<% } else { %>
+											<a class="view-profile" href="/profile?user=<%= tbl1[i].username%>">
+												<%= tbl1[i].username%>
+										<% } %>
+									</td>
 									<td><%= tbl1[i].nextminimumbid%></td>
 									<td><%= tbl1[i].pickuptime%></td>
                                     <td><%= tbl1[i].pickuplocation%></td>
@@ -135,7 +146,10 @@
 							<tbody>
 							<% for(var i=0; i<tbl3.length; i++) { %>
 								<tr>
-									<td><%= tbl3[i].stuffname%></td>
+									<td>
+										<a class="view-stuff" href="/bidding?stuff=<%= tbl3[i].sid %>">
+											<%= tbl3[i].stuffname %>
+									</td>
 									<td><%= tbl3[i].pickuptime%></td>
 									<td><%= tbl3[i].returntime%></td>
 									<td><%= tbl3[i].pickuplocation%></td>
