@@ -26,22 +26,20 @@
             <div class="card mb-3">
                 <div class="card-header">
 					<span style="color: #e83e8c;">
-						<i class="fas fa-comment"></i>  File A Complain
+						<i class="fas fa-comment"></i>  Feedback
 					</span> &nbsp;
                 </div>
                 <form method="post" action="/complain_file">
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="complain" class="col-sm-2 col-form-label"><b>Write Your Complain
-                                    here:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" class="form-control" id="complain"
-                                       placeholder="Write Complain here" name="complain" value="">
+                                       placeholder="Write feedback here..." name="complain" value="">
                             </div>
                         </div>
                     </div>
                     <div class="card-footer small text-muted">
-                        <button type="submit" class="btn btn-secondary">Submit Complain</button> &nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-secondary">Submit Feedback</button> &nbsp;&nbsp;&nbsp;
                         <span class="badge badge-pill badge-info"><%= info_msg %></span></div>
                 </form>
             </div>
