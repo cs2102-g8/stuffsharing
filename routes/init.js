@@ -682,9 +682,7 @@ function cancelBid(req, res, next) {
                 });
             });
         });
-
     });
-
 }
 
 function reg_user(req, res, next) {
