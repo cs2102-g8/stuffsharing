@@ -50,7 +50,7 @@ sql.query = {
     locate_stuff: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE sid=$1',
 
     // Comment
-    commentList: 'SELECT * FROM Comments NATURAL JOIN Users WHERE sid = $1',
+    commentList: 'SELECT * FROM Comments NATURAL JOIN Users NATURAL JOIN Stuffs WHERE sid = $1',
 
     // Submit comment
     submit_comment: 'insert into Comments(comment, updateTime, uid, sid, rating) values ($1, $2, $3, $4, $5)',

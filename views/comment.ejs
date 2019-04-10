@@ -24,10 +24,16 @@
     <% } %>
     <div id="content-wrapper">
         <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <i class="fas fa-box-open fa-fw"></i>
+                    <%= tbl[0].stuffname %>
+                </li>
+            </ol>
             <div class="card mb-3">
                 <div class="card-header">
                     <span style="color: #dc3545">
-                        <i class="fas fa-anchor"></i> Comments of This Item
+                        <i class="fas fa-comment"></i> Comments
                     </span>&nbsp;
                 </div>
                 <div class="card-body">
@@ -59,7 +65,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <span style="color: Tomato;">
-                        <i class="fas fa-key"></i> &nbsp; Write Your Comment
+                        <i class="fas fa-pen"></i> &nbsp; Write Your Comment
                     </span>
                 </div>
                 <form method="post" action="/submitComment">
@@ -78,14 +84,8 @@
                                        placeholder="Write your comment here" name="comment">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-4">
-                                <input type="hidden" id="sid" value="<%= sid %>" name="sid">
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="hidden" id="uid" value="<%= uid %>" name="uid">
-                            </div>
-                        </div>
+                        <input type="hidden" id="sid" value="<%= sid %>" name="sid">
+                        <input type="hidden" id="uid" value="<%= uid %>" name="uid">
                     </div>
                     <div class="card-footer small text-muted">
                         <button type="submit" class="btn btn-secondary">Submit Comment</button> &nbsp;&nbsp;&nbsp; <span
