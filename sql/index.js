@@ -46,8 +46,8 @@ sql.query = {
     // Information
     page_lims: 'SELECT * FROM Users ORDER BY ranking ASC LIMIT 10 OFFSET $1',
 
-    // Bidding
-    bidding: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE sid=$1',
+    // Stuff Page
+    locate_stuff: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE sid=$1',
 
     // Comment
     commentList: 'SELECT * FROM Comments NATURAL JOIN Users WHERE sid = $1',

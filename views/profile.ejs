@@ -84,7 +84,7 @@
                             <% for(var i = 0; i < tbl1.length; i++) { %>
                                 <tr>
                                     <td>
-                                        <a class="view-stuff" href="/bidding?stuff=<%= tbl1[i].sid %>">
+                                        <a class="view-stuff" href="/stuff?sid=<%= tbl1[i].sid %>">
                                             <%= tbl1[i].stuffname %>
                                     </td>
                                     <td>
@@ -147,7 +147,7 @@
                             <% for(var i = 0; i < tbl3.length; i++) { %>
                                 <tr>
                                     <td>
-                                        <a class="view-stuff" href="/bidding?stuff=<%= tbl3[i].sid %>">
+                                        <a class="view-stuff" href="/stuff?sid=<%= tbl3[i].sid %>">
                                             <%= tbl3[i].stuffname %>
                                     </td>
                                     <td><%= tbl3[i].pickuptime %></td>

@@ -17,7 +17,7 @@ function initRouter(app) {
     /* GET */
     app.get('/', index);
     app.get('/search', search);
-    app.get('/bidding', bidding);
+    app.get('/stuff', stuff);
     app.get('/categorySearch', categorySearch);
     app.get('/leaderboard', leaderboard);
 
@@ -314,17 +314,17 @@ function categorySearch(req, res, next) {
     });
 }
 
-function bidding(req, res, next) {
+function stuff(req, res, next) {
     var ctx = 0, ctx2 = 0, ctx3 = 0, tbl, tbl2, tbl3;
     var uid;
     var sid;
-    pool.query(sql_query.query.match_stuff, [req.user.username, req.query.stuff], (err, data) => {
+    pool.query(sql_query.query.match_stuff, [req.user.username, req.query.sid], (err, data) => {
         if (data.rows.length > 0) {
-            res.redirect('/lentDetails?sid=' + req.query.stuff);
+            res.redirect('/lentDetails?sid=' + req.query.sid);
         }
         pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
             uid = data.rows[0].uid;
-            pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
+            pool.query(sql_query.query.locate_stuff, [req.query.sid], (err, data) => {
                 if (err || !data.rows || data.rows.length == 0) {
                     ctx = 0;
                     tbl = [];
@@ -337,7 +337,7 @@ function bidding(req, res, next) {
                 pool.query(sql_query.query.user_bid, [uid, sid], (err, data) => {
                     if (err) {
                         console.error("Error in bidding");
-                        res.redirect('/bidding?bidding=fail');
+                        res.redirect('/stuff?bidding=fail');
                     } else if (!data.rows || data.rows.length == 0) {
                         ctx2 = 0;
                         tbl2 = [];
@@ -354,8 +354,8 @@ function bidding(req, res, next) {
                             tbl3 = data.rows;
                         }
                         if (req.isAuthenticated()) {
-                            basic(req, res, 'bidding', {
-                                page: 'bidding',
+                            basic(req, res, 'stuff', {
+                                page: 'stuff',
                                 auth: true,
                                 tbl: tbl,
                                 tbl2: tbl2,
