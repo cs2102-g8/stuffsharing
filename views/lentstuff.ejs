@@ -25,41 +25,6 @@
 
 			<div id="content-wrapper">
 				<div class="container-fluid">
-					<div class="card mb-3">
-						<div class="card-header">
-							<span style="color: #dc3545">
-								<i class="fas fa-anchor"></i> Lent Item: you have accepted the bid
-							</span>&nbsp;
-						</div>
-						<div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Pickup Time</th>
-                                        <th>Return Time</th>
-                                        <th>Pickup Location</th>
-                                        <th>Return Location</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <% for(var i=0; i<tbl2.length; i++) { %>
-                                        <tr>
-                                            <td><%= tbl2[i].stuffname%></td>
-                                            <td><%= tbl2[i].pickuptime%></td>
-                                            <td><%= tbl2[i].returntime%></td>
-                                            <td><%= tbl2[i].pickuplocation%></td>
-                                            <td><%= tbl2[i].returnlocation%></td>
-                                        </tr>
-                                    <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer small text-muted">Stuff Sharing</div>
-                    </div>
-
                     <div class="card mb-3">
                         <div class="card-header">
                             <span style="color: #dc3545">

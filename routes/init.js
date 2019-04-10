@@ -133,7 +133,7 @@ function search(req, res, next) {
 }
 
 function dashboard(req, res, next) {
-	var ctx1 = 0, ctx2 = 0, avg = 0, tbl1, tbl2;
+	var ctx1 = 0, ctx2 = 0, ctx3 = 0, tbl1, tbl2, tbl3;
 	pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
 		var uid = data.rows[0].uid;
 		pool.query(sql_query.query.borrowed, [uid], (err, data) => {
@@ -157,17 +157,27 @@ function dashboard(req, res, next) {
 					ctx2 = data.rows.length;
 					tbl2 = data.rows;
 				}
-				if(req.isAuthenticated()) {
-					basic(req, res, 'dashboard', { page: 'dashboard', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2 });
-				}
+				pool.query(sql_query.query.lent, [uid], (err, data) => {
+					if (err){
+						console.error("Error in update info");
+					} else if(!data.rows || data.rows.length == 0) {
+						ctx3 = 0;
+						tbl3 = [];
+					} else {
+						ctx3 = data.rows.length;
+						tbl3 = data.rows;
+					}
+					if(req.isAuthenticated()) {
+						basic(req, res, 'dashboard', { page: 'dashboard', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2, tbl3: tbl3, ctx3: ctx3 });
+					}
+				});
 			});
 		});
 	});
 }
 
 function profile(req, res, next) {
-	var ctx1 = 0, ctx2 = 0, avg = 0, tbl1, tbl2;
-	console.log(req.query.user);
+	var ctx1 = 0, ctx2 = 0, ctx3 = 0, tbl1, tbl2, tbl3;
 	pool.query(sql_query.query.findUid, [req.query.user], (err, data) => {
 		var uid = data.rows[0].uid;
 		pool.query(sql_query.query.borrowed, [uid], (err, data) => {
@@ -191,9 +201,20 @@ function profile(req, res, next) {
 					ctx2 = data.rows.length;
 					tbl2 = data.rows;
 				}
-				if(req.isAuthenticated()) {
-					basic(req, res, 'profile', { page: 'profile', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2 });
-				}
+				pool.query(sql_query.query.lent, [uid], (err, data) => {
+					if (err){
+						console.error("Error in update info");
+					} else if(!data.rows || data.rows.length == 0) {
+						ctx3 = 0;
+						tbl3 = [];
+					} else {
+						ctx3 = data.rows.length;
+						tbl3 = data.rows;
+					}
+					if(req.isAuthenticated()) {
+						basic(req, res, 'profile', { page: 'profile', auth: true, tbl1: tbl1, ctx1: ctx1, tbl2: tbl2, ctx2: ctx2, tbl3: tbl3, ctx3: ctx3, user:req.query.user });
+					}
+				});
 			});
 		});
 	});
@@ -234,34 +255,26 @@ function lentstuff(req, res, next) {
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         uid = data.rows[0].uid;
         pool.query(sql_query.query.lending, [uid], (err, data) => {
-            if (err){
-                console.error("Error in update info");
-                res.redirect('/lentstuff?update=fail');
-            } else if(!data.rows || data.rows.length == 0) {
-                ctx = 0;
-                tbl = [];
-            } else {
-                ctx = data.rows.length;
-                tbl = data.rows;
-            }
-
-        pool.query(sql_query.query.lent, [uid], (err, data) => {
-            if (err){
-                console.error("Error in update info");
-                res.redirect('/lentstuff?update=fail');
-            } else if(!data.rows || data.rows.length == 0) {
-                ctx2 = 0;
-                tbl2 = [];
-            } else {
-                ctx2 = data.rows.length;
-                tbl2 = data.rows;
-            }
-
-            if(req.isAuthenticated()) {
-                basic(req, res, 'lentstuff', { page: 'lentstuff', auth: true, tbl: tbl, tbl2: tbl2, ctx: ctx, ctx2: ctx2, lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')});
-            }
-            });
-        });
+			if (err) {
+				console.error("Error in update info");
+				res.redirect('/lentstuff?update=fail');
+			} else if (!data.rows || data.rows.length == 0) {
+				ctx = 0;
+				tbl = [];
+			} else {
+				ctx = data.rows.length;
+				tbl = data.rows;
+			}
+			if (req.isAuthenticated()) {
+				basic(req, res, 'lentstuff', {
+					page: 'lentstuff',
+					auth: true,
+					tbl: tbl,
+					ctx: ctx,
+					lend_msg: msg(req, 'lend', 'Lend stuff successfully', 'Error in stuff information')
+				});
+			}
+		});
     });
 }
 
