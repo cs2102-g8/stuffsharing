@@ -88,6 +88,9 @@ sql.query = {
 
     //Replace bid
     replace_bid: 'UPDATE Stuffs SET nextminimumbid=$2 WHERE sid=$1',
+
+	// Find if Stuff belongs to User
+	match_stuff: 'SELECT * FROM Users NATURAL JOIN Lends WHERE lower(username) = $1 AND sid = $2'
 }
 
 

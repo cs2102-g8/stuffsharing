@@ -340,60 +340,61 @@ function bidding(req, res, next) {
     var ctx = 0, ctx2 = 0, ctx3 = 0, avg = 0, tbl, tbl2, tbl3;
     var uid;
     var sid;
-    if (err) {
-        res.redirect('/lentDetails?sid=' + req.query.stuff);
-    }
-    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
-        uid = data.rows[0].uid;
-        pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
-            if (err || !data.rows || data.rows.length == 0) {
-                ctx = 0;
-                tbl = [];
-                sid = 0;
-            } else {
-                ctx = data.rows.length;
-                tbl = data.rows;
-                sid = data.rows[0].sid;
-            }
-            pool.query(sql_query.query.user_bid, [uid, sid], (err, data) => {
-                if (err) {
-                    console.error("Error in bidding");
-                    res.redirect('/bidding?bidding=fail');
-                } else if (!data.rows || data.rows.length == 0) {
-                    ctx2 = 0;
-                    tbl2 = [];
+    pool.query(sql_query.query.match_stuff, [req.user.username, req.query.stuff], (err, data) => {
+        if (data.rows.length > 0) {
+            res.redirect('/lentDetails?sid=' + req.query.stuff);
+        }
+        pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+            uid = data.rows[0].uid;
+            pool.query(sql_query.query.bidding, [req.query.stuff], (err, data) => {
+                if (err || !data.rows || data.rows.length == 0) {
+                    ctx = 0;
+                    tbl = [];
+                    sid = 0;
                 } else {
-                    ctx2 = data.rows.length;
-                    tbl2 = data.rows;
+                    ctx = data.rows.length;
+                    tbl = data.rows;
+                    sid = data.rows[0].sid;
                 }
-                pool.query(sql_query.query.commentList, [sid], (err, data) => {
-                    if (err || !data.rows || data.rows.length == 0) {
-                        ctx3 = 0;
-                        tbl3 = [];
+                pool.query(sql_query.query.user_bid, [uid, sid], (err, data) => {
+                    if (err) {
+                        console.error("Error in bidding");
+                        res.redirect('/bidding?bidding=fail');
+                    } else if (!data.rows || data.rows.length == 0) {
+                        ctx2 = 0;
+                        tbl2 = [];
                     } else {
-                        ctx3 = data.rows.length;
-                        tbl3 = data.rows;
+                        ctx2 = data.rows.length;
+                        tbl2 = data.rows;
                     }
-                    if (req.isAuthenticated()) {
-                        basic(req, res, 'bidding', {
-                            page: 'bidding',
-                            auth: true,
-                            tbl: tbl,
-                            tbl2: tbl2,
-                            tbl3: tbl3,
-                            ctx: ctx,
-                            ctx2: ctx2,
-                            ctx3: ctx3,
-                            sid: sid,
-                            user: req.user.username,
-                            lend_msg: msg(req, 'bid', 'Bid stuff successfully', 'Error in stuff information')
-                        });
-                    }
+                    pool.query(sql_query.query.commentList, [sid], (err, data) => {
+                        if (err || !data.rows || data.rows.length == 0) {
+                            ctx3 = 0;
+                            tbl3 = [];
+                        } else {
+                            ctx3 = data.rows.length;
+                            tbl3 = data.rows;
+                        }
+                        if (req.isAuthenticated()) {
+                            basic(req, res, 'bidding', {
+                                page: 'bidding',
+                                auth: true,
+                                tbl: tbl,
+                                tbl2: tbl2,
+                                tbl3: tbl3,
+                                ctx: ctx,
+                                ctx2: ctx2,
+                                ctx3: ctx3,
+                                sid: sid,
+                                user: req.user.username,
+                                lend_msg: msg(req, 'bid', 'Bid stuff successfully', 'Error in stuff information')
+                            });
+                        }
+                    });
                 });
             });
         });
     });
-
 }
 
 function lentDetails(req, res, next) {
