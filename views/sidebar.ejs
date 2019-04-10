@@ -1,19 +1,19 @@
 <!-- Sidebar -->
 <ul class="sidebar navbar-nav">
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link <%= page === "dashboard" ? "active" : "" %>"
            href="<%= page === "dashboard" ? "#" : "/dashboard" %>">
 			<span style="color:  yellowgreen;">
 				<i class="fas fa-fw fa-address-card"></i>
 			</span>
-            <span>Dashboard</span></a>
+            <span class="ml-2">Dashboard</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "lentstuff" ? "active" : "" %>"
            href="<%= page === "lentstuff" ? "#" : "/lentstuff" %>">
                 <span style="color: #dc3545">
-					<i class="fas fa-anchor"></i>
+					<i class="fas fa-truck-moving"></i>
 				</span>&nbsp;
             <span>Lend Stuff</span></a>
     </li>
@@ -23,7 +23,7 @@
     		<span style="color: #ab27B0">
     			<i class="fas fa-trophy"></i>
     		</span>
-            <span>Leaderboard</span></a>
+            <span class="ml-2">Leaderboard</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "discover" ? "active" : "" %>"
@@ -31,7 +31,7 @@
 			<span style="color: Yellow;">
 				<i class="fas fa-globe"></i>
 			</span>
-            <span>Discover Stuff</span></a>
+            <span class="ml-2">Discover Stuff</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "categories" ? "active" : "" %>"
@@ -39,7 +39,7 @@
 			<span style="color: #00B7FF;">
 				<i class="fas fa-shopping-basket"></i>
 			</span>
-            <span>Stuff Categories</span></a>
+            <span class="ml-2">Stuff Categories</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "complain" ? "active" : "" %>"
@@ -47,13 +47,13 @@
 			<span style="color: #e83e8c;">
 				<i class="fas fa-comment"></i>
 			</span>
-            <span>Contact Us</span></a>
+            <span class="ml-2">Contact Us</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link <%= page === "update" ? "active" : "" %>" href="<%= page === "update" ? "#" : "/update" %>">
 			<span style="color: Tomato;">
 				<i class="fas fa-igloo"></i>
 			</span>
-            <span>Account Settings</span></a>
+            <span class="ml-2">Account Settings</span></a>
     </li>
 </ul>
