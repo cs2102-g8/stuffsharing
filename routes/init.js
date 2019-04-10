@@ -148,6 +148,7 @@ function dashboard(req, res, next) {
                         basic(req, res, 'dashboard', {
                             page: 'dashboard',
                             auth: true,
+                            user: req.user.username,
                             tbl1: tbl1,
                             ctx1: ctx1,
                             tbl2: tbl2,
