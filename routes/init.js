@@ -420,7 +420,6 @@ function manageStuff(req, res, next) {
     });
 }
 
-
 function leaderboard(req, res, next) {
     var ctx = 0, tbl;
     var uidInfo;
@@ -440,7 +439,6 @@ function leaderboard(req, res, next) {
         });
     });
 }
-
 
 function comment(req, res, next) {
     var ctx = 0, tbl, uid;
@@ -659,7 +657,6 @@ function bids(req, res, next) {
 }
 
 function cancelBid(req, res, next) {
-    var bid = req.body.bidValue;
     var username = req.user.username;
     var sid = req.body.sid;
     var uid;
@@ -668,9 +665,10 @@ function cancelBid(req, res, next) {
         uid = data.rows[0].uid;
         pool.query(sql_query.query.cancelBid, [uid, sid], (err, data) => {
             pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
-                highest_bid = data.rows[0].bid;
-                if (highest_bid == undefined) {
+                if (data.rows.length == 0) {
                     highest_bid = 0;
+                } else {
+                    highest_bid = data.rows[0].bid;
                 }
                 pool.query(sql_query.query.replace_bid, [sid, highest_bid], (err, data) => {
                     if (err) {
