@@ -94,7 +94,7 @@ function index(req, res, next) {
 }
 
 function search(req, res, next) {
-    var ctx = 0, avg = 0, tbl;
+    var ctx = 0, tbl;
     pool.query(sql_query.query.search_stuff, [req.query.query], (err, data) => {
         if (err || !data.rows || data.rows.length == 0) {
             ctx = 0;
@@ -259,7 +259,7 @@ function discover(req, res, next) {
 }
 
 function lentstuff(req, res, next) {
-    var ctx = 0, ctx2 = 0, avg = 0, tbl, tbl2;
+    var ctx = 0, tbl;
     var uid;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         uid = data.rows[0].uid;
@@ -315,7 +315,7 @@ function categorySearch(req, res, next) {
 }
 
 function bidding(req, res, next) {
-    var ctx = 0, ctx2 = 0, ctx3 = 0, avg = 0, tbl, tbl2, tbl3;
+    var ctx = 0, ctx2 = 0, ctx3 = 0, tbl, tbl2, tbl3;
     var uid;
     var sid;
     pool.query(sql_query.query.match_stuff, [req.user.username, req.query.stuff], (err, data) => {
@@ -422,7 +422,7 @@ function lentDetails(req, res, next) {
 
 
 function leaderboard(req, res, next) {
-    var ctx = 0, avg = 0, tbl;
+    var ctx = 0, tbl;
     var uidInfo;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         uidInfo = data.rows[0].uid;
@@ -443,7 +443,7 @@ function leaderboard(req, res, next) {
 
 
 function comment(req, res, next) {
-    var ctx = 0, avg = 0, tbl, uid;
+    var ctx = 0, tbl, uid;
     var sid = req.query.sid, username = req.user.username;
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         uid = data.rows[0].uid;
@@ -469,7 +469,6 @@ function comment(req, res, next) {
         });
     });
 }
-
 
 function submitComment(req, res, next) {
     var comment = req.body.comment;
