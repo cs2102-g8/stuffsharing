@@ -128,8 +128,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Accept</button> &nbsp;&nbsp;&nbsp; <span class="badge badge-pill badge-info"><%= accept_msg %></span></div>
-                        </form>
+                        </div>
                     </div>
                     <div class="card-footer small text-muted">
                         <button type="submit" class="btn btn-secondary">Update</button> &nbsp;&nbsp;&nbsp; <span
@@ -147,12 +146,14 @@
                         <div class="form-group row">
                             <label for="bid" class="col-sm-2 col-form-label"><b>Current Bid:</b></label>
                             <div class="col-sm-4">
-                                <input type="text" required="required" readonly class="form-control-plaintext" id="bid"
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="bid"
                                        value="<%= bid %>" name="bid">
                             </div>
                             <label for="uid" class="col-sm-2 col-form-label"><b>Bid by:</b></label>
                             <div class="col-sm-4">
-                                <input type="text" required="required" readonly class="form-control-plaintext" id="user"
+                                <input type="text" required="required" readonly class="form-control-plaintext"
+                                       id="user"
                                        value="<%= user %>" name="user">
                             </div>
                         </div>
