@@ -17,8 +17,8 @@ sql.query = {
 
     // Search
     search: 'SELECT * FROM Stuffs WHERE sid = $1',
-    search_stuff: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE lower(stuffName) LIKE lower($1) OR lower(username) LIKE lower($1) OR lower(categoryName) like lower($1)',
-    categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1',
+    search_stuff: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE NOT EXISTS (SELECT 1 FROM Borrows WHERE sid = Stuffs.sid) AND (lower(stuffName) LIKE lower($1) OR lower(username) LIKE lower($1) OR lower(categoryName) like lower($1))',
+    categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE NOT EXISTS (SELECT 1 FROM Borrows WHERE sid = Stuffs.sid) AND categoryName=$1',
 
     // Discover
     discover: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE NOT EXISTS (SELECT 1 FROM Borrows WHERE sid = Stuffs.sid) AND Descriptions.pickUpLocation = (SELECT region FROM Users WHERE username = $1) OR Descriptions.returnLocation = (SELECT region FROM Users WHERE username = $1)',
