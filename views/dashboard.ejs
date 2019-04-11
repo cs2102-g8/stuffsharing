@@ -67,8 +67,8 @@
                                 <th>Name</th>
                                 <th>Lender</th>
                                 <th>Price</th>
-                                <th>Pick Up Time</th>
-                                <th>Pick Up Location</th>
+                                <th>Pickup Time</th>
+                                <th>Pickup Location</th>
                                 <th>Return Time</th>
                                 <th>Return Location</th>
                                 <th>Comment</th>
@@ -91,9 +91,9 @@
                                         <% } %>
                                     </td>
                                     <td><%= tbl1[i].nextminimumbid %></td>
-                                    <td><%= tbl1[i].pickuptime %></td>
+                                    <td><%= tbl1[i].pickuptime.toLocaleString() %></td>
                                     <td><%= tbl1[i].pickuplocation %></td>
-                                    <td><%= tbl1[i].returntime %></td>
+                                    <td><%= tbl1[i].returntime.toLocaleString() %></td>
                                     <td><%= tbl1[i].returnlocation %></td>
                                     <td>
                                         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
@@ -132,8 +132,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Pickup Time</th>
-                                <th>Return Time</th>
                                 <th>Pickup Location</th>
+                                <th>Return Time</th>
                                 <th>Return Location</th>
                             </tr>
                             </thead>
@@ -144,9 +144,9 @@
                                         <a class="view-stuff" href="/stuff?sid=<%= tbl3[i].sid %>">
                                             <%= tbl3[i].stuffname %>
                                     </td>
-                                    <td><%= tbl3[i].pickuptime %></td>
-                                    <td><%= tbl3[i].returntime %></td>
+                                    <td><%= tbl3[i].pickuptime.toLocaleString() %></td>
                                     <td><%= tbl3[i].pickuplocation %></td>
+                                    <td><%= tbl3[i].returntime.toLocaleString() %></td>
                                     <td><%= tbl3[i].returnlocation %></td>
                                 </tr>
                             <% } %>

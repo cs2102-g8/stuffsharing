@@ -39,19 +39,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickuptime" class="col-sm-2 col-form-label"><b>Pick Up Time:</b></label>
+                            <label for="pickuptime" class="col-sm-2 col-form-label"><b>Pickup Time:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" readonly class="form-control-plaintext"
-                                       id="pickuptime" value="<%= tbl[0].pickuptime %>" name="pickuptime">
+                                       id="pickuptime" value="<%= tbl[0].pickuptime.toLocaleString() %>" name="pickuptime">
                             </div>
                             <label for="returntime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" readonly class="form-control-plaintext"
-                                       id="returntime" value="<%= tbl[0].returntime %>" name="returntime">
+                                       id="returntime" value="<%= tbl[0].returntime.toLocaleString() %>" name="returntime">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickuplocation" class="col-sm-2 col-form-label"><b>Pick Up Location:</b></label>
+                            <label for="pickuplocation" class="col-sm-2 col-form-label"><b>Pickup Location:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" readonly class="form-control-plaintext"
                                        id="pickuplocation" value="<%= tbl[0].pickuplocation %>" name="pickuplocation">
@@ -85,7 +85,7 @@
                 <form method="post" action="/updateStuff">
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="pickUpTime" class="col-sm-2 col-form-label"><b>Pick Up Time:</b></label>
+                            <label for="pickUpTime" class="col-sm-2 col-form-label"><b>Pickup Time:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" class="form-control" id="pickUpTime"
                                        placeholder="YYYYMMDD HH:MM:SS AM/PM" name="pickUpTime">
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickUpLocation" class="col-sm-2 col-form-label"><b>Pick Up Location:</b></label>
+                            <label for="pickUpLocation" class="col-sm-2 col-form-label"><b>Pickup Location:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" class="form-control" id="pickUpLocation"
                                        placeholder="East/West/South/South-East/Central" name="pickUpLocation">
