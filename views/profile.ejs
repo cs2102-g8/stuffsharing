@@ -46,9 +46,21 @@
                             </thead>
                             <tbody>
                             <% for(var i = 0; i < tbl2.length; i++) { %>
-                                <% if ( tbl2[i].badgename == 'Credit Badge') { %>
+                                <% if (tbl2[i].badgename == 'Novice Lender') { %>
                                     <tr>
-                                        <td><i class="fas fa-mountain"></i> Credit Badge</td>
+                                        <td><i class="fas fa-certificate"></i> Novice Lender</td>
+                                    </tr>
+                                <% } else if (tbl2[i].badgename == 'Intermediate Lender') { %>
+                                    <tr>
+                                        <td><i class="fas fa-award"></i> Intermediate Lender</td>
+                                    </tr>
+                                <% } else if (tbl2[i].badgename == 'Expert Lender') { %>
+                                    <tr>
+                                        <td><i class="fas fa-medal"></i> Expert Lender</td>
+                                    </tr>
+                                <% } else if (tbl2[i].badgename == 'Star Lender') { %>
+                                    <tr>
+                                        <td><i class="fas fa-star"></i> Star Lender</td>
                                     </tr>
                                 <% } %>
                             <% } %>

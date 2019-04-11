@@ -190,29 +190,55 @@ after insert on Users
 for each row
 execute procedure addUserCheck();
 
-create or replace function lendsCheck() returns trigger as $$
+create or replace function lenderBadgesCheck() returns trigger as $$
 declare count numeric;
-declare count2 numeric;
 begin
 	select count(*) into count
     from Lends
     where new.uid = Lends.uid;
-
-   	select count(*) into count2
-   	from Earns
-   	where new.uid=Earns.uid and Earns.badgeName='Credit Badge';
-
-    if count >= 5 and count2 < 1 then
-        insert into Earns(uid, badgeName) values (new.uid, 'Credit Badge');
+    if count >= 1 and not exists (select 1 from Earns where badgeName = 'Novice Lender' and uid = new.uid) then
+        insert into Earns(uid, badgeName) values (new.uid, 'Novice Lender');
+    end if;
+    if count >= 3 and not exists (select 1 from Earns where badgeName = 'Intermediate Lender' and uid = new.uid) then
+        insert into Earns(uid, badgeName) values (new.uid, 'Intermediate Lender');
+    end if;
+    if count >= 5 and not exists (select 1 from Earns where badgeName = 'Expert Lender' and uid = new.uid) then
+        insert into Earns(uid, badgeName) values (new.uid, 'Expert Lender');
     end if;
     return new;
 end;
 $$ language plpgsql;
 
-create trigger addBadgesTrigger
+create trigger lenderBadgesTrigger
 after insert on Lends
 for each row
-execute procedure lendsCheck();
+execute procedure lenderBadgesCheck();
+
+create or replace function starBadgeCheck() returns trigger as $$
+declare count numeric;
+declare avg numeric;
+declare userx varchar(100);
+begin
+	select uid into userx
+	from (select Lends.uid as uid, Lends.sid as sid, rating from Comments join Lends on Comments.sid = Lends.sid join Users on Lends.uid = Users.uid) as A
+	where new.sid = sid;
+	select count(*) into count
+    from (select Lends.uid as uid, Lends.sid as sid, rating from Comments join Lends on Comments.sid = Lends.sid join Users on Lends.uid = Users.uid) as A
+    where uid = userx;
+    select avg(rating) into avg
+    from (select Lends.uid as uid, Lends.sid as sid, rating from Comments join Lends on Comments.sid = Lends.sid join Users on Lends.uid = Users.uid) as A
+    where uid = userx;
+    if count >= 5 and avg >= 4.5 and not exists (select 1 from Earns where badgeName = 'Star Lender' and uid = new.uid) then
+        insert into Earns(uid, badgeName) values (userx, 'Star Lender');
+    end if;
+    return new;
+end;
+$$ language plpgsql;
+
+create trigger starBadgeTrigger
+after insert on Comments
+for each row
+execute procedure starBadgeCheck();
 
 
 insert into Areas values('Central', 'Singapore');
@@ -232,19 +258,10 @@ insert into Users(uid, username, password, phone, region, country) values ('H800
 insert into Users(uid, username, password, phone, region, country) values ('I90009', 'Io', 'i90009', 89457342, 'West', 'Singapore');
 insert into Users(uid, username, password, phone, region, country) values ('J00000', 'Jack', 'j00000', 84387595, 'West', 'Singapore');
 
-insert into Badges(badgeName) values ('Credit Badge');
-insert into Badges(badgeName) values ('Friendly Badge');
-insert into Badges(badgeName) values ('Helpful Badge');
-insert into Badges(badgeName) values ('Resourceful Badge');
-insert into Badges(badgeName) values ('Experienced Badge');
-
-insert into Earns(uid, badgeName) values ('A10001', 'Helpful Badge');
-insert into Earns(uid, badgeName) values ('A10001', 'Friendly Badge');
-insert into Earns(uid, badgeName) values ('A10001', 'Experienced Badge');
-insert into Earns(uid, badgeName) values ('B20002', 'Helpful Badge');
-insert into Earns(uid, badgeName) values ('C30003', 'Resourceful Badge');
-insert into Earns(uid, badgeName) values ('C30003', 'Experienced Badge');
-insert into Earns(uid, badgeName) values ('J00000', 'Credit Badge');
+insert into Badges(badgeName) values ('Novice Lender');
+insert into Badges(badgeName) values ('Intermediate Lender');
+insert into Badges(badgeName) values ('Expert Lender');
+insert into Badges(badgeName) values ('Star Lender');
 
 insert into Feedbacks(fid, feedback, dateTime, uid) values (0, 'Lousy website', '20190101 10:00:00 AM', 'A10001');
 insert into Feedbacks(fid, feedback, dateTime, uid) values (1, 'Rubbish', '20180102 08:00:00 PM', 'B20002');
@@ -349,8 +366,10 @@ insert into Comments(comment, updateTime, uid, sid, rating) values ('Although it
 insert into Comments(comment, updateTime, uid, sid, rating) values ('Although it was a bit old but I am quite satisfied with its quality.', '20181010 07:00:00 PM', 'G70007', '08', 4);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('Why are you so angry? Although the screen is broken, it can still be used, right?', '20181010 07:00:00 PM', 'H80008', '09', 1);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('The box was very bad. But your attitude was very good.', '20180707 11:00:00 AM', 'F60006', '10', 4);
-insert into Comments(comment, updateTime, uid, sid, rating) values ('This is my bike! How dare you are!', '20181212 11:00:00 AM', 'J00000', '11', 1);
-insert into Comments(comment, updateTime, uid, sid, rating) values ('I think this cup does not belong to you.', '20181111 11:00:00 AM', 'I90009', '12', 1);
+insert into Comments(comment, updateTime, uid, sid, rating) values ('This is my bike! How dare you are!', '20181212 11:00:00 AM', 'J00000', '11', 5);
+insert into Comments(comment, updateTime, uid, sid, rating) values ('I think this cup does not belong to you.', '20181111 11:00:00 AM', 'I90009', '12', 5);
+insert into Comments(comment, updateTime, uid, sid, rating) values ('I think this cup does not belong to you.', '20181111 11:01:00 AM', 'I90009', '12', 5);
+insert into Comments(comment, updateTime, uid, sid, rating) values ('I think this cup does not belong to you.', '20181111 11:02:00 AM', 'I90009', '12', 5);
 
 insert into Categories(categoryName) values ('Electronics');
 insert into Categories(categoryName) values ('Clothing');
