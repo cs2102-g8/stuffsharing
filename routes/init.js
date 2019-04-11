@@ -412,7 +412,7 @@ function manageStuff(req, res, next) {
                 if (err) {
                     console.error(err);
                     res.redirect('/manageStuff?detail=fail');
-                } else if (!data.rows || data.rows.length == 0) {
+                } else if (!data.rows || data.rows.length == 1) {
                     bid = 'No Bid';
                     user = 'None';
                     uid = 'None';
