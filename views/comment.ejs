@@ -37,35 +37,39 @@
                     </span>&nbsp;
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Comment</th>
-                                <th>Rating</th>
-                                <th>Posted</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% for(var i = 0; i < tbl.length; i++) { %>
+                    <% if (tbl.length == 0) { %>
+                        <h5>There are no comments for this item.</h5>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
                                 <tr>
-                                    <td><%= tbl[i].username %></td>
-                                    <td><%= tbl[i].comment %></td>
-                                    <td><%= tbl[i].rating %> / 5</td>
-                                    <td><%= tbl[i].updatetime.toLocaleString() %></td>
+                                    <th>User</th>
+                                    <th>Comment</th>
+                                    <th>Rating</th>
+                                    <th>Posted</th>
                                 </tr>
-                            <% } %>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < tbl.length; i++) { %>
+                                    <tr>
+                                        <td><%= tbl[i].username %></td>
+                                        <td><%= tbl[i].comment %></td>
+                                        <td><%= tbl[i].rating %> / 5</td>
+                                        <td><%= tbl[i].updatetime.toLocaleString() %></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
             </div>
             <div class="card mb-3">
                 <div class="card-header">
                     <span style="color: Tomato;">
-                        <i class="fas fa-pen"></i> &nbsp; Write Your Comment
+                        <i class="fas fa-pen"></i> &nbsp; Add New Comment
                     </span>
                 </div>
                 <form method="post" action="/submitComment">
@@ -74,7 +78,7 @@
                             <label for="nextMinimumBid" class="col-sm-2 col-form-label"><b>Rating:</b></label>
                             <div class="col-sm-4">
                                 <input type="text" required="required" class="form-control" id="rating"
-                                       placeholder="1 for Very Bad; 5 for Very Good" name="rating">
+                                       placeholder="Stars out of 5" name="rating">
                             </div>
                         </div>
                         <div class="form-group row">

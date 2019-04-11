@@ -32,41 +32,45 @@
                         </span>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Lender</th>
-                                <th>Next Minimum Bid</th>
-                                <th>Pickup Location</th>
-                                <th>Return Location</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% for(var i = 0; i < tbl.length; i++) { %>
+                    <% if (tbl.length == 0) { %>
+                        <h5>There are no items of this category.</h5>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        <a class="view-stuff" href="/stuff?sid=<%= tbl[i].sid %>">
-                                            <%= tbl[i].stuffname %>
-                                    </td>
-                                    <td>
-                                        <% if(tbl[i].username == user) { %>
-                                            <a class="view-profile" href="/dashboard">
-                                                <%= tbl[i].username %>
-                                        <% } else { %>
-                                            <a class="view-profile" href="/profile?user=<%= tbl[i].username %>">
-                                                <%= tbl[i].username %>
-                                        <% } %>
-                                    </td>
-                                    <td><%= tbl[i].nextminimumbid %></td>
-                                    <td><%= tbl[i].pickuplocation %></td>
-                                    <td><%= tbl[i].returnlocation %></td>
+                                    <th>Name</th>
+                                    <th>Lender</th>
+                                    <th>Next Minimum Bid</th>
+                                    <th>Pickup Location</th>
+                                    <th>Return Location</th>
                                 </tr>
-                            <% } %>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < tbl.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <a class="view-stuff" href="/stuff?sid=<%= tbl[i].sid %>">
+                                                <%= tbl[i].stuffname %>
+                                        </td>
+                                        <td>
+                                            <% if(tbl[i].username == user) { %>
+                                                <a class="view-profile" href="/dashboard">
+                                                    <%= tbl[i].username %>
+                                            <% } else { %>
+                                                <a class="view-profile" href="/profile?user=<%= tbl[i].username %>">
+                                                    <%= tbl[i].username %>
+                                            <% } %>
+                                        </td>
+                                        <td><%= tbl[i].nextminimumbid %></td>
+                                        <td><%= tbl[i].pickuplocation %></td>
+                                        <td><%= tbl[i].returnlocation %></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
             </div>

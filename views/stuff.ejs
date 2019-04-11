@@ -27,7 +27,7 @@
             <div class="card mb-3">
                 <div class="card-header">
 							<span style="color: #e0a800;">
-								<i class="fas fa-dollar-sign"></i> <%= tbl[0].stuffname %>
+								<i class="fas fa-box-open"></i> <%= tbl[0].stuffname %>
 							</span>&nbsp;
                 </div>
                 <div class="card-body">
@@ -84,41 +84,45 @@
             </div>
             <div class="card mb-3">
                 <div class="card-header">
-                            <span style="color: #dc3545">
-                                <i class="fas fa-anchor"></i> Comments
-                            </span>&nbsp;
+                    <span style="color: #dc3545">
+                        <i class="fas fa-comment"></i> Comments
+                    </span>&nbsp;
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Comment</th>
-                                <th>Rating</th>
-                                <th>Posted</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% for(var i = 0; i < tbl3.length; i++) { %>
+                    <% if (tbl3.length == 0) { %>
+                        <h5>There are no comments for this item.</h5>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        <% if(tbl3[i].username == user) { %>
-                                        <a class="view-profile" href="/dashboard">
-                                            <%= tbl3[i].username %>
-                                            <% } else { %>
-                                            <a class="view-profile" href="/profile?user=<%= tbl3[i].username %>">
-                                                <%= tbl3[i].username %>
-                                                <% } %>
-                                    </td>
-                                    <td><%= tbl3[i].comment %></td>
-                                    <td><%= tbl3[i].rating %> / 5</td>
-                                    <td><%= tbl3[i].updatetime.toLocaleString() %></td>
+                                    <th>User</th>
+                                    <th>Comment</th>
+                                    <th>Rating</th>
+                                    <th>Posted</th>
                                 </tr>
-                            <% } %>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < tbl3.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <% if(tbl3[i].username == user) { %>
+                                            <a class="view-profile" href="/dashboard">
+                                                <%= tbl3[i].username %>
+                                                <% } else { %>
+                                                <a class="view-profile" href="/profile?user=<%= tbl3[i].username %>">
+                                                    <%= tbl3[i].username %>
+                                                    <% } %>
+                                        </td>
+                                        <td><%= tbl3[i].comment %></td>
+                                        <td><%= tbl3[i].rating %> / 5</td>
+                                        <td><%= tbl3[i].updatetime.toLocaleString() %></td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
                 </div>
                 <div class="card-footer small text-muted">
                     <form action="/comment">

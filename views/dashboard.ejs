@@ -32,24 +32,73 @@
 					</span>&nbsp;
                 </div>
                 <div class="card-body">
-                    <% for(var i = 0; i < tbl2.length; i++) { %>
-                        <% if (tbl2[i].badgename == 'Novice Lender') { %>
-                            <i class="fas fa-certificate"></i> Novice Lender
-                            <br/>
-                        <% } else if (tbl2[i].badgename == 'Intermediate Lender') { %>
-                            <i class="fas fa-award"></i> Intermediate Lender
-                            <br/>
-                        <% } else if (tbl2[i].badgename == 'Expert Lender') { %>
-                            <i class="fas fa-medal"></i> Expert Lender
-                            <br/>
-                        <% } else if (tbl2[i].badgename == 'Star Lender') { %>
-                            <i class="fas fa-star"></i> Star Lender
-                            <br/>
+                    <% if (tbl2.length == 0) { %>
+                        <h5>You have not earned any badges.</h5>
+                    <% } else { %>
+                        <% for(var i = 0; i < tbl2.length; i++) { %>
+                            <% if (tbl2[i].badgename == 'Novice Lender') { %>
+                                <i class="fas fa-certificate"></i> Novice Lender
+                                <br/>
+                            <% } else if (tbl2[i].badgename == 'Intermediate Lender') { %>
+                                <i class="fas fa-award"></i> Intermediate Lender
+                                <br/>
+                            <% } else if (tbl2[i].badgename == 'Expert Lender') { %>
+                                <i class="fas fa-medal"></i> Expert Lender
+                                <br/>
+                            <% } else if (tbl2[i].badgename == 'Star Lender') { %>
+                                <i class="fas fa-star"></i> Star Lender
+                                <br/>
+                            <% } %>
                         <% } %>
                     <% } %>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
             </div>
+<!--            <div class="card mb-3">-->
+<!--                <div class="card-header">-->
+<!--					<span style="color: yellowgreen;">-->
+<!--						<i class="fas fa-fw fa-tags"></i> Pending Bids-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <div class="table-responsive">-->
+<!--                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Name</th>-->
+<!--                                <th>Lender</th>-->
+<!--                                <th>Comments</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <% for(var i = 0; i < tbl1.length; i++) { %>-->
+<!--                                <tr>-->
+<!--                                    <td>-->
+<!--                                        <a class="view-stuff" href="/stuff?sid=<%= tbl1[i].sid %>">-->
+<!--                                            <%= tbl1[i].stuffname %>-->
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <% if(tbl1[i].username == user) { %>-->
+<!--                                        <a class="view-profile" href="/dashboard">-->
+<!--                                            <%= tbl1[i].username %>-->
+<!--                                            <% } else { %>-->
+<!--                                            <a class="view-profile" href="/profile?user=<%= tbl1[i].username %>">-->
+<!--                                                <%= tbl1[i].username %>-->
+<!--                                                <% } %>-->
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <form action="/comment">-->
+<!--                                            <input type="hidden" id="sid" value="<%= tbl1[0].sid %>" name="sid">-->
+<!--                                            <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>-->
+<!--                                        </form>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            <% } %>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="card-footer small text-muted">Stuff Sharing</div>-->
+<!--            </div>-->
             <div class="card mb-3">
                 <div class="card-header">
 					<span style="color: yellowgreen;">
@@ -57,40 +106,44 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Lender</th>
-                                <th>Comments</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% for(var i = 0; i < tbl1.length; i++) { %>
+                        <% if (tbl1.length == 0) { %>
+                            <h5>You have not borrowed any stuff.</h5>
+                        <% } else { %>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        <a class="view-stuff" href="/stuff?sid=<%= tbl1[i].sid %>">
-                                            <%= tbl1[i].stuffname %>
-                                    </td>
-                                    <td>
-                                        <% if(tbl1[i].username == user) { %>
-                                            <a class="view-profile" href="/dashboard">
-                                                <%= tbl1[i].username %>
-                                        <% } else { %>
-                                            <a class="view-profile" href="/profile?user=<%= tbl1[i].username %>">
-                                                <%= tbl1[i].username %>
-                                        <% } %>
-                                    </td>
-                                    <td>
-                                        <form action="/comment">
-                                            <input type="hidden" id="sid" value="<%= tbl1[0].sid %>" name="sid">
-                                            <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
-                                        </form>
-                                    </td>
+                                    <th>Name</th>
+                                    <th>Lender</th>
+                                    <th>Comments</th>
                                 </tr>
-                            <% } %>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < tbl1.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <a class="view-stuff" href="/stuff?sid=<%= tbl1[i].sid %>">
+                                                <%= tbl1[i].stuffname %>
+                                        </td>
+                                        <td>
+                                            <% if(tbl1[i].username == user) { %>
+                                                <a class="view-profile" href="/dashboard">
+                                                    <%= tbl1[i].username %>
+                                            <% } else { %>
+                                                <a class="view-profile" href="/profile?user=<%= tbl1[i].username %>">
+                                                    <%= tbl1[i].username %>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <form action="/comment">
+                                                <input type="hidden" id="sid" value="<%= tbl1[0].sid %>" name="sid">
+                                                <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        <% } %>
                     </div>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
@@ -103,35 +156,39 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Borrower</th>
-                                <th>Comments</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% for(var i = 0; i < tbl3.length; i++) { %>
+                        <% if (tbl3.length == 0) { %>
+                            <h5>You have not lent any stuff.</h5>
+                        <% } else { %>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
                                 <tr>
-                                    <td>
-                                        <a class="view-stuff" href="/stuff?sid=<%= tbl3[i].sid %>">
-                                            <%= tbl3[i].stuffname %>
-                                    </td>
-                                    <td>
-                                        <a class="view-profile" href="/profile?user=<%= tbl3[i].name %>">
-                                            <%= tbl3[i].name %>
-                                    </td>
-                                    <td>
-                                        <form action="/comment">
-                                            <input type="hidden" id="sid" value="<%= tbl3[0].sid %>" name="sid">
-                                            <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
-                                        </form>
-                                    </td>
+                                    <th>Name</th>
+                                    <th>Borrower</th>
+                                    <th>Comments</th>
                                 </tr>
-                            <% } %>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < tbl3.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <a class="view-stuff" href="/stuff?sid=<%= tbl3[i].sid %>">
+                                                <%= tbl3[i].stuffname %>
+                                        </td>
+                                        <td>
+                                            <a class="view-profile" href="/profile?user=<%= tbl3[i].name %>">
+                                                <%= tbl3[i].name %>
+                                        </td>
+                                        <td>
+                                            <form action="/comment">
+                                                <input type="hidden" id="sid" value="<%= tbl3[0].sid %>" name="sid">
+                                                <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        <% } %>
                     </div>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
