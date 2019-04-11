@@ -41,8 +41,7 @@
                             </thead>
                             <tbody>
                             <% for(var i = 0; i < tbl2.length; i++) { %>
-                                <% var a = tbl2[i].badgename %>
-                                <% if ( a == 'Credit Badge') { %>
+                                <% if ( tbl2[i].badgename == 'Credit Badge') { %>
                                     <tr>
                                         <td><i class="fas fa-mountain"></i> Credit Badge</td>
                                     </tr>
