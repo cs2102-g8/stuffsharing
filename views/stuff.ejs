@@ -104,7 +104,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                             <span style="color: #dc3545">
-                                <i class="fas fa-anchor"></i> Comments of This Item
+                                <i class="fas fa-anchor"></i> Comments
                             </span>&nbsp;
                 </div>
                 <div class="card-body">
@@ -113,9 +113,9 @@
                             <thead>
                             <tr>
                                 <th>User</th>
-                                <th>Post Time</th>
                                 <th>Comment</th>
                                 <th>Rating</th>
+                                <th>Posted</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -130,14 +130,18 @@
                                                 <%= tbl3[i].username %>
                                                 <% } %>
                                     </td>
-                                    <td><%= tbl3[i].updatetime %></td>
                                     <td><%= tbl3[i].comment %></td>
-                                    <td><%= tbl3[i].rating %></td>
+                                    <td><%= tbl3[i].rating %> / 5</td>
+                                    <td><%= tbl3[i].updatetime.toLocaleString() %></td>
                                 </tr>
                             <% } %>
                             </tbody>
                         </table>
                     </div>
+                    <form action="/comment">
+                        <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
+                        <button type="submit" class="btn btn-secondary" value="View All Comments" />View All Comments</button>
+                    </form>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
             </div>

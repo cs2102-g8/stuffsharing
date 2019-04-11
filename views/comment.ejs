@@ -42,18 +42,18 @@
                             <thead>
                             <tr>
                                 <th>User</th>
-                                <th>Post Time</th>
                                 <th>Comment</th>
                                 <th>Rating</th>
+                                <th>Posted</th>
                             </tr>
                             </thead>
                             <tbody>
                             <% for(var i = 0; i < tbl.length; i++) { %>
                                 <tr>
                                     <td><%= tbl[i].username %></td>
-                                    <td><%= tbl[i].updatetime %></td>
                                     <td><%= tbl[i].comment %></td>
-                                    <td><%= tbl[i].rating %></td>
+                                    <td><%= tbl[i].rating %> / 5</td>
+                                    <td><%= tbl[i].updatetime.toLocaleString() %></td>
                                 </tr>
                             <% } %>
                             </tbody>
