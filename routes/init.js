@@ -387,56 +387,60 @@ function stuff(req, res, next) {
 }
 
 function manageStuff(req, res, next) {
-    var ctx = 0, ctx2 = 0, tbl, tbl2, bid, user, uid;
+    var ctx = 0, ctx2 = 0, tbl, tbl2, bid, user, uid, userid;
     var sid = req.query.sid;
-    pool.query(sql_query.query.check_borrowed, [sid], (err, data) => {
-        if (!data.rows || data.rows.length == 0) {
-            ctx2 = 0;
-            tbl2 = [];
-        } else {
-            ctx2 = data.rows.length;
-            tbl2 = data.rows;
-        }
-        pool.query(sql_query.query.details, [sid], (err, data) => {
-            if (err) {
-                console.error(err);
-                res.redirect('/manageStuff?detail=fail');
-            } else if (!data.rows || data.rows.length == 0) {
-                ctx = 0;
-                tbl = [];
+    pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
+        userid = data.rows[0].uid;
+        pool.query(sql_query.query.check_borrowed, [sid], (err, data) => {
+            if (!data.rows || data.rows.length == 0) {
+                ctx2 = 0;
+                tbl2 = [];
             } else {
-                ctx = data.rows.length;
-                tbl = data.rows;
+                ctx2 = data.rows.length;
+                tbl2 = data.rows;
             }
-            pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
+            pool.query(sql_query.query.details, [sid], (err, data) => {
                 if (err) {
                     console.error(err);
                     res.redirect('/manageStuff?detail=fail');
                 } else if (!data.rows || data.rows.length == 0) {
-                    bid = 'No Bid';
-                    user = 'None';
-                    uid = 'None';
+                    ctx = 0;
+                    tbl = [];
                 } else {
-                    bid = data.rows[0].bid;
-                    user = data.rows[0].username;
-                    uid = data.rows[0].uid;
+                    ctx = data.rows.length;
+                    tbl = data.rows;
                 }
-                if (req.isAuthenticated()) {
-                    basic(req, res, 'manageStuff', {
-                        page: 'manageStuff',
-                        auth: true,
-                        tbl: tbl,
-                        tbl2: tbl2,
-                        bid: bid,
-                        uid: uid,
-                        user: user,
-                        ctx: ctx,
-                        ctx2: ctx2,
-                        delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'),
-                        accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting'),
-                        update_msg: msg(req, 'update', 'Update successfully', 'Error in updating')
-                    });
-                }
+                pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
+                    if (err) {
+                        console.error(err);
+                        res.redirect('/manageStuff?detail=fail');
+                    } else if (!data.rows || data.rows.length == 0) {
+                        bid = 'No Bid';
+                        user = 'None';
+                        uid = 'None';
+                    } else {
+                        bid = data.rows[0].bid;
+                        user = data.rows[0].username;
+                        uid = data.rows[0].uid;
+                    }
+                    if (req.isAuthenticated()) {
+                        basic(req, res, 'manageStuff', {
+                            page: 'manageStuff',
+                            auth: true,
+                            tbl: tbl,
+                            tbl2: tbl2,
+                            bid: bid,
+                            uid: uid,
+                            user: user,
+                            userid: userid,
+                            ctx: ctx,
+                            ctx2: ctx2,
+                            delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'),
+                            accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting'),
+                            update_msg: msg(req, 'update', 'Update successfully', 'Error in updating')
+                        });
+                    }
+                });
             });
         });
     });
