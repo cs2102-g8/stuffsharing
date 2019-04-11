@@ -21,8 +21,8 @@ sql.query = {
     categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1',
 
     // Discover
-    discover: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE Descriptions.pickUpLocation = (SELECT region FROM Users WHERE username = $1) OR Descriptions.returnLocation = (SELECT region FROM Users WHERE username = $1)',
-    discover_all: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users ORDER BY stuffName',
+    discover: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE NOT EXISTS (SELECT 1 FROM Borrows WHERE sid = Stuffs.sid) AND Descriptions.pickUpLocation = (SELECT region FROM Users WHERE username = $1) OR Descriptions.returnLocation = (SELECT region FROM Users WHERE username = $1)',
+    discover_all: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users WHERE NOT EXISTS (SELECT 1 FROM Borrows WHERE sid = Stuffs.sid) ORDER BY stuffName',
 
     // Borrowed
     borrowed: 'SELECT R2.sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation, U.username from (SELECT R.sid, stuffname, nextminimumbid, pickuptime, pickuplocation, returntime, returnlocation, R.uid FROM (select * FROM Stuffs NATURAL JOIN Descriptions) as R JOIN Borrows B ON B.uid = $1 AND R.sid = B.sid) AS R2 JOIN Users U ON R2.uid = U.uid',
@@ -93,6 +93,5 @@ sql.query = {
     // Find if Stuff is already Borrowed
     check_borrowed: 'SELECT * FROM Borrows WHERE sid = $1'
 }
-
 
 module.exports = sql
