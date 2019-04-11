@@ -585,6 +585,8 @@ function lend(req, res, next) {
     var returnLocation = req.body.returnLocation;
     var description = req.body.description;
     var category = req.body.category;
+    var price2 = price;
+    price--;
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         var uid = data.rows[0].uid;
         pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
@@ -601,12 +603,19 @@ function lend(req, res, next) {
                             pool.query(sql_query.query.findUid, [username], (err, data) => {
                                 pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
                                     pool.query(sql_query.query.insertToBelongs, [sid, category], (err, data) => {
-                                        if (err) {
-                                            console.error(err);
-                                            res.redirect('/myStuff?pass=fail');
-                                        } else {
-                                            res.redirect('/myStuff?pass=pass');
-                                        }
+                                        pool.query(sql_query.query.bids, [uid, sid, price2], (err, data) => {
+                                            if (err) {
+                                                console.error(err);
+                                                res.redirect('/myStuff?pass=fail');
+                                            } else {
+                                                pool.query(sql_query.query.bids, [sid], (err, data) => {
+                                                    console.log('pass');
+                                                });
+
+
+                                                res.redirect('/myStuff?pass=pass');
+                                            }
+                                        });
                                     });
                                 });
                             });
