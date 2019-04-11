@@ -131,14 +131,15 @@ create table Belongs(
 	foreign key (categoryName) references Categories(categoryName) on delete cascade
 );
 
-
 create or replace function bidCheck() returns trigger as $$
 declare amount money;
 begin
     select nextMinimumBid into amount
     from Stuffs
     where new.sid = Stuffs.sid;
-    if new.bid > amount then
+   	if exists (select 1 from Lends natural join Stuffs where new.uid = uid and new.sid = sid) then
+	    raise exception 'Cannot bid for own Stuff';
+    elsif new.bid > amount then
     	update Stuffs set nextMinimumBid = new.bid where new.sid = Stuffs.sid;
     	if exists (select 1 from Bids where new.sid = Bids.sid and new.uid = Bids.uid) then
     		update Bids set bid = new.bid where new.sid = Bids.sid and new.uid = Bids.uid;
@@ -153,7 +154,7 @@ end;
 $$ language plpgsql;
 
 create trigger bidTrigger
-before insert on Bids
+before insert or update on Bids
 for each row
 execute procedure bidCheck();
 
@@ -189,7 +190,6 @@ after insert on Users
 for each row
 execute procedure addUserCheck();
 
-
 create or replace function lendsCheck() returns trigger as $$
 declare count numeric;
 declare count2 numeric;
@@ -202,7 +202,7 @@ begin
    	from Earns
    	where new.uid=Earns.uid and Earns.badgeName='Credit Badge';
 
-    if count > 5 and count2 < 1 then
+    if count >= 5 and count2 < 1 then
         insert into Earns(uid, badgeName) values (new.uid, 'Credit Badge');
     end if;
     return new;
@@ -213,7 +213,6 @@ create trigger addBadgesTrigger
 after insert on Lends
 for each row
 execute procedure lendsCheck();
-
 
 
 insert into Areas values('Central', 'Singapore');
@@ -269,14 +268,28 @@ insert into Stuffs(sid, stuffName, nextMinimumBid) values ('12', 'Cup', 10);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('13', 'Water Bottle', 0);
 insert into Stuffs(sid, stuffName, nextMinimumBid) values ('14', 'Mouse', 10);
 
+insert into Lends(uid, sid) values ('A10001', '14');
+insert into Lends(uid, sid) values ('A10001', '13');
+insert into Lends(uid, sid) values ('A10001', '12');
+insert into Lends(uid, sid) values ('A10001', '11');
+insert into Lends(uid, sid) values ('A10001', '10');
+insert into Lends(uid, sid) values ('B20002', '09');
+insert into Lends(uid, sid) values ('B20002', '08');
+insert into Lends(uid, sid) values ('B20002', '07');
+insert into Lends(uid, sid) values ('C30003', '06');
+insert into Lends(uid, sid) values ('C30003', '05');
+insert into Lends(uid, sid) values ('E50005', '04');
+insert into Lends(uid, sid) values ('F60006', '03');
+insert into Lends(uid, sid) values ('H80008', '02');
+insert into Lends(uid, sid) values ('J00000', '01');
+insert into Lends(uid, sid) values ('J00000', '00');
+
 insert into Bids(uid, sid, bid) values ('A10001', '00', 1);
 insert into Bids(uid, sid, bid) values ('B20002', '01', 60);
 insert into Bids(uid, sid, bid) values ('C30003', '01', 70);
 insert into Bids(uid, sid, bid) values ('A10001', '03', 15);
-insert into Bids(uid, sid, bid) values ('E50005', '04', 200);
 insert into Bids(uid, sid, bid) values ('E50005', '09', 205);
 insert into Bids(uid, sid, bid) values ('F60006', '05', 60);
-insert into Bids(uid, sid, bid) values ('F60006', '03', 80);
 insert into Bids(uid, sid, bid) values ('F60006', '10', 15);
 insert into Bids(uid, sid, bid) values ('G70007', '06', 35);
 insert into Bids(uid, sid, bid) values ('G70007', '07', 50);
@@ -298,22 +311,6 @@ insert into Borrows(uid, sid) values ('G70007', '08');
 insert into Borrows(uid, sid) values ('H80008', '09');
 insert into Borrows(uid, sid) values ('I90009', '12');
 insert into Borrows(uid, sid) values ('J00000', '11');
-
-insert into Lends(uid, sid) values ('A10001', '14');
-insert into Lends(uid, sid) values ('A10001', '13');
-insert into Lends(uid, sid) values ('A10001', '12');
-insert into Lends(uid, sid) values ('A10001', '11');
-insert into Lends(uid, sid) values ('A10001', '10');
-insert into Lends(uid, sid) values ('B20002', '09');
-insert into Lends(uid, sid) values ('B20002', '08');
-insert into Lends(uid, sid) values ('B20002', '07');
-insert into Lends(uid, sid) values ('C30003', '06');
-insert into Lends(uid, sid) values ('C30003', '05');
-insert into Lends(uid, sid) values ('E50005', '04');
-insert into Lends(uid, sid) values ('F60006', '03');
-insert into Lends(uid, sid) values ('H80008', '02');
-insert into Lends(uid, sid) values ('J00000', '01');
-insert into Lends(uid, sid) values ('J00000', '00');
 
 insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation, summary, uid, sid) values (
 '20180404 10:00:00 AM', '20180505 10:00:00 AM', 'Central', 'Central', 'My CS2102 Textbook. It will help you a lot!', 'J00000', '00');
