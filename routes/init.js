@@ -387,46 +387,57 @@ function stuff(req, res, next) {
 }
 
 function manageStuff(req, res, next) {
-    var ctx = 0, tbl, bid, user, uid;
+    var ctx = 0, ctx2 = 0, tbl, tbl2, bid, user, uid;
     var sid = req.query.sid;
-    pool.query(sql_query.query.details, [sid], (err, data) => {
-        if (err) {
-            console.error(err);
-            res.redirect('/manageStuff?detail=fail');
-        } else if (!data.rows || data.rows.length == 0) {
-            ctx = 0;
-            tbl = [];
+    pool.query(sql_query.query.check_borrowed, [sid], (err, data) => {
+        if (!data.rows || data.rows.length == 0) {
+            ctx2 = 0;
+            tbl2 = [];
         } else {
-            ctx = data.rows.length;
-            tbl = data.rows;
+            ctx2 = data.rows.length;
+            tbl2 = data.rows;
         }
-        pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
+        pool.query(sql_query.query.details, [sid], (err, data) => {
             if (err) {
                 console.error(err);
                 res.redirect('/manageStuff?detail=fail');
             } else if (!data.rows || data.rows.length == 0) {
-                bid = 'No Bid';
-                user = 'None';
-                uid = 'None';
+                ctx = 0;
+                tbl = [];
             } else {
-                bid = data.rows[0].bid;
-                user = data.rows[0].username;
-                uid = data.rows[0].uid;
+                ctx = data.rows.length;
+                tbl = data.rows;
             }
-            if (req.isAuthenticated()) {
-                basic(req, res, 'manageStuff', {
-                    page: 'manageStuff',
-                    auth: true,
-                    tbl: tbl,
-                    bid: bid,
-                    uid: uid,
-                    user: user,
-                    ctx: ctx,
-                    delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'),
-                    accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting'),
-                    update_msg: msg(req, 'update', 'Update successfully', 'Error in updating')
-                });
-            }
+            pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
+                if (err) {
+                    console.error(err);
+                    res.redirect('/manageStuff?detail=fail');
+                } else if (!data.rows || data.rows.length == 0) {
+                    bid = 'No Bid';
+                    user = 'None';
+                    uid = 'None';
+                } else {
+                    bid = data.rows[0].bid;
+                    user = data.rows[0].username;
+                    uid = data.rows[0].uid;
+                }
+                if (req.isAuthenticated()) {
+                    basic(req, res, 'manageStuff', {
+                        page: 'manageStuff',
+                        auth: true,
+                        tbl: tbl,
+                        tbl2: tbl2,
+                        bid: bid,
+                        uid: uid,
+                        user: user,
+                        ctx: ctx,
+                        ctx2: ctx2,
+                        delete_msg: msg(req, 'delete', 'Delete successfully', 'Error in deleting stuff'),
+                        accept_msg: msg(req, 'accept', 'Accept successfully', 'Error in accepting'),
+                        update_msg: msg(req, 'update', 'Update successfully', 'Error in updating')
+                    });
+                }
+            });
         });
     });
 }
@@ -452,29 +463,33 @@ function leaderboard(req, res, next) {
 }
 
 function comment(req, res, next) {
-    var ctx = 0, tbl, uid;
+    var ctx = 0, tbl, uid, stuffname;
     var sid = req.query.sid, username = req.user.username;
-    pool.query(sql_query.query.findUid, [username], (err, data) => {
-        uid = data.rows[0].uid;
-        pool.query(sql_query.query.commentList, [sid], (err, data) => {
-            if (err || !data.rows || data.rows.length == 0) {
-                ctx = 0;
-                tbl = [];
-            } else {
-                ctx = data.rows.length;
-                tbl = data.rows;
-            }
-            if (req.isAuthenticated()) {
-                basic(req, res, 'comment', {
-                    page: 'comment',
-                    auth: true,
-                    sid: sid,
-                    uid: uid,
-                    tbl: tbl,
-                    ctx: ctx,
-                    comment_msg: msg(req, 'comment', 'Comment successfully', 'Error in comment')
-                });
-            }
+    pool.query(sql_query.query.search, [sid], (err, data) => {
+        stuffname = data.rows[0].stuffname;
+        pool.query(sql_query.query.findUid, [username], (err, data) => {
+            uid = data.rows[0].uid;
+            pool.query(sql_query.query.commentList, [sid], (err, data) => {
+                if (err || !data.rows || data.rows.length == 0) {
+                    ctx = 0;
+                    tbl = [];
+                } else {
+                    ctx = data.rows.length;
+                    tbl = data.rows;
+                }
+                if (req.isAuthenticated()) {
+                    basic(req, res, 'comment', {
+                        page: 'comment',
+                        auth: true,
+                        sid: sid,
+                        uid: uid,
+                        tbl: tbl,
+                        ctx: ctx,
+                        stuffname: stuffname,
+                        comment_msg: msg(req, 'comment', 'Comment successfully', 'Error in comment')
+                    });
+                }
+            });
         });
     });
 }
