@@ -91,7 +91,10 @@ sql.query = {
     match_stuff: 'SELECT * FROM Users NATURAL JOIN Lends WHERE lower(username) = $1 AND sid = $2',
 
     // Find if Stuff is already Borrowed
-    check_borrowed: 'SELECT * FROM Borrows WHERE sid = $1'
+    check_borrowed: 'SELECT * FROM Borrows WHERE sid = $1',
+
+    // Pending Bids
+    pending_bids: 'SELECT * FROM Stuffs NATURAL JOIN (Users NATURAL JOIN Lends) JOIN Bids ON Bids.sid = Stuffs.sid WHERE NOT EXISTS (SELECT 1 FROM Borrows WHERE sid = Stuffs.sid) and Bids.uid = $1'
 }
 
 module.exports = sql

@@ -54,55 +54,58 @@
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
             </div>
-<!--            <div class="card mb-3">-->
-<!--                <div class="card-header">-->
-<!--					<span style="color: yellowgreen;">-->
-<!--						<i class="fas fa-fw fa-tags"></i> Pending Bids-->
-<!--                </div>-->
-<!--                <div class="card-body">-->
-<!--                    <div class="table-responsive">-->
-<!--                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
-<!--                            <thead>-->
-<!--                            <tr>-->
-<!--                                <th>Name</th>-->
-<!--                                <th>Lender</th>-->
-<!--                                <th>Comments</th>-->
-<!--                            </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody>-->
-<!--                            <% for(var i = 0; i < tbl1.length; i++) { %>-->
-<!--                                <tr>-->
-<!--                                    <td>-->
-<!--                                        <a class="view-stuff" href="/stuff?sid=<%= tbl1[i].sid %>">-->
-<!--                                            <%= tbl1[i].stuffname %>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <% if(tbl1[i].username == user) { %>-->
-<!--                                        <a class="view-profile" href="/dashboard">-->
-<!--                                            <%= tbl1[i].username %>-->
-<!--                                            <% } else { %>-->
-<!--                                            <a class="view-profile" href="/profile?user=<%= tbl1[i].username %>">-->
-<!--                                                <%= tbl1[i].username %>-->
-<!--                                                <% } %>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <form action="/comment">-->
-<!--                                            <input type="hidden" id="sid" value="<%= tbl1[0].sid %>" name="sid">-->
-<!--                                            <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>-->
-<!--                                        </form>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                            <% } %>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="card-footer small text-muted">Stuff Sharing</div>-->
-<!--            </div>-->
+            <div class="card mb-3">
+                <div class="card-header">
+					<span style="color: yellowgreen;">
+						<i class="fas fa-fw fa-tags"></i> My Pending Bids
+                    </span>
+                </div>
+                <div class="card-body">
+                    <% if (tbl4.length == 0) { %>
+                        <h5>You have no pending bids.</h5>
+                    <% } else { %>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Lender</th>
+                                    <th>Comments</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% for(var i = 0; i < tbl4.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <a class="view-stuff" href="/stuff?sid=<%= tbl4[i].sid %>">
+                                                <%= tbl4[i].stuffname %>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="view-profile" href="/profile?user=<%= tbl4[i].username %>">
+                                                <%= tbl4[i].username %>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <form action="/comment">
+                                                <input type="hidden" id="sid" value="<%= tbl4[0].sid %>" name="sid">
+                                                <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="card-footer small text-muted">Stuff Sharing</div>
+            </div>
             <div class="card mb-3">
                 <div class="card-header">
 					<span style="color: yellowgreen;">
 						<i class="fas fa-fw fa-hands-helping"></i> Borrowed Stuffs
+                    </span>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

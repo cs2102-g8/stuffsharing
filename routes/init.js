@@ -110,7 +110,7 @@ function search(req, res, next) {
 }
 
 function dashboard(req, res, next) {
-    var ctx1 = 0, ctx2 = 0, ctx3 = 0, tbl1, tbl2, tbl3;
+    var ctx1 = 0, ctx2 = 0, ctx3 = 0, ctx4 = 0, tbl1, tbl2, tbl3, tbl4;
     pool.query(sql_query.query.findUid, [req.user.username], (err, data) => {
         var uid = data.rows[0].uid;
         pool.query(sql_query.query.borrowed, [uid], (err, data) => {
@@ -144,19 +144,32 @@ function dashboard(req, res, next) {
                         ctx3 = data.rows.length;
                         tbl3 = data.rows;
                     }
-                    if (req.isAuthenticated()) {
-                        basic(req, res, 'dashboard', {
-                            page: 'dashboard',
-                            auth: true,
-                            user: req.user.username,
-                            tbl1: tbl1,
-                            ctx1: ctx1,
-                            tbl2: tbl2,
-                            ctx2: ctx2,
-                            tbl3: tbl3,
-                            ctx3: ctx3
-                        });
-                    }
+                    pool.query(sql_query.query.pending_bids, [uid], (err, data) => {
+                        if (err) {
+                            console.error("Error in update info");
+                        } else if (!data.rows || data.rows.length == 0) {
+                            ctx4 = 0;
+                            tbl4 = [];
+                        } else {
+                            ctx4 = data.rows.length;
+                            tbl4 = data.rows;
+                        }
+                        if (req.isAuthenticated()) {
+                            basic(req, res, 'dashboard', {
+                                page: 'dashboard',
+                                auth: true,
+                                user: req.user.username,
+                                tbl1: tbl1,
+                                ctx1: ctx1,
+                                tbl2: tbl2,
+                                ctx2: ctx2,
+                                tbl3: tbl3,
+                                ctx3: ctx3,
+                                tbl4: tbl4,
+                                ctx4: ctx4
+                            });
+                        }
+                    });
                 });
             });
         });
