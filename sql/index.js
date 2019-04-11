@@ -16,6 +16,7 @@ sql.query = {
     userpass: 'SELECT * FROM Users WHERE username=$1',
 
     // Search
+    search: 'SELECT * FROM Stuffs WHERE sid = $1',
     search_stuff: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE lower(stuffName) LIKE lower($1) OR lower(username) LIKE lower($1) OR lower(categoryName) like lower($1)',
     categorySearch: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions NATURAL JOIN Users NATURAL JOIN Belongs WHERE categoryName=$1',
 

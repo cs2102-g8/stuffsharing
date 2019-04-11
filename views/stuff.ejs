@@ -56,29 +56,28 @@
                                 Your bid has to be higher than the next minimum bid!
                             </div>
                         </form>
+                        <% if(ctx2 != 0){ %>
+                            <form method="post" action="/cancelBid">
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="bid" class="col-sm-2 col-form-label"><b>Your current bid is:</b></label>
+                                        <div class="col-sm-4">
+                                            <input type="text" required="required" readonly class="form-control-plaintext"
+                                                   id="bidValue" value="<%= tbl2[0].bid %>" name="bidValue">
+                                            <button type="submit" class="btn btn-secondary">Cancel Bid</button>
+                                            <br/>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="hidden" id="sid" value="<%= tbl2[0].sid %>" name="sid">
+                                            <input type="hidden" id="uid" value="<%= tbl2[0].uid %>" name="uid">
+                                        </div>
+                                    </div>
+                                    Are you sure you would like to cancel your bid?
+                                </div>
+                            </form>
+                        <% } %>
                     <% } else { %>
                         <br/><h5>This item has been borrowed and can no longer be bidded for.</h5>
-                    <% } %>
-                    <% if(ctx2 != 0){ %>
-                        <form method="post" action="/cancelBid">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="bid" class="col-sm-2 col-form-label"><b>Your current bid is:</b></label>
-                                    <div class="col-sm-4">
-                                        <input type="text" required="required" readonly class="form-control-plaintext"
-                                               id="bidValue" value="<%= tbl2[0].bid %>" name="bidValue">
-                                        <button type="submit" class="btn btn-secondary">Cancel Bid</button>
-                                        <br/>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <input type="hidden" id="sid" value="<%= tbl2[0].sid %>" name="sid">
-                                        <input type="hidden" id="uid" value="<%= tbl2[0].uid %>" name="uid">
-                                    </div>
-                                </div>
-                                Are you sure you would like to cancel your bid?
-                            </div>
-                            <!--											<div class="card-footer small text-muted"><button type="submit" class="btn btn-secondary">Cancel Bid/button> &nbsp;&nbsp;&nbsp; </div>-->
-                        </form>
                     <% } %>
                 </div>
                 <div class="card-footer small text-muted">Stuff Sharing</div>
@@ -120,12 +119,13 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="card-footer small text-muted">
                     <form action="/comment">
                         <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
                         <button type="submit" class="btn btn-secondary" value="View All Comments" />View All Comments</button>
                     </form>
                 </div>
-                <div class="card-footer small text-muted">Stuff Sharing</div>
             </div>
         </div>
     </div>
