@@ -31,7 +31,7 @@ sql.query = {
     lending: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions AS R WHERE NOT EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = R.sid) and uid = $1',
 
     // Lent
-    lent: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions AS R WHERE EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = R.sid) and uid = $1',
+    lent: 'SELECT Stuffs.sid as sid, Stuffs.stuffname as stuffname, Users.username as name FROM Stuffs NATURAL JOIN Descriptions JOIN (Borrows NATURAL JOIN Users) on Stuffs.sid = Borrows.sid WHERE EXISTS (SELECT 1 FROM Borrows B WHERE B.sid = Stuffs.sid) and Descriptions.uid = $1',
 
     // Lent_Details
     details: 'SELECT * FROM Stuffs NATURAL JOIN Descriptions WHERE sid = $1',

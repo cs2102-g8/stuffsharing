@@ -28,7 +28,7 @@
             <div class="card mb-3">
                 <div class="card-header">
 					<span style="color: yellowgreen;">
-						<i class="fas fa-palette"></i> My Badges
+						<i class="fas fa-ribbon"></i> My Badges
 					</span>&nbsp;
                 </div>
                 <div class="card-body">
@@ -53,7 +53,7 @@
             <div class="card mb-3">
                 <div class="card-header">
 					<span style="color: yellowgreen;">
-						<i class="fas fa-fw fa-address-card"></i> Borrowed Stuffs
+						<i class="fas fa-fw fa-hands-helping"></i> Borrowed Stuffs
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -62,12 +62,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Lender</th>
-                                <th>Price</th>
-                                <th>Pickup Time</th>
-                                <th>Pickup Location</th>
-                                <th>Return Time</th>
-                                <th>Return Location</th>
-                                <th>Comment</th>
+                                <th>Comments</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -86,25 +81,10 @@
                                                 <%= tbl1[i].username %>
                                         <% } %>
                                     </td>
-                                    <td><%= tbl1[i].nextminimumbid %></td>
-                                    <td><%= tbl1[i].pickuptime.toLocaleString() %></td>
-                                    <td><%= tbl1[i].pickuplocation %></td>
-                                    <td><%= tbl1[i].returntime.toLocaleString() %></td>
-                                    <td><%= tbl1[i].returnlocation %></td>
                                     <td>
-                                        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
-                                              action="/comment">
-                                            <div class="input-group">
-                                                <div class="col-sm-40">
-                                                    <input type="hidden" readonly class="form-control-plaintext"
-                                                           aria-label="Search" aria-describedby="basic-addon2"
-                                                           value="<%= tbl1[i].sid %>" name="sid">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-primary" type="submit">
-                                                            <i class="fas fa-search"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                        <form action="/comment">
+                                            <input type="hidden" id="sid" value="<%= tbl1[0].sid %>" name="sid">
+                                            <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -118,7 +98,7 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <span style="color: yellowgreen">
-                    <i class="fas fa-anchor"></i> Lent Stuffs
+                    <i class="fas fa-truck-moving"></i> Lent Stuffs
                     </span>
                 </div>
                 <div class="card-body">
@@ -127,10 +107,8 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Pickup Time</th>
-                                <th>Pickup Location</th>
-                                <th>Return Time</th>
-                                <th>Return Location</th>
+                                <th>Borrower</th>
+                                <th>Comments</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -140,10 +118,16 @@
                                         <a class="view-stuff" href="/stuff?sid=<%= tbl3[i].sid %>">
                                             <%= tbl3[i].stuffname %>
                                     </td>
-                                    <td><%= tbl3[i].pickuptime.toLocaleString() %></td>
-                                    <td><%= tbl3[i].pickuplocation %></td>
-                                    <td><%= tbl3[i].returntime.toLocaleString() %></td>
-                                    <td><%= tbl3[i].returnlocation %></td>
+                                    <td>
+                                        <a class="view-profile" href="/profile?user=<%= tbl3[i].name %>">
+                                            <%= tbl3[i].name %>
+                                    </td>
+                                    <td>
+                                        <form action="/comment">
+                                            <input type="hidden" id="sid" value="<%= tbl3[0].sid %>" name="sid">
+                                            <button type="submit" class="btn btn-secondary" value="View All Comments" />View Comments</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <% } %>
                             </tbody>
