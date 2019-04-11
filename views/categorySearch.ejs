@@ -52,14 +52,17 @@
                                         <td>
                                             <a class="view-stuff" href="/stuff?sid=<%= tbl[i].sid %>">
                                                 <%= tbl[i].stuffname %>
+                                            </a>
                                         </td>
                                         <td>
                                             <% if(tbl[i].username == user) { %>
                                                 <a class="view-profile" href="/dashboard">
                                                     <%= tbl[i].username %>
+                                                </a>
                                             <% } else { %>
                                                 <a class="view-profile" href="/profile?user=<%= tbl[i].username %>">
                                                     <%= tbl[i].username %>
+                                                </a>
                                             <% } %>
                                         </td>
                                         <td><%= tbl[i].nextminimumbid %></td>

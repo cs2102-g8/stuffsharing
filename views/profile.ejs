@@ -84,15 +84,18 @@
                                         <td>
                                             <a class="view-stuff" href="/stuff?sid=<%= tbl1[i].sid %>">
                                                 <%= tbl1[i].stuffname %>
+                                            </a>
                                         </td>
                                         <td>
                                             <% if(tbl1[i].username == user) { %>
-                                            <a class="view-profile" href="/dashboard">
-                                                <%= tbl1[i].username %>
-                                                <% } else { %>
+                                                <a class="view-profile" href="/dashboard">
+                                                    <%= tbl1[i].username %>
+                                                </a>
+                                            <% } else { %>
                                                 <a class="view-profile" href="/profile?user=<%= tbl1[i].username %>">
                                                     <%= tbl1[i].username %>
-                                                    <% } %>
+                                                </a>
+                                            <% } %>
                                         </td>
                                         <td>
                                             <form action="/comment">
@@ -134,10 +137,12 @@
                                         <td>
                                             <a class="view-stuff" href="/stuff?sid=<%= tbl3[i].sid %>">
                                                 <%= tbl3[i].stuffname %>
+                                            </a>
                                         </td>
                                         <td>
                                             <a class="view-profile" href="/profile?user=<%= tbl3[i].name %>">
                                                 <%= tbl3[i].name %>
+                                            </a>
                                         </td>
                                         <td>
                                             <form action="/comment">

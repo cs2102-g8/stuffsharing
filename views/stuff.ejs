@@ -107,12 +107,14 @@
                                     <tr>
                                         <td>
                                             <% if(tbl3[i].username == user) { %>
-                                            <a class="view-profile" href="/dashboard">
-                                                <%= tbl3[i].username %>
-                                                <% } else { %>
+                                                <a class="view-profile" href="/dashboard">
+                                                    <%= tbl3[i].username %>
+                                                </a>
+                                            <% } else { %>
                                                 <a class="view-profile" href="/profile?user=<%= tbl3[i].username %>">
                                                     <%= tbl3[i].username %>
-                                                    <% } %>
+                                                </a>
+                                            <% } %>
                                         </td>
                                         <td><%= tbl3[i].comment %></td>
                                         <td><%= tbl3[i].rating %> / 5</td>
