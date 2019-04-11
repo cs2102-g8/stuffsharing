@@ -72,86 +72,93 @@
                         <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
                     </div>
                     <div class="card-footer small text-muted">
-                        <button type="submit" class="btn btn-secondary">Delete</button> &nbsp;&nbsp;&nbsp; <span
-                                class="badge badge-pill badge-info"><%= delete_msg %></span></div>
-                </form>
-            </div>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <span style="color: Tomato;">
-                        <i class="fas fa-tags"></i> &nbsp; Update Stuff Information
-                    </span>
-                </div>
-                <form method="post" action="/updateStuff">
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label for="pickUpTime" class="col-sm-2 col-form-label"><b>Pickup Time:</b></label>
-                            <div class="col-sm-4">
-                                <input type="text" required="required" class="form-control" id="pickUpTime"
-                                       placeholder="YYYYMMDD HH:MM:SS AM/PM" name="pickUpTime">
-                            </div>
-                            <label for="returnTime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
-                            <div class="col-sm-4">
-                                <input type="text" required="required" class="form-control" id="returnTime"
-                                       placeholder="YYYYMMDD HH:MM:SS AM/PM" name="returnTime">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="pickUpLocation" class="col-sm-2 col-form-label"><b>Pickup Location:</b></label>
-                            <div class="col-sm-4">
-                                <input type="text" required="required" class="form-control" id="pickUpLocation"
-                                       placeholder="East/West/South/South-East/Central" name="pickUpLocation">
-                            </div>
-                            <label for="returnLocation" class="col-sm-2 col-form-label"><b>Return Location:</b></label>
-                            <div class="col-sm-4">
-                                <input type="text" required="required" class="form-control" id="returnLocation"
-                                       placeholder="East/West/South/South-East/Central" name="returnLocation">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="description" class="col-sm-2 col-form-label"><b>Description:</b></label>
-                            <div class="col-sm-10">
-                                <input type="text" required="required" class="form-control" id="description"
-                                       placeholder="Describe the stuff" name="description">
-                            </div>
-                        </div>
-                        <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
+                        <% if(ctx2 == 0){ %>
+                                <button type="submit" class="btn btn-secondary">Delete</button> &nbsp;&nbsp;&nbsp; <span
+                                        class="badge badge-pill badge-info"><%= delete_msg %></span>
+                        <% } else { %>
+                            <h5>This item has been borrowed and can no longer be modified.</h5>
+                        <% } %>
                     </div>
-                    <div class="card-footer small text-muted">
-                        <button type="submit" class="btn btn-secondary">Update</button> &nbsp;&nbsp;&nbsp; <span
-                                class="badge badge-pill badge-info"><%= update_msg %></span></div>
                 </form>
             </div>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <span style="color: Tomato;">
-                        <i class="fas fa-handshake"></i> &nbsp; Accept Current Maximum Bid
-                    </span>
-                </div>
-                <form method="post" action="/accept">
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <label for="bid" class="col-sm-2 col-form-label"><b>Current Bid:</b></label>
-                            <div class="col-sm-4">
-                                <input type="text" required="required" readonly class="form-control-plaintext"
-                                       id="bid"
-                                       value="<%= bid %>" name="bid">
-                            </div>
-                            <label for="uid" class="col-sm-2 col-form-label"><b>Bid by:</b></label>
-                            <div class="col-sm-4">
-                                <input type="text" required="required" readonly class="form-control-plaintext"
-                                       id="user"
-                                       value="<%= user %>" name="user">
-                            </div>
-                        </div>
-                        <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
-                        <input type="hidden" id="uid" value="<%= uid %>" name="uid">
+            <% if(ctx2 == 0){ %>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <span style="color: Tomato;">
+                            <i class="fas fa-tags"></i> &nbsp; Update Stuff Information
+                        </span>
                     </div>
-                    <div class="card-footer small text-muted">
-                        <button type="submit" class="btn btn-secondary">Accept</button> &nbsp;&nbsp;&nbsp; <span
-                                class="badge badge-pill badge-info"><%= accept_msg %></span></div>
-                </form>
-            </div>
+                    <form method="post" action="/updateStuff">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="pickUpTime" class="col-sm-2 col-form-label"><b>Pickup Time:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" class="form-control" id="pickUpTime"
+                                           placeholder="YYYYMMDD HH:MM:SS AM/PM" name="pickUpTime">
+                                </div>
+                                <label for="returnTime" class="col-sm-2 col-form-label"><b>Return Time:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" class="form-control" id="returnTime"
+                                           placeholder="YYYYMMDD HH:MM:SS AM/PM" name="returnTime">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="pickUpLocation" class="col-sm-2 col-form-label"><b>Pickup Location:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" class="form-control" id="pickUpLocation"
+                                           placeholder="East/West/South/South-East/Central" name="pickUpLocation">
+                                </div>
+                                <label for="returnLocation" class="col-sm-2 col-form-label"><b>Return Location:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" class="form-control" id="returnLocation"
+                                           placeholder="East/West/South/South-East/Central" name="returnLocation">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="description" class="col-sm-2 col-form-label"><b>Description:</b></label>
+                                <div class="col-sm-10">
+                                    <input type="text" required="required" class="form-control" id="description"
+                                           placeholder="Describe the stuff" name="description">
+                                </div>
+                            </div>
+                            <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
+                        </div>
+                        <div class="card-footer small text-muted">
+                            <button type="submit" class="btn btn-secondary">Update</button> &nbsp;&nbsp;&nbsp; <span
+                                    class="badge badge-pill badge-info"><%= update_msg %></span></div>
+                    </form>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <span style="color: Tomato;">
+                            <i class="fas fa-handshake"></i> &nbsp; Accept Current Maximum Bid
+                        </span>
+                    </div>
+                    <form method="post" action="/accept">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="bid" class="col-sm-2 col-form-label"><b>Current Bid:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" readonly class="form-control-plaintext"
+                                           id="bid"
+                                           value="<%= bid %>" name="bid">
+                                </div>
+                                <label for="uid" class="col-sm-2 col-form-label"><b>Bid by:</b></label>
+                                <div class="col-sm-4">
+                                    <input type="text" required="required" readonly class="form-control-plaintext"
+                                           id="user"
+                                           value="<%= user %>" name="user">
+                                </div>
+                            </div>
+                            <input type="hidden" id="sid" value="<%= tbl[0].sid %>" name="sid">
+                            <input type="hidden" id="uid" value="<%= uid %>" name="uid">
+                        </div>
+                        <div class="card-footer small text-muted">
+                            <button type="submit" class="btn btn-secondary">Accept</button> &nbsp;&nbsp;&nbsp; <span
+                                    class="badge badge-pill badge-info"><%= accept_msg %></span></div>
+                    </form>
+                </div>
+            <% } %>
         </div>
     </div>
 </div>
