@@ -65,6 +65,7 @@ create table Lenders(
 create table Stuffs(
 	sid varchar(100),
 	stuffName varchar(100),
+	originalPrice money not null,
 	nextMinimumBid money not null,
 	primary key (sid)
 );
@@ -134,14 +135,15 @@ create table Belongs(
 create or replace function bidCheck() returns trigger as $$
 declare amount money;
 begin
-    select nextMinimumBid into amount
-    from Stuffs
-    where new.sid = Stuffs.sid;
    	if exists (select 1 from Lends natural join Stuffs where new.uid = uid and new.sid = sid) then
 	    raise exception 'Cannot bid for own Stuff';
 	elsif exists (select 1 from Borrows where new.sid = sid) then
 		raise exception 'Stuff is already borrowed';
-    elsif new.bid > amount then
+	end if;
+    select nextMinimumBid into amount
+    from Stuffs
+    where new.sid = Stuffs.sid;
+    if new.bid > amount then
     	update Stuffs set nextMinimumBid = new.bid where new.sid = Stuffs.sid;
     	if exists (select 1 from Bids where new.sid = Bids.sid and new.uid = Bids.uid) then
     		update Bids set bid = new.bid where new.sid = Bids.sid and new.uid = Bids.uid;
@@ -156,7 +158,7 @@ end;
 $$ language plpgsql;
 
 create trigger bidTrigger
-before insert or update on Bids
+before insert on Bids
 for each row
 execute procedure bidCheck();
 
@@ -269,21 +271,21 @@ insert into Feedbacks(fid, feedback, dateTime, uid) values (2, 'Please work hard
 insert into Feedbacks(fid, feedback, dateTime, uid) values (3, 'HAHA', '20190304 01:22:33 PM', 'D40004');
 insert into Feedbacks(fid, feedback, dateTime, uid) values (4, 'I can do better than you', '20181202 03:04:05 AM', 'E50005');
 
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('00', 'Old Textbook', 0);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('01', 'Formal attire', 50);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('02', 'Mouse', 15);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('03', 'Harry Poter Fictions', 10);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('04', 'iPad', 100);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('05', 'Headphone', 50);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('06', 'Key Board', 30);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('07', 'Old Clothes', 30);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('08', 'Backpack', 35);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('09', 'Laptop', 200);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('10', 'Box', 10);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('11', 'Bike', 100);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('12', 'Cup', 10);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('13', 'Water Bottle', 0);
-insert into Stuffs(sid, stuffName, nextMinimumBid) values ('14', 'Mouse', 10);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('00', 'Old Textbook', 0, 0);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('01', 'Formal attire', 50, 50);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('02', 'Mouse', 15, 15);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('03', 'Harry Poter Fictions', 10, 10);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('04', 'iPad', 100, 100);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('05', 'Headphone', 50, 50);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('06', 'Key Board', 30, 30);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('07', 'Old Clothes', 30, 30);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('08', 'Backpack', 35, 35);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('09', 'Laptop', 200, 200);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('10', 'Box', 10, 10);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('11', 'Bike', 100, 100);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('12', 'Cup', 10, 10);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('13', 'Water Bottle', 0, 0);
+insert into Stuffs(sid, stuffName, originalPrice, nextMinimumBid) values ('14', 'Mouse', 10, 10);
 
 insert into Lends(uid, sid) values ('A10001', '14');
 insert into Lends(uid, sid) values ('A10001', '13');

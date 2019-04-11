@@ -412,7 +412,7 @@ function manageStuff(req, res, next) {
                 if (err) {
                     console.error(err);
                     res.redirect('/manageStuff?detail=fail');
-                } else if (!data.rows || data.rows.length == 1) {
+                } else if (!data.rows || data.rows.length == 0) {
                     bid = 'No Bid';
                     user = 'None';
                     uid = 'None';
@@ -585,8 +585,6 @@ function lend(req, res, next) {
     var returnLocation = req.body.returnLocation;
     var description = req.body.description;
     var category = req.body.category;
-    var price2 = price;
-    price--;
     pool.query(sql_query.query.findUid, [username], (err, data) => {
         var uid = data.rows[0].uid;
         pool.query(sql_query.query.insertToStuff, [sid, name, price], (err, data) => {
@@ -603,19 +601,12 @@ function lend(req, res, next) {
                             pool.query(sql_query.query.findUid, [username], (err, data) => {
                                 pool.query(sql_query.query.insertToDescription, [pickUpTime, returnTime, pickUpLocation, returnLocation, description, data.rows[0].uid, sid], (err, data) => {
                                     pool.query(sql_query.query.insertToBelongs, [sid, category], (err, data) => {
-                                        pool.query(sql_query.query.bids, [uid, sid, price2], (err, data) => {
-                                            if (err) {
-                                                console.error(err);
-                                                res.redirect('/myStuff?pass=fail');
-                                            } else {
-                                                pool.query(sql_query.query.bids, [sid], (err, data) => {
-                                                    console.log('pass');
-                                                });
-
-
-                                                res.redirect('/myStuff?pass=pass');
-                                            }
-                                        });
+                                        if (err) {
+                                            console.error(err);
+                                            res.redirect('/myStuff?pass=fail');
+                                        } else {
+                                            res.redirect('/myStuff?pass=pass');
+                                        }
                                     });
                                 });
                             });
@@ -678,6 +669,7 @@ function bids(req, res, next) {
     var username = req.user.username;
     var sid = req.body.sid;
     pool.query(sql_query.query.findUid, [username], (err, data) => {
+        console.log("Bid Amount: " + bid + " SID: " + sid + " UID: " + data.rows[0].uid);
         pool.query(sql_query.query.bids, [data.rows[0].uid, sid, bid], (err, data) => {
             if (err) {
                 console.error(err);
@@ -701,18 +693,31 @@ function cancelBid(req, res, next) {
         pool.query(sql_query.query.cancelBid, [uid, sid], (err, data) => {
             pool.query(sql_query.query.find_max_bid, [sid], (err, data) => {
                 if (data.rows.length == 0) {
-                    highest_bid = 0;
+                    pool.query(sql_query.query.search, [sid], (err, data) => {
+                        highest_bid = data.rows[0].originalprice;
+                        console.log(data.rows[0]);
+                        console.log(highest_bid);
+                        pool.query(sql_query.query.replace_bid, [sid, highest_bid], (err, data) => {
+                            if (err) {
+                                console.error(err);
+                                res.redirect('back');
+                            } else {
+                                res.redirect('back');
+                            }
+                        });
+                    });
                 } else {
                     highest_bid = data.rows[0].bid;
+                    console.log(highest_bid);
+                    pool.query(sql_query.query.replace_bid, [sid, highest_bid], (err, data) => {
+                        if (err) {
+                            console.error(err);
+                            res.redirect('back');
+                        } else {
+                            res.redirect('back');
+                        }
+                    });
                 }
-                pool.query(sql_query.query.replace_bid, [sid, highest_bid], (err, data) => {
-                    if (err) {
-                        console.error(err);
-                        res.redirect('back');
-                    } else {
-                        res.redirect('back');
-                    }
-                });
             });
         });
     });

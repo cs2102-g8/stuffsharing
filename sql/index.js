@@ -39,7 +39,7 @@ sql.query = {
     // Lend_New_Stuff
     checkLender: 'SELECT uid FROM Lenders WHERE uid = $1',
     insertToLenders: 'INSERT INTO Lenders(uid) VALUES ($1)',
-    insertToStuff: 'INSERT INTO Stuffs(sid, stuffName, nextMinimumBid) VALUES ($1, $2, $3)',
+    insertToStuff: 'INSERT INTO Stuffs(sid, stuffName, originalPrice, nextMinimumBid) VALUES ($1, $2, $3, $3)',
     insertToLends: 'INSERT INTO Lends(sid, uid) VALUES ($1, $2)',
     insertToDescription: 'INSERT INTO Descriptions(pickUpTime, returnTime, pickUpLocation, returnLocation, summary, uid, sid) VALUES ($1, $2, $3, $4, $5, $6, $7)',
     insertToBelongs: 'INSERT INTO Belongs(sid,categoryName) VALUES ($1,$2)',
