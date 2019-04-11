@@ -159,13 +159,9 @@ for each row
 execute procedure bidCheck();
 
 create or replace function borrowCheck() returns trigger as $$
-declare count numeric;
 begin
-    select count(*) into count
-    from Borrows
-    where new.uid = Borrows.uid;
-    if count > 10 then
-        return null;
+    if exists (select 1 from Lends natural join Stuffs where new.uid = uid and new.sid = sid) then
+	    raise exception 'Cannot bid for own Stuff';
     else
         return new;
     end if;
@@ -301,9 +297,7 @@ insert into Bids(uid, sid, bid) values ('J00000', '11', 120);
 
 insert into Borrows(uid, sid) values ('A10001', '00');
 insert into Borrows(uid, sid) values ('C30003', '01');
-insert into Borrows(uid, sid) values ('E50005', '04');
 insert into Borrows(uid, sid) values ('F60006', '05');
-insert into Borrows(uid, sid) values ('F60006', '03');
 insert into Borrows(uid, sid) values ('F60006', '10');
 insert into Borrows(uid, sid) values ('G70007', '06');
 insert into Borrows(uid, sid) values ('G70007', '07');
@@ -345,8 +339,6 @@ insert into Descriptions(pickupTime, returnTime, pickupLocation, returnLocation,
 
 insert into Comments(comment, updateTime, uid, sid, rating) values ('I drew something on your book. Hope you like it.', '20180505 10:00:00 AM', 'A10001', '00', 5);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('Oh I failed my interview. It is your fault!', '20180719 09:00:00 PM', 'C30003', '01', 1);
-insert into Comments(comment, updateTime, uid, sid, rating) values ('Intersting books. But the quality of paper was not very good.', '20181212 10:20:00 AM', 'F60006', '03', 3);
-insert into Comments(comment, updateTime, uid, sid, rating) values ('Nice iPad. It was very new.', '20190202 11:03:00 AM', 'E50005', '04', 5);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('The quality of headphone was very bad. It hurted my ears.', '20180805 05:00:00 PM', 'F60006', '05', 2);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('Although it was a bit old but I am quite satisfied with its quality.', '20180808 10:00:00 AM', 'G70007', '06', 4);
 insert into Comments(comment, updateTime, uid, sid, rating) values ('Although it was a bit old but I am quite satisfied with its quality.', '20180111 08:00:00 PM', 'G70007', '07', 4);
