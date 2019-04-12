@@ -165,7 +165,7 @@ execute procedure bidCheck();
 create or replace function borrowCheck() returns trigger as $$
 begin
     if exists (select 1 from Lends natural join Stuffs where new.uid = uid and new.sid = sid) then
-	    raise exception 'Cannot bid for own Stuff';
+	    raise exception 'Cannot borrow own Stuff';
     elsif exists (select 1 from Borrows where new.sid = sid) then
 	    raise exception 'Stuff is already borrowed';
 	else
